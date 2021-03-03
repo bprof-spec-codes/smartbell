@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    class Template
+    public class Template
     {
         public string Id { get; set; }
 

@@ -8,7 +8,7 @@ namespace Models
     {
         Manual,Break,Holiday
     }
-    class Holiday
+    public class Holiday
     {
         public string Id { get; set; }
 
