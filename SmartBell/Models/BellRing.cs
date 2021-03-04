@@ -2,6 +2,11 @@
 
 namespace Models
 {
+    public enum BellRingType
+    {
+        Start,End,Special
+    }
+
     public class BellRing
     {
         public string Id { get; set; }
@@ -11,6 +16,8 @@ namespace Models
         public TimeSpan Interval { get; set; }
 
         public string AudioPath { get; set; }
+
+        public BellRingType Type { get; set; }
 
         public string TTSContent { get; set; }
     }
