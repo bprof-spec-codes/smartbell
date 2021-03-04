@@ -31,7 +31,7 @@ namespace Repository
                 return;
             }
 
-            // TODO: If possible Interval should be able to be set by the mp3 file's length 
+            // TODO: If possible Interval should be able to be set by the mp3 file's duration
             /*
             Bellring.Interval = ???;
              */

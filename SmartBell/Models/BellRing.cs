@@ -11,5 +11,7 @@ namespace Models
         public TimeSpan Interval { get; set; }
 
         public string AudioPath { get; set; }
+
+        public string TTSContent { get; set; }
     }
 }
