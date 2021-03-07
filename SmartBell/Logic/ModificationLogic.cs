@@ -160,5 +160,27 @@ namespace Logic
                 }
             }
         }
+        public void FillDbbyTemplate(Template template,DateTime StartDate, DateTime EndDate) 
+        {
+            List<BellRing> bellRingsForADay = new List<BellRing>();
+            foreach (DateTime day in EachDay(StartDate, EndDate)) // loops through an entire school year
+            {
+                bellRingsForADay = template.TemplateElements;
+                if (day.Day<6) // checks if it's a workday Monday->Friday
+                {
+                    foreach (var item in bellRingsForADay)
+                    {
+                        item.BellRingTime= new DateTime(day.Year, day.Month, day.Day, item.BellRingTime.Hour, item.BellRingTime.Minute, item.BellRingTime.Second);
+                        InsertBellRing(item);
+                    }
+                }
+            }
+        }
+        private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        {
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
+        }
+
     }
 }
