@@ -19,6 +19,5 @@ namespace Models
 
         public BellRingType Type { get; set; }
 
-        public string TTSContent { get; set; }
     }
 }
