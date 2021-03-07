@@ -10,6 +10,6 @@ namespace Models
 
         public string Name { get; set; }
 
-        public List<DateTime> TemplateElements { get; set; }
+        public List<BellRing> TemplateElements { get; set; }
     }
 }

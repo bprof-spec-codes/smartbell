@@ -103,5 +103,22 @@ namespace Logic
             IQueryable<BellRing> BellringsOfDay = bellRingRepo.GetAll().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
             return BellringsOfDay;
         }
+
+        public void ModifyByTemplate(DateTime dayDate,Template template)
+        {
+            IQueryable<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate);
+            foreach (var item in BellringsOfDay)
+            {
+                if (item.Type.Equals(BellRingType.Start) || item.Type.Equals(BellRingType.End))
+                {
+                    DeleteBellring(item);
+                }
+            }
+            foreach (var item in template.TemplateElements)
+            {
+                BellRing b = item;
+                b.BellRingTime=new DateTime(dayDate.Year,dayDate.Month,dayDate.Day,b.BellRingTime.Hour,b.BellRingTime.Minute,b.BellRingTime.Second);
+            }
+        }
     }
 }
