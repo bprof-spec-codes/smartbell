@@ -100,13 +100,17 @@ namespace Logic
 
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
         {
-            IQueryable<BellRing> BellringsOfDay = bellRingRepo.GetAll().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
+            IQueryable<BellRing> BellringsOfDay = GetAllBellring().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
             return BellringsOfDay;
         }
 
         public void ModifyByTemplate(DateTime dayDate,Template template)
         {
             IQueryable<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate);
+            if (BellringsOfDay == null || template.TemplateElements == null)
+            {
+                return;
+            }
             foreach (var item in BellringsOfDay)
             {
                 if (item.Type.Equals(BellRingType.Start) || item.Type.Equals(BellRingType.End))
@@ -118,6 +122,42 @@ namespace Logic
             {
                 BellRing b = item;
                 b.BellRingTime=new DateTime(dayDate.Year,dayDate.Month,dayDate.Day,b.BellRingTime.Hour,b.BellRingTime.Minute,b.BellRingTime.Second);
+                InsertBellRing(b);
+            }
+        }
+        
+        public void RemoveAllHolidays()
+        {
+            IQueryable<Holiday> holidays = GetAllHoliday();
+            if (holidays == null )
+            {
+                return;
+            }
+            foreach (var item in holidays)
+            {
+                IQueryable<BellRing> bellRingsDuringHoliday =
+                    GetAllBellring().Where(bellring => bellring.BellRingTime >= item.StartTime && item.EndTime >= bellring.BellRingTime);
+                if (bellRingsDuringHoliday!=null)
+                {
+                    foreach (var BellRingToBeRemoved in bellRingsDuringHoliday)
+                    {
+                        DeleteBellring(BellRingToBeRemoved);
+                    }
+                }
+
+            }
+        }
+
+        public void RemoveByHoliday(Holiday h)
+        {
+            IQueryable<BellRing> bellRingsDuringHoliday =
+                    GetAllBellring().Where(bellring => bellring.BellRingTime >= h.StartTime && h.EndTime >= bellring.BellRingTime);
+            if (bellRingsDuringHoliday != null)
+            {
+                foreach (var BellRingToBeRemoved in bellRingsDuringHoliday)
+                {
+                    DeleteBellring(BellRingToBeRemoved);
+                }
             }
         }
     }
