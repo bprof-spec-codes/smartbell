@@ -1,6 +1,7 @@
 ﻿using Models;
 using Repository;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Logic
@@ -95,6 +96,12 @@ namespace Logic
         public void SaveTemplate()
         {
             templateRepo.SaveChanges();
+        }
+
+        public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
+        {
+            IQueryable<BellRing> BellringsOfDay = bellRingRepo.GetAll().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
+            return BellringsOfDay;
         }
     }
 }
