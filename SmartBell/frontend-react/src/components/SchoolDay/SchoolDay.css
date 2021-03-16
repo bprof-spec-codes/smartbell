@@ -1,0 +1,19 @@
+.LessonSheet {
+    height: 40%;
+    width: 60%;
+    background: linear-gradient(#1ebcbc, #85edff);
+    border-radius: 50% 50% 0 0;
+    box-shadow: inset -15px 0 #276972;
+    margin: 2% auto;
+    position: relative;
+}
+
+.BreakSheet {
+    height: 40%;
+    width: 60%;
+    background: linear-gradient(#37ffa1, #00bd94);
+    border-radius: 50% 50% 0 0;
+    box-shadow: inset -15px 0 #27726e;
+    margin: 2% auto;
+    position: relative;
+}
