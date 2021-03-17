@@ -12,7 +12,10 @@ const lesson = (props) => {
         case('break'):
             block = <div className={classes.BreakSheet}></div>;
             break;
+        default: block=null;
     }
+
+    return block;
 };
 
 export default lesson;
