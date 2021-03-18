@@ -8,15 +8,16 @@ namespace Logic
 {
     public class ModificationLogic
     {
-        BellRingRepository bellRingRepo;
-        TemplateRepository templateRepo;
-        HolidayRepository holidayRepo;
-        TemplateEelementRepository templateElementRepo;
-        public ModificationLogic(BellRingRepository bellRingRepo, TemplateRepository templateRepo, HolidayRepository holidayRepo)
+        IBellRingRepository bellRingRepo;
+        ITemplateRepository templateRepo;
+        IHolidayRepository holidayRepo;
+        ITemplateElementRepository templateElementRepo;
+        public ModificationLogic(IBellRingRepository bellRingRepo, ITemplateRepository templateRepo, IHolidayRepository holidayRepo, ITemplateElementRepository templateElementRepo)
         {
             this.bellRingRepo = bellRingRepo;
             this.templateRepo = templateRepo;
             this.holidayRepo = holidayRepo;
+            this.templateElementRepo = templateElementRepo;
         }
 
         // Insert
