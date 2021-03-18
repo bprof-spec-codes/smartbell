@@ -1,14 +1,13 @@
 import React from 'react'
 
+import Ring from './Ring'
 
-
-const Rings = (props) => {
-
+const Rings = ({rings, onDelete}) => {
 
     return (
         <div>
-            {props.rings.map((ring)=>(
-                <h3 key={ring.id}>{ring.text} - {ring.time}</h3>
+            {rings.map((ring)=>(
+                <Ring key={ring.id} ring={ring} onDelete={onDelete}/>
             ))}
         </div>
     )
