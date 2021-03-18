@@ -1,10 +1,17 @@
 import React from "react";
 
+import Button from '../../components/Button/Button';
+
 //rafce -->tabtab
 const Header = () => {
+    const onClicked = () => {
+        console.log('Clicked.')
+    }
+
     return (
-        <header>
+        <header className='header'>
             <h1>Naptár</h1>
+            <Button onClick={onClicked} color='green' text='Új zeneszám hozzáadása'/>
         </header>
     )
 }
