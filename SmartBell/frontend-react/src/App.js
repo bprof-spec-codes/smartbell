@@ -1,8 +1,10 @@
 import React from 'react';
 
 import {useState} from 'react'
+import { FaTasks } from 'react-icons/fa';
 
 //crash course
+//npm install react-icons
 import Header from './components/Header/Header'
 import Rings from './components/Rings/Rings'
 
@@ -35,12 +37,26 @@ const App = () =>{
     }
 ])
 
+  //delete ring
+  const deleteRing = (id) =>{
+    //console.log('delete', id)
+    setRings(rings.filter((ring) => ring.id!==id))
+  }
+
   return(
     <div className='container'>
         <Header/>
-        <Rings rings={rings}/>
+        {
+          rings.length > 0 ? 
+          (
+            <Rings rings={rings} onDelete={deleteRing}/>
+          ) 
+          : 
+          (
+            'A mai napra nincsenek csengetések'
+          )
+        }
       </div>
   )
 }
-
 export default App;
