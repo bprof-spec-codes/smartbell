@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    interface IHolidayRepository : IRepository<Holiday>
+    public interface IHolidayRepository : IRepository<Holiday>
     {
 
     }
     public class HolidayRepository : Repository<Holiday>, IHolidayRepository
     {
-        public HolidayRepository(DbContext context) : base(context)
+        public HolidayRepository(SbDbContext context) : base(context)
         {
         }
 

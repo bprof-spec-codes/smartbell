@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,8 @@ namespace Repository
     }
     public abstract class Repository<T> : IRepository<T> where T:class
     {
-        protected DbContext context;
-        public Repository(DbContext context)
+        private SbDbContext context = new SbDbContext();
+        public Repository(SbDbContext context)
         {
             this.context = context;
         }

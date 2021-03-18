@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Repository
     }
     public class BellRingRepository : Repository<BellRing>, IBellRingRepository
     {
-        public BellRingRepository(DbContext context) : base(context)
+        public BellRingRepository(SbDbContext context) : base(context)
         {
         }
 
@@ -29,7 +30,7 @@ namespace Repository
             if (Bellring == null)
             {
                 return;
-            }
+            } 
 
             // TODO: If possible Interval should be able to be set by the mp3 file's duration
             /*
