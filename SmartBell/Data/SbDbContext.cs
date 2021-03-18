@@ -8,7 +8,7 @@ namespace Data
     {
         public SbDbContext()
         {
-
+            this.Database.EnsureCreated();
         }
         public SbDbContext(DbContextOptions<SbDbContext> options)
             :base(options)
@@ -20,7 +20,8 @@ namespace Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=tcp:smartbell.database.windows.net,1433;Initial Catalog=SmartBell;Persist Security Info=False;User ID=sm_admin;Password=Passw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.
+                    UseLazyLoadingProxies().UseSqlServer(@"Server=tcp:smartbell.database.windows.net,1433;Initial Catalog=SmartBell;Persist Security Info=False;User ID=sm_admin;Password=Passw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
