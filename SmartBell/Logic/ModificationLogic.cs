@@ -11,6 +11,7 @@ namespace Logic
         BellRingRepository bellRingRepo;
         TemplateRepository templateRepo;
         HolidayRepository holidayRepo;
+        TemplateEelementRepository templateElementRepo;
         public ModificationLogic(BellRingRepository bellRingRepo, TemplateRepository templateRepo, HolidayRepository holidayRepo)
         {
             this.bellRingRepo = bellRingRepo;
@@ -33,6 +34,10 @@ namespace Logic
         {
             templateRepo.Insert(template);
         }
+        public void InsertTemplateElement(TemplateElement templateElement)
+        {
+            templateElementRepo.Insert(templateElement);
+        }
 
         // Get one
         public BellRing GetOneBellring(string id)
@@ -49,7 +54,10 @@ namespace Logic
         {
             return templateRepo.GetOne(id);
         }
-
+        public TemplateElement GetOneTemplateElement(string id)
+        {
+            return templateElementRepo.GetOne(id);
+        }
         // Get all
         public IQueryable<BellRing> GetAllBellring()
         {
@@ -65,7 +73,10 @@ namespace Logic
         {
             return templateRepo.GetAll();
         }
-
+        public IQueryable<TemplateElement> GetAllTemplateElement()
+        {
+            return templateElementRepo.GetAll();
+        }
         // Delete
         public void DeleteBellring(BellRing bellRing)
         {
@@ -81,7 +92,10 @@ namespace Logic
         {
             templateRepo.Delete(template);
         }
-
+        public void DeleteTemplateElement(TemplateElement templateElement)
+        {
+            templateElementRepo.Delete(templateElement);
+        }
         //Save
         public void SaveBellring()
         {
@@ -96,6 +110,10 @@ namespace Logic
         public void SaveTemplate()
         {
             templateRepo.SaveChanges();
+        }
+        public void SaveTemplateElement()
+        {
+            templateElementRepo.SaveChanges();
         }
 
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
