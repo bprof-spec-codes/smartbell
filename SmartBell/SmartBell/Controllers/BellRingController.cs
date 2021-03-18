@@ -38,7 +38,7 @@ namespace SmartBell.Controllers
         }
 
         [HttpPost]
-        public void AddTemplateElement([FromBody] BellRing item)
+        public void AddBellRing([FromBody] BellRing item)
         {
             logic.InsertBellRing(item);
         }

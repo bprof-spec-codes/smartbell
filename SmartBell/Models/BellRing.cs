@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -26,6 +27,7 @@ namespace Models
         public string TemplateId { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual Template ParentTemplate { get; set; }
 
     }

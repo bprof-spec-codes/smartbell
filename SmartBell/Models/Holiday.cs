@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Models
@@ -10,6 +11,7 @@ namespace Models
     }
     public class Holiday
     {
+        [Key]
         public string Id { get; set; }
 
         public HolidayType Type { get; set; }

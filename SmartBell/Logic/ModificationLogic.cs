@@ -33,6 +33,7 @@ namespace Logic
 
         public void InsertTemplate(Template template)
         {
+            template.Id = Guid.NewGuid().ToString();
             templateRepo.Insert(template);
         }
         public void InsertTemplateElement(TemplateElement templateElement)
