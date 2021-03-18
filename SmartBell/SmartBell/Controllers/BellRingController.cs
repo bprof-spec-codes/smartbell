@@ -1,0 +1,46 @@
+﻿using Logic;
+using Microsoft.AspNetCore.Mvc;
+using Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SmartBell.Controllers
+{
+    [ApiController]
+    [Route("{controller}")]
+    public class BellRingController : ControllerBase
+    {
+        ModificationLogic logic;
+
+        public BellRingController(ModificationLogic logic)
+        {
+            this.logic = logic;
+        }
+
+        [HttpDelete("{id}")]
+        public void DeleteBellRing(string id)
+        {
+            BellRing bellring = logic.GetOneBellring(id);
+            logic.DeleteBellring(bellring);
+        }
+        [HttpGet("{id}")]
+        public BellRing GetBellRing(string id)
+        {
+            return logic.GetOneBellring(id);
+        }
+
+        [HttpGet]
+        public IEnumerable<BellRing> GetAllBellRings()
+        {
+            return logic.GetAllBellring();
+        }
+
+        [HttpPost]
+        public void AddTemplateElement([FromBody] BellRing item)
+        {
+            logic.InsertBellRing(item);
+        }
+    }
+}

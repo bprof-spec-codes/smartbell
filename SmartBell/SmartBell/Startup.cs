@@ -1,8 +1,13 @@
+using Data;
+using Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Models;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +21,14 @@ namespace SmartBell
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            services.AddTransient<SbDbContext>();
+            services.AddTransient<ModificationLogic, ModificationLogic>();
+            services.AddTransient<ITemplateRepository, TemplateRepository>();
+            services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();
+            services.AddTransient<IBellRingRepository, BellRingRepository>();
+            services.AddTransient<IHolidayRepository, HolidayRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,14 +39,12 @@ namespace SmartBell
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
