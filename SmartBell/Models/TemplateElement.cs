@@ -1,20 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Models
 {
-    public enum BellRingType
-    {
-        Start,End,Special
-    }
-
-    public class BellRing
+    public class TemplateElement
     {
         [Key]
         public string Id { get; set; }
 
-        public  DateTime BellRingTime { get; set; }
+        public DateTime BellRingTime { get; set; }
 
         public TimeSpan Interval { get; set; }
 
@@ -22,7 +21,8 @@ namespace Models
         public string AudioPath { get; set; }
 
         public BellRingType Type { get; set; }
-        
+
+
         public string TemplateId { get; set; }
 
         [NotMapped]

@@ -104,7 +104,9 @@ namespace Logic
             return BellringsOfDay;
         }
 
-        public void ModifyByTemplate(DateTime dayDate,Template template)
+
+        // TODO: These logic methods should be fixed asap (sql antipattern issue...)
+       /* public void ModifyByTemplate(DateTime dayDate,Template template)
         {
             IQueryable<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate);
             if (BellringsOfDay == null || template.TemplateElements == null)
@@ -180,7 +182,7 @@ namespace Logic
         {
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
-        }
+        }*/
 
     }
 }

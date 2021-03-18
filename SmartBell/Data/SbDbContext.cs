@@ -25,12 +25,29 @@ namespace Data
         }
 
         public DbSet<Template> Templates { get; set; }
+        public DbSet<TemplateElement> TemplateElements { get; set; }
         public DbSet<BellRing> BellRings { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // TODO: ONE TO MANY FOR TEMPLATE -> BELLRINGS
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TemplateElement>(entity =>
+            {
+                entity.
+                HasOne(templateElement => templateElement.ParentTemplate)
+                .WithMany(template => template.TemplateElements)
+                .HasForeignKey(templateElement => templateElement.TemplateId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<BellRing>(entity =>
+            {
+                entity.
+                HasOne(bellRing => bellRing.ParentTemplate)
+                .WithMany(template => template.BellRings)
+                .HasForeignKey(bellRing => bellRing.TemplateId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }
