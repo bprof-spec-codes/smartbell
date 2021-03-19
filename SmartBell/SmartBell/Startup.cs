@@ -22,7 +22,7 @@ namespace SmartBell
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<SbDbContext>();
+            services.AddDbContext<SbDbContext>();
             services.AddTransient<ModificationLogic, ModificationLogic>();
             services.AddTransient<ITemplateRepository, TemplateRepository>();
             services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();
