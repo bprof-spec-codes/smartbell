@@ -23,11 +23,13 @@ namespace Logic
         // Insert
         public void InsertBellRing(BellRing bellRing)
         {
+            bellRing.Id = Guid.NewGuid().ToString();
             bellRingRepo.Insert(bellRing);
         }
 
         public void InsertHoliday(Holiday holiday)
         {
+            holiday.Id = Guid.NewGuid().ToString();
             holidayRepo.Insert(holiday);
         }
 
@@ -38,6 +40,7 @@ namespace Logic
         }
         public void InsertTemplateElement(TemplateElement templateElement)
         {
+            templateElement.Id = Guid.NewGuid().ToString();
             templateElementRepo.Insert(templateElement);
         }
 
