@@ -135,10 +135,11 @@ namespace Logic
 
 
         // TODO: These logic methods should be fixed asap (sql antipattern issue...)
-        /*public void ModifyByTemplate(DateTime dayDate,Template template)
+        public void ModifyByTemplate(DateTime dayDate,Template template)
         {
             IQueryable<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate);
-            if (BellringsOfDay == null || template.TemplateElements == null)
+            IQueryable<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id);
+            if (BellringsOfDay == null || ElementsOfTemplate == null)
             {
                 return;
             }
@@ -149,10 +150,10 @@ namespace Logic
                     DeleteBellring(item);
                 }
             }
-            foreach (var item in template.TemplateElements)
+
+            foreach (var item in ElementsOfTemplate)
             {
-                BellRing b = item;
-                b.BellRingTime=new DateTime(dayDate.Year,dayDate.Month,dayDate.Day,b.BellRingTime.Hour,b.BellRingTime.Minute,b.BellRingTime.Second);
+                BellRing b = AssignNewBellRingByTemplateElement(item, dayDate);
                 InsertBellRing(b);
             }
         }
@@ -175,7 +176,6 @@ namespace Logic
                         DeleteBellring(BellRingToBeRemoved);
                     }
                 }
-
             }
         }
 
@@ -191,27 +191,44 @@ namespace Logic
                 }
             }
         }
-        /*public void FillDbbyTemplate(Template template,DateTime StartDate, DateTime EndDate) 
+        // this method should be "locked" from the frontend site to only allow years to be filled by a template with a name like "normal" 
+        public void FillDbByTemplate(Template template,DateTime StartDate, DateTime EndDate) 
         {
+            if (template == null)
+            {
+                return;
+            }
             List<BellRing> bellRingsForADay = new List<BellRing>();
+            IQueryable<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id);
             foreach (DateTime day in EachDay(StartDate, EndDate)) // loops through an entire school year
             {
-                bellRingsForADay = template.TemplateElements;
                 if (day.Day<6) // checks if it's a workday Monday->Friday
                 {
-                    foreach (var item in bellRingsForADay)
+                    foreach (var item in ElementsOfTemplate)
                     {
-                        item.BellRingTime= new DateTime(day.Year, day.Month, day.Day, item.BellRingTime.Hour, item.BellRingTime.Minute, item.BellRingTime.Second);
-                        InsertBellRing(item);
+                        BellRing b = AssignNewBellRingByTemplateElement(item, day);
+                        InsertBellRing(b);
                     }
                 }
             }
+        }
+        private BellRing AssignNewBellRingByTemplateElement(TemplateElement templateElement,DateTime dayDate)
+        {
+            BellRing b = new BellRing()
+            {
+                Id = Guid.NewGuid().ToString(),
+                AudioPath = templateElement.AudioPath,
+                Interval = templateElement.Interval,
+                Type = templateElement.Type,
+                BellRingTime = new DateTime(dayDate.Year, dayDate.Month, dayDate.Day, templateElement.BellRingTime.Hour, templateElement.BellRingTime.Minute, templateElement.BellRingTime.Second),
+            };
+            return new BellRing();
         }
         private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
         {
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
-        }*/
+        }
 
     }
 }
