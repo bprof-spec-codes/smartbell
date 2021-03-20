@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SmartBell.Controllers
 {
     [ApiController]
-    [Route("{controller}")]
+    [Route("Bellring")]
     public class BellRingController : ControllerBase
     {
         ModificationLogic logic;

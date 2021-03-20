@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ApiEndpoint.Controllers
 {
     [ApiController]
-    [Route("{controller}")]
+    [Route("Template")]
     public class TemplateController:ControllerBase
     {
         ModificationLogic logic;
