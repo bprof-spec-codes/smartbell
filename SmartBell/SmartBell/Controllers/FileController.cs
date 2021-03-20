@@ -40,5 +40,14 @@ namespace SmartBell.Controllers
                 return StatusCode(500, $"Internal server error : {ex}");
             }
         }
+
+        [HttpGet("{filename}")]
+        public FileResult Download(string filename)
+        {
+            var folder = Path.Combine(Directory.GetCurrentDirectory(), "Output");
+            var path = Path.Combine(folder, filename);
+            byte[] allbytes = System.IO.File.ReadAllBytes(path);
+            return File(allbytes, "application/octet-stream",filename);
+        }
     }
 }
