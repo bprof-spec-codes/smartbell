@@ -10,7 +10,9 @@ using Models;
 using Repository;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SmartBell
@@ -28,6 +30,13 @@ namespace SmartBell
             services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();
             services.AddTransient<IBellRingRepository, BellRingRepository>();
             services.AddTransient<IHolidayRepository, HolidayRepository>();
+            services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SmartBell Api endpoints", Version = "v1" });
+                var filename = $"Models.xml";
+                var filepath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).FullName + @"/Models", filename);
+                opt.IncludeXmlComments(filepath);
+            });
 
         }
 
@@ -45,6 +54,12 @@ namespace SmartBell
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(opt=>
+            {
+                opt.SwaggerEndpoint("./v1/swagger.json", "Smartbell Api");
             });
         }
     }
