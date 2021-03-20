@@ -141,7 +141,7 @@ namespace Logic
             List<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id).ToList();
             if (ElementsOfTemplate.Count() % 2 !=0)
             {
-                throw new Exception("Template elements declaration is incorrect, all start types have a separate end type enum");
+                throw new Exception("Template elements declaration is incorrect, all start types have a separate end type");
             }
             List<BellRing> ElementsOfTemplateForThisDay = new List<BellRing>();
             foreach (var item in ElementsOfTemplate)
@@ -161,11 +161,11 @@ namespace Logic
                     else if (BellringsOfDay[i - 1].BellRingTime > item.BellRingTime && BellringsOfDay[i - 1].BellRingTime < item.BellRingTime+item.Interval)
                     {
                         output += $"\n Template Modification intersect Special type of bellring starts at : {item.BellRingTime} " +
-                            $"has the interval of {item.Interval} which creates an intersect with the StartTime:{BellringsOfDay[i - 1].BellRingTime}"
+                            $"has the interval of {item.Interval} which creates an intersect with the StartTime:{BellringsOfDay[i - 1].BellRingTime}";
                     }
                 }
             }
-            return "";
+            return output;
         }
         
         public void ModifyByTemplate(DateTime dayDate,Template template)
