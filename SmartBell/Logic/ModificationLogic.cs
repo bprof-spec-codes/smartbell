@@ -118,6 +118,12 @@ namespace Logic
             templateElementRepo.SaveChanges();
         }
 
+        // This method will allow us to get all Elements for a ceratin template (one to many)
+        public IQueryable<TemplateElement>GetElementsForTemplate(string templateId)
+        {
+            return templateRepo.GetOne(templateId).TemplateElements.AsQueryable();
+        }
+
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
         {
             IQueryable<BellRing> BellringsOfDay = GetAllBellring().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
@@ -126,7 +132,7 @@ namespace Logic
 
 
         // TODO: These logic methods should be fixed asap (sql antipattern issue...)
-       /* public void ModifyByTemplate(DateTime dayDate,Template template)
+        /*public void ModifyByTemplate(DateTime dayDate,Template template)
         {
             IQueryable<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate);
             if (BellringsOfDay == null || template.TemplateElements == null)
@@ -182,7 +188,7 @@ namespace Logic
                 }
             }
         }
-        public void FillDbbyTemplate(Template template,DateTime StartDate, DateTime EndDate) 
+        /*public void FillDbbyTemplate(Template template,DateTime StartDate, DateTime EndDate) 
         {
             List<BellRing> bellRingsForADay = new List<BellRing>();
             foreach (DateTime day in EachDay(StartDate, EndDate)) // loops through an entire school year
