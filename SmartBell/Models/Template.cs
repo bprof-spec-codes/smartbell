@@ -17,10 +17,6 @@ namespace Models
 
         [NotMapped]
         [JsonIgnore]
-        public virtual ICollection<BellRing> BellRings { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
         public virtual ICollection<TemplateElement> TemplateElements { get; set; }
 
     }

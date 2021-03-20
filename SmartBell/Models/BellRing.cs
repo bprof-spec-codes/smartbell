@@ -23,12 +23,6 @@ namespace Models
         public string AudioPath { get; set; }
 
         public BellRingType Type { get; set; }
-        
-        public string TemplateId { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
-        public virtual Template ParentTemplate { get; set; }
 
     }
 }
