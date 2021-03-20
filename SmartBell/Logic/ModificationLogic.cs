@@ -36,13 +36,29 @@ namespace Logic
         public void InsertTemplate(Template template)
         {
             template.Id = Guid.NewGuid().ToString();
+            int i = 1;
+            while (!VerifyTemplateName(template.Name))
+            {
+                template.Name += i;
+                i++;
+            }
             templateRepo.Insert(template);
+        }
+        private bool VerifyTemplateName(string name)
+        {
+            IQueryable<Template> SameNames = GetAllTemplate().Where(x => x.Name == name);
+            if (SameNames.Count()==0)
+            {
+                return true;
+            }
+            return false;
         }
         public void InsertTemplateElement(TemplateElement templateElement)
         {
             templateElement.Id = Guid.NewGuid().ToString();
             templateElementRepo.Insert(templateElement);
         }
+        
 
         // Get one
         public BellRing GetOneBellring(string id)
