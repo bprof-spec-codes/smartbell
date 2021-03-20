@@ -134,7 +134,40 @@ namespace Logic
         }
 
 
-        // TODO: These logic methods should be fixed asap (sql antipattern issue...)
+        public string CheckForIntersect(DateTime dayDate, Template template)
+        {
+            string output = "";
+            List<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate).Where(x=>x.Type.Equals(BellRingType.Special)).ToList();
+            List<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id).ToList();
+            if (ElementsOfTemplate.Count() % 2 !=0)
+            {
+                throw new Exception("Template elements declaration is incorrect, all start types have a separate end type enum");
+            }
+            List<BellRing> ElementsOfTemplateForThisDay = new List<BellRing>();
+            foreach (var item in ElementsOfTemplate)
+            {
+                BellRing b = AssignNewBellRingByTemplateElement(item, dayDate);
+                ElementsOfTemplateForThisDay.Add(b);
+            }
+            for (int i = 1; i < ElementsOfTemplateForThisDay.Count()-1; i+=2)
+            {
+                foreach (var item in BellringsOfDay)
+                {
+                    if (BellringsOfDay[i-1].BellRingTime < item.BellRingTime && item.BellRingTime < BellringsOfDay[i].BellRingTime)
+                    {
+                        output += $"\n Template Modification intersect between type StartTime:{BellringsOfDay[i - 1].BellRingTime} " +
+                            $"and EndTime:{BellringsOfDay[i].BellRingTime} there is a Special type with which shall not rang at: {item.BellRingTime}";
+                    }
+                    else if (BellringsOfDay[i - 1].BellRingTime > item.BellRingTime && BellringsOfDay[i - 1].BellRingTime < item.BellRingTime+item.Interval)
+                    {
+                        output += $"\n Template Modification intersect Special type of bellring starts at : {item.BellRingTime} " +
+                            $"has the interval of {item.Interval} which creates an intersect with the StartTime:{BellringsOfDay[i - 1].BellRingTime}"
+                    }
+                }
+            }
+            return "";
+        }
+        
         public void ModifyByTemplate(DateTime dayDate,Template template)
         {
             IQueryable<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate);
