@@ -142,7 +142,7 @@ namespace Logic
         }
 
         // BellRingSpecific method
-        public void SetIntervalByAudio(string id)
+        public void SetIntervalByAudioPath(string id)
         {
             bellRingRepo.SetIntervalByAudioPath(id);
         }
