@@ -19,7 +19,6 @@ namespace SmartBell.Controllers
         {
             try
             {
-                ;
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (FileToUpload != null || FileToUpload.Length > 0)
