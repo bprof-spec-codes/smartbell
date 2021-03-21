@@ -7,6 +7,8 @@ import { FaTasks } from 'react-icons/fa';
 //npm install react-icons
 import Header from './components/Header/Header'
 import Rings from './components/Rings/Rings'
+import AddRing from './components/Button/AddRing'
+
 
 
 const App = () =>{
@@ -43,13 +45,26 @@ const App = () =>{
     setRings(rings.filter((ring) => ring.id!==id))
   }
 
+  //toggle reminder
+  const toggleReminder = (id) => {
+    setRings(rings.map((ring)=>ring.id===id?
+    {...ring, normal: !ring.normal}
+    :
+    ring))
+  }
+
   return(
     <div className='container'>
         <Header/>
+        <AddRing/>
         {
           rings.length > 0 ? 
           (
-            <Rings rings={rings} onDelete={deleteRing}/>
+            <Rings 
+              rings={rings} 
+              onDelete={deleteRing}
+              onToggle={toggleReminder}
+            />
           ) 
           : 
           (

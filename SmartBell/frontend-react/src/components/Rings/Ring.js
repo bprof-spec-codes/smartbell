@@ -2,9 +2,9 @@ import React from 'react' //rafcetabtab
 
 import {FaTimes} from 'react-icons/fa'
 
-const Ring = ({ring, onDelete}) => {
+const Ring = ({ring, onDelete, onToggle}) => {
     return (
-        <div className='task'>
+        <div className={`task ${ring.normal? 'reminder':''}`} onDoubleClick={()=>onToggle(ring.id)}>
             <h3>
                 {ring.time} {' '}
                 <FaTimes 
