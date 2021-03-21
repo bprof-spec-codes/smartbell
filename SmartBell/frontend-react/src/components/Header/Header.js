@@ -10,7 +10,7 @@ const Header = () => {
 
     return (
         <header className='header'>
-            <h1>Naptár</h1>
+            <h1>Kiválasztott nap</h1>
             <Button onClick={onClicked} color='green' text='Új csengetés hozzáadása'/>
         </header>
     )
