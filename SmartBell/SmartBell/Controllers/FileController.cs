@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,25 +13,24 @@ namespace SmartBell.Controllers
     [Route("File")]
     public class FileController : ControllerBase
     {
+
         [HttpPost,DisableRequestSizeLimit]
-        public IActionResult Upload()
+        public IActionResult Upload(IFormFile FileToUpload)
         {
             try
             {
-                var file = Request.Form.Files[0];
+                ;
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (file.Length>0)
+                if (FileToUpload != null || FileToUpload.Length > 0)
                 {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullpath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
+                    var fullpath = Path.Combine(pathToSave, FileToUpload.FileName);
 
                     using (var stream = new FileStream(fullpath, FileMode.Create))
                     {
-                        file.CopyTo(stream);
+                        FileToUpload.CopyTo(stream);
                     }
-                    return Ok(new { dbPath });
+                    return Ok();
                 }
                 return BadRequest();
             }
