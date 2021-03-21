@@ -28,7 +28,10 @@
             <summary>The start time of outputing sound.</summary>
         </member>
         <member name="P:Models.BellRing.Interval">
-            <summary>The interval of outputing sound.</summary>
+            <summary>Read only parameter, interval of outputing sound.</summary>
+        </member>
+        <member name="P:Models.BellRing.IntervalSeconds">
+            <summary>The interval of outputing sound in seconds for manual setup.</summary>
         </member>
         <member name="P:Models.BellRing.AudioPath">
             <summary>
