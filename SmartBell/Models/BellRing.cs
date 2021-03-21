@@ -27,8 +27,11 @@ namespace Models
         /// <summary>The start time of outputing sound.</summary>
         public DateTime BellRingTime { get; set; }
 
-        /// <summary>The interval of outputing sound.</summary>
+        /// <summary>Read only parameter, interval of outputing sound.</summary>
         public TimeSpan Interval { get; set; }
+
+        /// <summary>The interval of outputing sound in seconds for manual setup.</summary>
+        public int IntervalSeconds { get; set; }
 
         /// <summary>
         /// The path the file or directory where the element or elements are specified.
