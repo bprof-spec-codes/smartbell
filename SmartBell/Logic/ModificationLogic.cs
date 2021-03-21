@@ -24,6 +24,10 @@ namespace Logic
         public void InsertBellRing(BellRing bellRing)
         {
             bellRing.Id = Guid.NewGuid().ToString();
+            if (bellRing.IntervalSeconds>0)
+            {
+                bellRing.Interval = new TimeSpan(0, 0, bellRing.IntervalSeconds);
+            }
             bellRingRepo.Insert(bellRing);
         }
 
@@ -135,6 +139,12 @@ namespace Logic
         public void SaveTemplateElement()
         {
             templateElementRepo.SaveChanges();
+        }
+
+        // BellRingSpecific method
+        public void SetIntervalByAudio(string id)
+        {
+            bellRingRepo.SetIntervalByAudioPath(id);
         }
 
         // This method will allow us to get all Elements for a ceratin template (one to many)
