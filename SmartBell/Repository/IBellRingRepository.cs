@@ -11,7 +11,7 @@ namespace Repository
 {
     public interface IBellRingRepository : IRepository<BellRing>
     {
-        void SetIntervalByAudio(string Id);
+        void SetIntervalByAudioPath(string Id);
     }
     public class BellRingRepository : Repository<BellRing>, IBellRingRepository
     {
@@ -24,9 +24,9 @@ namespace Repository
             return GetAll().SingleOrDefault(x => x.Id == id);
         }
 
-        public void SetIntervalByAudio(string Id)
+        public void SetIntervalByAudioPath(string id)
         {
-            var Bellring = GetOne(Id);
+            var Bellring = GetOne(id);
             if (Bellring == null)
             {
                 return;
