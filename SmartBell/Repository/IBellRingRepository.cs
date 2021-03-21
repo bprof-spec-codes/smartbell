@@ -37,6 +37,10 @@ namespace Repository
                 {
                     return true;
                 }
+                if (Directory.Exists(fullPath))
+                {
+                    return true;
+                }
                 return false;
             }
             catch (Exception)
