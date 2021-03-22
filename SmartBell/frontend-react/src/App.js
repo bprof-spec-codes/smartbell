@@ -11,7 +11,10 @@ import AddRing from './components/Button/AddRing'
 
 
 
+//id, bellringtime, interval, intervalseconds, audiopath, type(int)
 const App = () =>{
+  const [showAddRing, setShowAddRing] = useState(false)
+
   const [rings, setRings] = useState([
     {
         id:1, //3 fajta csengetés, 4-es ha user által feltöltött zeneszám
@@ -39,6 +42,14 @@ const App = () =>{
     }
 ])
 
+  //add ring
+  const addRing = (ring) =>{
+    //console.log(ring);
+    const id=Math.floor(Math.random()*10000)+1
+    const newRing = {id, ...ring}
+    setRings([...rings, newRing]) //hozzáadjuk a már meglévő tömhöz
+  }
+
   //delete ring
   const deleteRing = (id) =>{
     //console.log('delete', id)
@@ -55,8 +66,11 @@ const App = () =>{
 
   return(
     <div className='container'>
-        <Header/>
-        <AddRing/>
+        <Header 
+          onAdd={()=>setShowAddRing(!showAddRing)} 
+          showAdd={showAddRing}
+        />
+        {showAddRing && <AddRing onAdd={addRing} />}
         {
           rings.length > 0 ? 
           (
