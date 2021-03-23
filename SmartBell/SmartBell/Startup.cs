@@ -32,6 +32,7 @@ namespace SmartBell
             services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();
             services.AddTransient<IBellRingRepository, BellRingRepository>();
             services.AddTransient<IHolidayRepository, HolidayRepository>();
+            services.AddTransient<IOutputPathRepository, OutputPathRepository>();
             services.AddSwaggerGen(opt =>
             {
                 opt.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SmartBell Api endpoints", Version = "v1" });
