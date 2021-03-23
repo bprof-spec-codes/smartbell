@@ -156,10 +156,10 @@ namespace Logic
         }
 
         // TODO: Not Bell Ring specific method anymore it also depends by OutputPath(s)
-        public void SetIntervalByAudioPath(string id)
+        /*public void SetIntervalByAudioPath(string id)
         {
             bellRingRepo.SetIntervalByAudioPath(id);
-        }
+        }*/
 
         // This method will allow us to get all Elements for a ceratin template (one to many)
         public IQueryable<TemplateElement>GetElementsForTemplate(string templateId)
