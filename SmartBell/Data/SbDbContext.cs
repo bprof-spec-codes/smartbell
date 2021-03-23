@@ -41,6 +41,15 @@ namespace Data
                 .HasForeignKey(templateElement => templateElement.TemplateId)
                 .OnDelete(DeleteBehavior.Cascade);
             });
+
+            modelBuilder.Entity<OutputPath>(entity =>
+            {
+                entity.
+                HasOne(outputPath => outputPath.ParentBellRing)
+                .WithMany(bellring => bellring.OutputPaths)
+                .HasForeignKey(outputPath => outputPath.BellRingId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }
