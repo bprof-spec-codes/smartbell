@@ -12,12 +12,14 @@ namespace Logic
         ITemplateRepository templateRepo;
         IHolidayRepository holidayRepo;
         ITemplateElementRepository templateElementRepo;
-        public ModificationLogic(IBellRingRepository bellRingRepo, ITemplateRepository templateRepo, IHolidayRepository holidayRepo, ITemplateElementRepository templateElementRepo)
+        IOutputPathRepository outputPathRepo;
+        public ModificationLogic(IBellRingRepository bellRingRepo, ITemplateRepository templateRepo, IHolidayRepository holidayRepo, ITemplateElementRepository templateElementRepo, IOutputPathRepository outputPathRepo)
         {
             this.bellRingRepo = bellRingRepo;
             this.templateRepo = templateRepo;
             this.holidayRepo = holidayRepo;
             this.templateElementRepo = templateElementRepo;
+            this.outputPathRepo = outputPathRepo;
         }
 
         // Insert
@@ -62,7 +64,11 @@ namespace Logic
             templateElement.Id = Guid.NewGuid().ToString();
             templateElementRepo.Insert(templateElement);
         }
-        
+        public void InsertOutputPath(OutputPath outputPath)
+        {
+            outputPath.Id = Guid.NewGuid().ToString();
+            outputPathRepo.Insert(outputPath);
+        }
 
         // Get one
         public BellRing GetOneBellring(string id)
@@ -102,6 +108,10 @@ namespace Logic
         {
             return templateElementRepo.GetAll();
         }
+        public IQueryable<OutputPath> GetAllOutputPath()
+        {
+            return outputPathRepo.GetAll();
+        }
         // Delete
         public void DeleteBellring(BellRing bellRing)
         {
@@ -120,6 +130,10 @@ namespace Logic
         public void DeleteTemplateElement(TemplateElement templateElement)
         {
             templateElementRepo.Delete(templateElement);
+        }
+        public void DeleteOutputPath(OutputPath outputPath)
+        {
+            outputPathRepo.Delete(outputPath);
         }
         //Save
         public void SaveBellring()
@@ -141,7 +155,7 @@ namespace Logic
             templateElementRepo.SaveChanges();
         }
 
-        // BellRingSpecific method
+        // TODO: Not Bell Ring specific method anymore it also depends by OutputPath(s)
         public void SetIntervalByAudioPath(string id)
         {
             bellRingRepo.SetIntervalByAudioPath(id);
@@ -276,11 +290,18 @@ namespace Logic
             BellRing b = new BellRing()
             {
                 Id = Guid.NewGuid().ToString(),
-                AudioPath = templateElement.AudioPath,
                 Interval = templateElement.Interval,
                 Type = templateElement.Type,
                 BellRingTime = new DateTime(dayDate.Year, dayDate.Month, dayDate.Day, templateElement.BellRingTime.Hour, templateElement.BellRingTime.Minute, templateElement.BellRingTime.Second),
             };
+            bellRingRepo.Insert(b);
+            OutputPath outputPath = new OutputPath()
+            {
+                Id = Guid.NewGuid().ToString(),
+                FilePath = templateElement.FilePath,
+                BellRingId = b.Id,
+            };
+            outputPathRepo.Insert(outputPath);
             return new BellRing();
         }
         private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
