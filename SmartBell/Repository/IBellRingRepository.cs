@@ -12,8 +12,7 @@ namespace Repository
 {
     public interface IBellRingRepository : IRepository<BellRing>
     {
-        void SetIntervalByAudioPath(string Id);
-        bool PathExists(string id);
+        
     }
     public class BellRingRepository : Repository<BellRing>, IBellRingRepository
     {
@@ -26,7 +25,8 @@ namespace Repository
             return GetAll().SingleOrDefault(x => x.Id == id);
         }
 
-        public bool PathExists(string id)
+        // TODO: Method must move to-> IOutPutPath repository as an entity specific method
+        /*public bool PathExists(string id)
         {
             var bellRing = GetOne(id);
             try
@@ -37,19 +37,14 @@ namespace Repository
                 {
                     return true;
                 }
-                if (Directory.Exists(fullPath))
-                {
-                    return true;
-                }
-                return false;
             }
             catch (Exception)
             {
                 return false;
             }
-
         }
 
+        // TODO: This method is not entity specific it's dependent by output paths
         public void SetIntervalByAudioPath(string id)
         {
             var bellRing = GetOne(id);
@@ -59,9 +54,9 @@ namespace Repository
             } 
 
             // TODO: If possible Interval should be able to be set by the mp3 file's duration
-            /*
+            
             Bellring.Interval = ???;
-             */
-        }
+             
+        }*/
     }
 }
