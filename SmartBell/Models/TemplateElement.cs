@@ -26,11 +26,11 @@ namespace Models
         public TimeSpan Interval { get; set; }
 
         /// <summary>
-        /// The path the file or directory where the element or elements are specified.
-        /// There are 3 possibilites [*].mp3 , [*].txt or [Directory]
+        /// The path of the file where the element's output is specified.
+        /// There are 2 possibilites [*].mp3 or [*].txt
         /// </summary>
         [StringLength(255)]
-        public string AudioPath { get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// Specifies the reasoning of a bellring 0=Start of a lesson 1=end of a lesson 2= special reason
