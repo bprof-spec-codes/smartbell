@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -34,11 +35,11 @@ namespace Models
         public int IntervalSeconds { get; set; }
 
         /// <summary>
-        /// The path the file or directory where the element or elements are specified.
-        /// There are 3 possibilites [*].mp3 , [*].txt or [Directory]
+        /// Database storage reference of storing one or multiple outputPaths for a bellringing.
         /// </summary>
-        [StringLength(255)]
-        public string AudioPath { get; set; }
+        [NotMapped]
+        [JsonIgnore]
+        public virtual ICollection<OutputPath> OutputPaths { get; set; }
 
         /// <summary>Specifies the reasoning of a bellring 0=Start of a lesson 1=end of a lesson 2= special reason</summary>
         public BellRingType Type { get; set; }
