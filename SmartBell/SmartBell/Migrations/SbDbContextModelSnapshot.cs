@@ -72,6 +72,9 @@ namespace SmartBell.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("SequenceID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BellRingId");

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SmartBell.Migrations
 {
     [DbContext(typeof(SbDbContext))]
-    [Migration("20210324145544_116")]
-    partial class _116
+    [Migration("20210324150821_117")]
+    partial class _117
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,6 +73,9 @@ namespace SmartBell.Migrations
                     b.Property<string>("FilePath")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SequenceID")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SmartBell.Migrations
 {
-    public partial class _116 : Migration
+    public partial class _117 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,7 @@ namespace SmartBell.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    SequenceID = table.Column<int>(type: "int", nullable: false),
                     BellRingId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
