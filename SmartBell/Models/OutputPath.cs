@@ -24,6 +24,7 @@ namespace Models
         /// There are 2 possibilites [*].mp3 or [*].txt
         /// </summary>
         [StringLength(50)]
+        [Required]
         public string FilePath { get; set; }
 
         /// <summary>Specifies the index of the sequence.</summary>
