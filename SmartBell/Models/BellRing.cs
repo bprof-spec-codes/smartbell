@@ -26,6 +26,7 @@ namespace Models
         [Key]
         public string Id { get; set; }
         /// <summary>The start time of outputing sound.</summary>
+        [Required]
         public DateTime BellRingTime { get; set; }
 
         /// <summary>Read only parameter, interval of outputing sound.</summary>
@@ -42,6 +43,8 @@ namespace Models
         public virtual ICollection<OutputPath> OutputPaths { get; set; }
 
         /// <summary>Specifies the reasoning of a bellring 0=Start of a lesson 1=end of a lesson 2= special reason</summary>
+        [Required]
+        [Range(0,2)]
         public BellRingType Type { get; set; }
 
     }
