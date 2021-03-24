@@ -29,7 +29,7 @@ namespace Models
         public DateTime BellRingTime { get; set; }
 
         /// <summary>Read only parameter, interval of outputing sound.</summary>
-        public TimeSpan Interval { get; set; }
+        public TimeSpan? Interval { get; set; } //TODO this property should not be null, set automatically.
 
         /// <summary>The interval of outputing sound in seconds for manual setup.</summary>
         public int IntervalSeconds { get; set; }
