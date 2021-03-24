@@ -25,6 +25,9 @@ namespace Models
         /// <summary>The interval of outputing sound.</summary>
         public TimeSpan Interval { get; set; }
 
+        /// <summary>The interval of outputing sound in seconds for manual setup.</summary>
+        public int IntervalSeconds { get; set; }
+
         /// <summary>
         /// The path of the file where the element's output is specified.
         /// There are 2 possibilites [*].mp3 or [*].txt

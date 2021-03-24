@@ -116,6 +116,9 @@
         <member name="P:Models.TemplateElement.Interval">
             <summary>The interval of outputing sound.</summary>
         </member>
+        <member name="P:Models.TemplateElement.IntervalSeconds">
+            <summary>The interval of outputing sound in seconds for manual setup.</summary>
+        </member>
         <member name="P:Models.TemplateElement.FilePath">
             <summary>
             The path of the file where the element's output is specified.
