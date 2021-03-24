@@ -27,6 +27,7 @@ namespace Models
         public TimeSpan? Interval { get; set; } //TODO this property should not be null, set automatically.
 
         /// <summary>The interval of outputing sound in seconds for manual setup.</summary>
+        [Required]
         public int IntervalSeconds { get; set; }
 
         /// <summary>
