@@ -32,7 +32,7 @@ namespace SmartBell.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<TemplateElement> GetAllTemplate(string id)
+        public IEnumerable<TemplateElement> GetAllTemplate()
         {
             return logic.GetAllTemplateElement();
         }
