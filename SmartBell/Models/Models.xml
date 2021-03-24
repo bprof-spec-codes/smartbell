@@ -83,6 +83,9 @@
             There are 2 possibilites [*].mp3 or [*].txt
             </summary>
         </member>
+        <member name="P:Models.OutputPath.SequenceID">
+            <summary>Specifies the index of the sequence.</summary>
+        </member>
         <member name="P:Models.OutputPath.BellRingId">
             <summary>Specifies the id of the parent for the database connection.</summary>
         </member>
