@@ -29,6 +29,7 @@ namespace Data
         public DbSet<TemplateElement> TemplateElements { get; set; }
         public DbSet<BellRing> BellRings { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<OutputPath> OutputPaths { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
