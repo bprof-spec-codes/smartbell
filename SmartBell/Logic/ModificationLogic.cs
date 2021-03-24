@@ -62,6 +62,11 @@ namespace Logic
         public void InsertTemplateElement(TemplateElement templateElement)
         {
             templateElement.Id = Guid.NewGuid().ToString();
+            if (templateElement.IntervalSeconds == 0)
+            {
+                throw new Exception("This parameter should never be zero, it's required.");
+            }
+            templateElement.Interval = new TimeSpan(0, 0, templateElement.IntervalSeconds);
             templateElementRepo.Insert(templateElement);
         }
         public void InsertOutputPath(OutputPath outputPath)
