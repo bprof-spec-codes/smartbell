@@ -9,7 +9,8 @@ import Header from './components/Header/Header'
 import Rings from './components/Rings/Rings'
 import AddRing from './components/Button/AddRing'
 
-
+//calendar
+import MainCalendar from './components/Calendar/MainCalendar'
 
 //id, bellringtime, interval, intervalseconds, audiopath, type(int)
 const App = () =>{
@@ -66,6 +67,7 @@ const App = () =>{
 
   return(
     <div className='container'>
+      <MainCalendar/>
         <Header 
           onAdd={()=>setShowAddRing(!showAddRing)} 
           showAdd={showAddRing}
