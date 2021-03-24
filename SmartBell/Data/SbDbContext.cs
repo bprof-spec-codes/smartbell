@@ -115,7 +115,7 @@ namespace Data
                 new { Id = "45", BellRingTime = new DateTime(0, 0, 0, 11, 20, 0), IntervalSeconds = 15, Type = BellRingType.End, TemplateId = shortenedtemplate.Id },
 
                 new { Id = "46", BellRingTime = new DateTime(0, 0, 0, 11, 25, 0), IntervalSeconds = 15, Type = BellRingType.Start, TemplateId = shortenedtemplate.Id },
-                new { Id = "47", BellRingTime = new DateTime(0, 0, 0, 12, 0, 0), IntervalSeconds = 15, Type = BellRingType.End, TemplateId = shortenedtemplate.Id },
+                new { Id = "47", BellRingTime = new DateTime(0, 0, 0, 12, 0, 0), IntervalSeconds = 15, Type = BellRingType.End, TemplateId = shortenedtemplate.Id }
 
                 );
 
