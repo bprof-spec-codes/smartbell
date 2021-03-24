@@ -23,12 +23,15 @@ namespace Models
         public string Id { get; set; }
 
         /// <summary>Specifies the type of the holiday 0=Manually setup , 1=Break ,2=Holiday.</summary>
+        [Required]
         public HolidayType Type { get; set; }
 
         /// <summary>Specifies the starting time of a holiday.</summary>
+        [Required]
         public DateTime StartTime{ get; set; }
 
         /// <summary>Specifies the ending time of a holiday.</summary>
+        [Required]
         public DateTime EndTime { get; set; }
     }
 }
