@@ -25,6 +25,7 @@ namespace SmartBell.Controllers
             TemplateElement templateElement = logic.GetOneTemplateElement(id);
             logic.DeleteTemplateElement(templateElement);
         }
+
         [HttpGet("{id}")]
         public TemplateElement GetTemplateElement(string id)
         {
@@ -38,9 +39,18 @@ namespace SmartBell.Controllers
         }
 
         [HttpPost]
-        public void AddTemplateElement([FromBody] TemplateElement item)
+        public IActionResult AddTemplateElement([FromBody] TemplateElement item)
         {
-            logic.InsertTemplateElement(item);
+            try
+            {
+                logic.InsertTemplateElement(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error : {ex}");
+            }
+            
         }
     }
 }
