@@ -12,7 +12,7 @@ namespace Repository
 {
     public interface IBellRingRepository : IRepository<BellRing>
     {
-        
+        public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate);
     }
     public class BellRingRepository : Repository<BellRing>, IBellRingRepository
     {
@@ -58,5 +58,13 @@ namespace Repository
             Bellring.Interval = ???;
              
         }*/
+
+        public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
+        {
+            IQueryable<BellRing> BellringsOfDay = GetAll().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
+            return BellringsOfDay;
+        }
+
+        
     }
 }
