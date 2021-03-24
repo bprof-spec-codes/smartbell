@@ -16,6 +16,7 @@ namespace Models
 
         /// <summary>Specifies the name of a bellringing pattern.</summary>
         [StringLength(50)]
+        [Required]
         public string Name { get; set; }
 
         /// <summary>Database storage reference for pattern elements.</summary>
