@@ -7,6 +7,7 @@ const AddRing = ({onAdd}) => {
     const [text, setText]=useState('');
     const [time,setTime]=useState('');
     const [normal,setNormal]=useState(false);
+    const [toRead, settoRead]=useState('');
     
     const onSubmit = (e)=>{
         e.preventDefault()
@@ -20,6 +21,7 @@ const AddRing = ({onAdd}) => {
         setText('')
         setTime('')
         setNormal(false)
+        settoRead('')
     }
 
     return (
@@ -50,6 +52,18 @@ const AddRing = ({onAdd}) => {
                     value={normal}
                     onChange={(e)=>setNormal(e.currentTarget.checked)}
                  />
+            </div>
+            <div className='form-control'>
+                <label>Felolvasás</label>
+                <input 
+                    type='text' 
+                    placeholder='Add meg a hangosan beolvasandó szöveget' 
+                    value={toRead}
+                    onChange={(e)=>settoRead(e.target.value)}
+                />
+            </div>
+            <div>
+                <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.100.2/jquery.min.js'></script>
             </div>
 
             <input type='submit' className='btn btn-block' value='Csengetés hozzáadása'/>
