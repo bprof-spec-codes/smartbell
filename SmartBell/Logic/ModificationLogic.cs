@@ -172,17 +172,10 @@ namespace Logic
             return templateRepo.GetOne(templateId).TemplateElements.AsQueryable();
         }
 
-        public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
-        {
-            IQueryable<BellRing> BellringsOfDay = GetAllBellring().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
-            return BellringsOfDay;
-        }
-
-
         public string CheckForIntersect(DateTime dayDate, Template template)
         {
             string output = "";
-            List<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate).Where(x=>x.Type.Equals(BellRingType.Special)).ToList();
+            List<BellRing> BellringsOfDay = bellRingRepo.GetBellRingsForDay(dayDate).Where(x=>x.Type.Equals(BellRingType.Special)).ToList();
             List<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id).ToList();
             if (ElementsOfTemplate.Count() % 2 !=0)
             {
@@ -215,7 +208,7 @@ namespace Logic
         
         public void ModifyByTemplate(DateTime dayDate,Template template)
         {
-            IQueryable<BellRing> BellringsOfDay = GetBellRingsForDay(dayDate);
+            IQueryable<BellRing> BellringsOfDay = bellRingRepo.GetBellRingsForDay(dayDate);
             IQueryable<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id);
             if (BellringsOfDay == null || ElementsOfTemplate == null)
             {
@@ -225,7 +218,7 @@ namespace Logic
             {
                 if (item.Type.Equals(BellRingType.Start) || item.Type.Equals(BellRingType.End))
                 {
-                    DeleteBellring(item);
+                    bellRingRepo.Delete(item);
                 }
             }
 
@@ -238,7 +231,7 @@ namespace Logic
         
         public void RemoveAllHolidays()
         {
-            IQueryable<Holiday> holidays = GetAllHoliday();
+            IQueryable<Holiday> holidays = holidayRepo.GetAll();
             if (holidays == null )
             {
                 return;
@@ -246,12 +239,12 @@ namespace Logic
             foreach (var item in holidays)
             {
                 IQueryable<BellRing> bellRingsDuringHoliday =
-                    GetAllBellring().Where(bellring => bellring.BellRingTime >= item.StartTime && item.EndTime >= bellring.BellRingTime);
+                    bellRingRepo.GetAll().Where(bellring => bellring.BellRingTime >= item.StartTime && item.EndTime >= bellring.BellRingTime);
                 if (bellRingsDuringHoliday!=null)
                 {
                     foreach (var BellRingToBeRemoved in bellRingsDuringHoliday)
                     {
-                        DeleteBellring(BellRingToBeRemoved);
+                        bellRingRepo.Delete(BellRingToBeRemoved);
                     }
                 }
             }
@@ -260,12 +253,12 @@ namespace Logic
         public void RemoveByHoliday(Holiday h)
         {
             IQueryable<BellRing> bellRingsDuringHoliday =
-                    GetAllBellring().Where(bellring => bellring.BellRingTime >= h.StartTime && h.EndTime >= bellring.BellRingTime);
+                    bellRingRepo.GetAll().Where(bellring => bellring.BellRingTime >= h.StartTime && h.EndTime >= bellring.BellRingTime);
             if (bellRingsDuringHoliday != null)
             {
                 foreach (var BellRingToBeRemoved in bellRingsDuringHoliday)
                 {
-                    DeleteBellring(BellRingToBeRemoved);
+                    bellRingRepo.Delete(BellRingToBeRemoved);
                 }
             }
         }
