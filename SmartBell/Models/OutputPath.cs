@@ -26,6 +26,9 @@ namespace Models
         [StringLength(50)]
         public string FilePath { get; set; }
 
+        /// <summary>Specifies the index of the sequence.</summary>
+        public int SequenceID { get; set; }
+
         /// <summary>Specifies the id of the parent for the database connection.</summary>
         public string BellRingId { get; set; }
 
@@ -33,5 +36,6 @@ namespace Models
         [NotMapped]
         [JsonIgnore]
         public virtual BellRing ParentBellRing { get; set; }
+
     }
 }
