@@ -20,6 +20,7 @@ namespace Models
         public string Id { get; set; }
 
         /// <summary>Generalized start time of outputing sound where only the hour and minite properties are important.</summary>
+        [Required]
         public DateTime BellRingTime { get; set; }
 
         /// <summary>The interval of outputing sound.</summary>
@@ -32,13 +33,15 @@ namespace Models
         /// The path of the file where the element's output is specified.
         /// There are 2 possibilites [*].mp3 or [*].txt
         /// </summary>
-        [StringLength(255)]
+        [StringLength(50)]
+        [Required]
         public string FilePath { get; set; }
 
         /// <summary>
         /// Specifies the reasoning of a bellring 0=Start of a lesson 1=end of a lesson 2= special reason
         /// A template must never have the value of special.
         /// </summary>
+        [Required]
         public BellRingType Type { get; set; }
 
         /// <summary>Specifies the id of the parent for the database connection.</summary>
