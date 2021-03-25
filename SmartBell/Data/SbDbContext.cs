@@ -34,9 +34,9 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            Template tenminutetemplate = new Template { Id = "TenminuteTemplate", Name = "Tízperces csengetési rend" };
-            Template fifteenminutetemplate = new Template { Id = "FifteenminuteTemplate", Name = "Tizenöt perces csengetési rend" };
-            Template shortenedtemplate = new Template { Id = "ShortenedTemplate", Name = "Rövidített órák" };
+            Template tenminutetemplate = new Template { Id = "1", Name = "Tízperces csengetési rend" };
+            Template fifteenminutetemplate = new Template { Id = "2", Name = "Tizenöt perces csengetési rend" };
+            Template shortenedtemplate = new Template { Id = "3", Name = "Rövidített órák" };
             modelBuilder.Entity<Template>().HasData(tenminutetemplate,fifteenminutetemplate,shortenedtemplate);
 
             modelBuilder.Entity<TemplateElement>().HasData(
