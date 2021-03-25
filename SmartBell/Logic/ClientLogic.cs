@@ -1,4 +1,5 @@
 ﻿using Models;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,19 @@ namespace Logic
     public class ClientLogic
     {
         ModificationLogic modLogic;
+        IBellRingRepository bellRingRepo;
+        ITemplateRepository templateRepo;
 
-        public ClientLogic(ModificationLogic modLogic)
+        public ClientLogic(ModificationLogic logic,IBellRingRepository bellRingRepo, ITemplateRepository templateRepo)
         {
-            this.modLogic = modLogic;
+            this.modLogic = logic;
+            this.bellRingRepo = bellRingRepo;
+            this.templateRepo = templateRepo;
         }
 
         public Template GetTemplateByName(string name)
         {
-            return modLogic.GetAllTemplate().Where(x => x.Name == name).FirstOrDefault();  
+            return templateRepo.GetAll().Where(x => x.Name == name).FirstOrDefault();  
         }
         public IQueryable<TemplateElement> GetElementsForTemplate(string id)
         {
@@ -26,7 +31,7 @@ namespace Logic
         }
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
         {
-            return modLogic.GetBellRingsForDay(dayDate);
+            return bellRingRepo.GetBellRingsForDay(dayDate);
         }
     }
 }
