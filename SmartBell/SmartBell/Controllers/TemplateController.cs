@@ -43,5 +43,11 @@ namespace ApiEndpoint.Controllers
             logic.InsertTemplate(item);
         }
 
+        [HttpGet("GetAllSampleTemplate")]
+        public IQueryable GetAllSampleTemplate()
+        {
+            return logic.GetAllSampleTemplate();
+        }
+
     }
 }
