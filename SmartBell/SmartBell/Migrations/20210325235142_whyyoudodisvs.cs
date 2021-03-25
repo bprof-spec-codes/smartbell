@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SmartBell.Migrations
 {
-    public partial class samplevalueschanged : Migration
+    public partial class whyyoudodisvs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,6 +12,7 @@ namespace SmartBell.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BellRingTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Interval = table.Column<TimeSpan>(type: "time", nullable: true),
                     IntervalSeconds = table.Column<int>(type: "int", nullable: false),

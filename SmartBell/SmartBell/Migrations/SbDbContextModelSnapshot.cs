@@ -27,6 +27,9 @@ namespace SmartBell.Migrations
                     b.Property<DateTime>("BellRingTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<TimeSpan?>("Interval")
                         .HasColumnType("time");
 

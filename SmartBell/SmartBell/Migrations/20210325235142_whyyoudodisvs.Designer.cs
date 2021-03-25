@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SmartBell.Migrations
 {
     [DbContext(typeof(SbDbContext))]
-    [Migration("20210325123030_samplevalueschanged")]
-    partial class samplevalueschanged
+    [Migration("20210325235142_whyyoudodisvs")]
+    partial class whyyoudodisvs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,9 @@ namespace SmartBell.Migrations
 
                     b.Property<DateTime>("BellRingTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan?>("Interval")
                         .HasColumnType("time");
