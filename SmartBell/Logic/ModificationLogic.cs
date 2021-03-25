@@ -123,6 +123,11 @@ namespace Logic
         {
             return outputPathRepo.GetAll();
         }
+
+        public IQueryable<Template> GetAllSampleTemplate()
+        {
+            return templateRepo.GetAll().Where(x => x.Id.Length < 4); ;
+        }
         // Delete
         public void DeleteBellring(BellRing bellRing)
         {
