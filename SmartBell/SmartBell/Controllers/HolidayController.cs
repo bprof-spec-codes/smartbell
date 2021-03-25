@@ -37,9 +37,15 @@ namespace SmartBell.Controllers
         }
 
         [HttpPost]
-        public void AddHoliday([FromBody] BellRing item)
+        public void AddHoliday([FromBody] Holiday item)
         {
-            logic.InsertBellRing(item);
+            logic.InsertHoliday(item);
+        }
+
+        [HttpGet("GetAllCalendarHoliday")]
+        public IQueryable GetAllCalenderHoliday()
+        {
+            return logic.GetAllCalendarHoliday();
         }
     }
 }
