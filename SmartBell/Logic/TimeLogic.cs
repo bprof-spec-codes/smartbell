@@ -1,4 +1,5 @@
 ﻿using Models;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,11 +14,11 @@ namespace Logic
     public class TimeLogic
     {
         const string NtpServerAddress= "hu.pool.ntp.org";
-        ModificationLogic modLogic;
+        IBellRingRepository bellRingRepo;
 
-        public TimeLogic(ModificationLogic modLogic)
+        public TimeLogic(IBellRingRepository bellRingRepo)
         {
-            this.modLogic = modLogic;
+            this.bellRingRepo = bellRingRepo;
         }
 
 
@@ -77,7 +78,7 @@ namespace Logic
         }
         public DateTime GetNextBellRing(DateTime DayDate)
         {
-            IQueryable<BellRing> DaysBellRings = modLogic.GetBellRingsForDay(DayDate);
+            IQueryable<BellRing> DaysBellRings = bellRingRepo.GetBellRingsForDay(DayDate);
             DateTime dt = (from x in DaysBellRings
                            where x.BellRingTime > GetCurrentDateTime()
                            orderby x ascending
