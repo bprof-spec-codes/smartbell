@@ -25,6 +25,8 @@ namespace Models
         /// <summary>Unique Id used for database storage.</summary>
         [Key]
         public string Id { get; set; }
+        /// <summary>Describes a bellring.</summary>
+        public string Description { get; set; }
         /// <summary>The start time of outputing sound.</summary>
         [Required]
         public DateTime BellRingTime { get; set; }

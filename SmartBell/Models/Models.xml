@@ -24,6 +24,9 @@
         <member name="P:Models.BellRing.Id">
             <summary>Unique Id used for database storage.</summary>
         </member>
+        <member name="P:Models.BellRing.Description">
+            <summary>Describes a bellring.</summary>
+        </member>
         <member name="P:Models.BellRing.BellRingTime">
             <summary>The start time of outputing sound.</summary>
         </member>
