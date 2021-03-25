@@ -128,6 +128,11 @@ namespace Logic
         {
             return templateRepo.GetAll().Where(x => x.Id.Length < 4); ;
         }
+
+        public IQueryable<Holiday> GetAllCalendarHoliday()
+        {
+            return holidayRepo.GetAll().Where(x => x.Type.Equals(HolidayType.Holiday));
+        }
         // Delete
         public void DeleteBellring(BellRing bellRing)
         {
