@@ -32,6 +32,12 @@ namespace Logic
             }
             bellRingRepo.Insert(bellRing);
         }
+        // For bellrings with multiple seuqenced outputs, with this you can generate a readable method.
+        public void InsertSequencedBellRing(BellRing bellRing,string name)
+        {
+            bellRing.Id = name;
+            bellRingRepo.Insert(bellRing);
+        }
 
         public void InsertHoliday(Holiday holiday)
         {
