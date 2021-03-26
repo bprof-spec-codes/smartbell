@@ -44,5 +44,11 @@ namespace SmartBell.Controllers
             logic.InsertBellRing(item);
         }
 
+        [HttpGet("GetAllSequencedBellRings")]
+        public IQueryable<BellRing> GetAllSequencedBellRings()
+        {
+            return logic.GetAllSequencedBellRings();
+        }
+
     }
 }
