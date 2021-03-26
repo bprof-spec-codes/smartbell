@@ -176,10 +176,20 @@ namespace Logic
             bellRingRepo.SetIntervalByAudioPath(id);
         }*/
 
-        // This method will allow us to get all Elements for a ceratin template (one to many)
+        // This method will allow us to get all Elements for a cerating template (one to many)
         public IQueryable<TemplateElement>GetElementsForTemplate(string templateId)
         {
             return templateRepo.GetOne(templateId).TemplateElements.AsQueryable();
+        }
+
+        public IQueryable<OutputPath> GetOutputsForBellRing(string bellringId)
+        {
+            return bellRingRepo.GetOne(bellringId).OutputPaths.AsQueryable();
+        }
+
+        public IQueryable<BellRing> GetSequencedBellRings()
+        {
+            return bellRingRepo.GetAll().Where(x => x.Description != null && x.OutputPaths.Count() > 1);
         }
 
         public string CheckForIntersect(DateTime dayDate, Template template)
