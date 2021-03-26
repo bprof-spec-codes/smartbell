@@ -44,7 +44,7 @@ namespace SmartBell.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex}");
+                return StatusCode(400, $"Bad request error: {ex}");
             }
             
         }
@@ -58,27 +58,50 @@ namespace SmartBell.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex}");
+                return StatusCode(400, $"Bad request error: {ex}");
             }
             
         }
 
         [HttpPost]
-        public void AddBellRing([FromBody] BellRing item)
+        public IActionResult AddBellRing([FromBody] BellRing item)
         {
-            logic.InsertBellRing(item);
+            try
+            {
+                logic.InsertBellRing(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
 
         [HttpGet("GetAllSequencedBellRings")]
-        public IQueryable<BellRing> GetAllSequencedBellRings()
+        public IActionResult GetAllSequencedBellRings()
         {
-            return logic.GetAllSequencedBellRings();
+            try
+            {
+                return Ok(logic.GetAllSequencedBellRings());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpGet("GetOneSequencedBellRing/{id}")]
-        public BellRing GetAllSequencedBellRings(string id)
+        public IActionResult GetAllSequencedBellRings(string id)
         {
-            return logic.GetSequencedBellring(id);
+            try
+            {
+                return Ok(logic.GetSequencedBellring(id));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
     }
