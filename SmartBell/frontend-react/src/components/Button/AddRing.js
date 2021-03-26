@@ -1,7 +1,7 @@
 import React from 'react'
 import {useState} from 'react'
 
-
+import UploadFile from '../Button/UploadFile'
 
 const AddRing = ({onAdd}) => {
     const [text, setText]=useState('');
@@ -26,6 +26,7 @@ const AddRing = ({onAdd}) => {
 
     return (
         <form className='add-form' onSubmit={onSubmit}>
+            <UploadFile/>
             <div className='form-control'>
                 <label>Csengetés</label>
                 <input 
