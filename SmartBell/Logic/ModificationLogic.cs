@@ -196,6 +196,10 @@ namespace Logic
         {
             return bellRingRepo.GetAll().Where(x => x.Description != null && x.OutputPaths.Count() > 1 && x.Type.Equals(BellRingType.Special));
         }
+        public BellRing GetSequencedBellring(string id)
+        {
+            return GetAllSequencedBellRings().Where(x => x.Id == id).FirstOrDefault();
+        }
 
         public string CheckForIntersect(DateTime dayDate, Template template)
         {

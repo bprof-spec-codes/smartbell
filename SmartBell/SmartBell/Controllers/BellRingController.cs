@@ -50,5 +50,11 @@ namespace SmartBell.Controllers
             return logic.GetAllSequencedBellRings();
         }
 
+        [HttpGet("GetOneSequencedBellRing/{id}")]
+        public BellRing GetAllSequencedBellRings(string id)
+        {
+            return logic.GetSequencedBellring(id);
+        }
+
     }
 }
