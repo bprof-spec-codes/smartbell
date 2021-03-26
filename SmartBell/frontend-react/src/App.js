@@ -71,6 +71,7 @@ const App = () =>{
         <Header 
           onAdd={()=>setShowAddRing(!showAddRing)} 
           showAdd={showAddRing}
+          title='Hétfő'
         />
         {showAddRing && <AddRing onAdd={addRing} />}
         {
