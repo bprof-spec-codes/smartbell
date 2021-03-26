@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import {render} from 'react-dom';
 
+import Header from '../Header/Header';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+//import 'react-calendar/dist/Calendar.css';
+import '../Calendar/MainCalendar.css';
 
-const MainCalendar = () => {
-    const [date,setDate] = useState(new Date());
+
+const MainCalendar = ({onAdd, showAdd}) => {
+    const [date,setDate] = useState(new Date());   
     const onChange = date => {
         setDate(date);
     };
@@ -14,6 +17,11 @@ const MainCalendar = () => {
     return (
         <div>
             <Calendar onChange={onChange} value={date}/>
+            <Header
+                title={date.getFullYear() + "." + date.getMonth() + "." + date.getDate()}
+                onAdd={onAdd}
+                showAdd={showAdd}
+            />
             {console.log(date)}
         </div>
     )
