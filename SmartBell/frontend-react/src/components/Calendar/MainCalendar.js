@@ -18,7 +18,7 @@ const MainCalendar = ({onAdd, showAdd}) => {
         <div>
             <Calendar onChange={onChange} value={date}/>
             <Header
-                title={date.getFullYear() + "." + date.getMonth() + "." + date.getDate()}
+                title={date.toDateString()}
                 onAdd={onAdd}
                 showAdd={showAdd}
             />
