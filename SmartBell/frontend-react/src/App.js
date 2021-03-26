@@ -5,7 +5,6 @@ import { FaTasks } from 'react-icons/fa';
 
 //crash course
 //npm install react-icons
-import Header from './components/Header/Header'
 import Rings from './components/Rings/Rings'
 import AddRing from './components/Button/AddRing'
 

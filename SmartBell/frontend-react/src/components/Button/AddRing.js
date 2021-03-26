@@ -8,7 +8,7 @@ const AddRing = ({onAdd}) => {
     const [time,setTime]=useState('');
     const [normal,setNormal]=useState(false);
     const [toRead, settoRead]=useState('');
-    
+
     const onSubmit = (e)=>{
         e.preventDefault()
 
@@ -61,9 +61,6 @@ const AddRing = ({onAdd}) => {
                     value={toRead}
                     onChange={(e)=>settoRead(e.target.value)}
                 />
-            </div>
-            <div>
-                <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.100.2/jquery.min.js'></script>
             </div>
 
             <input type='submit' className='btn btn-block' value='Csengetés hozzáadása'/>
