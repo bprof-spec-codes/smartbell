@@ -67,12 +67,10 @@ const App = () =>{
 
   return(
     <div className='container'>
-      <MainCalendar/>
-        <Header 
-          onAdd={()=>setShowAddRing(!showAddRing)} 
-          showAdd={showAddRing}
-          title='Hétfő'
-        />
+      <MainCalendar
+        onAdd={()=>setShowAddRing(!showAddRing)} 
+        showAdd={showAddRing}
+      />
         {showAddRing && <AddRing onAdd={addRing} />}
         {
           rings.length > 0 ? 
