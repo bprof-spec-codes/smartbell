@@ -187,9 +187,9 @@ namespace Logic
             return bellRingRepo.GetOne(bellringId).OutputPaths.AsQueryable();
         }
 
-        public IQueryable<BellRing> GetSequencedBellRings()
+        public IQueryable<BellRing> GetAllSequencedBellRings()
         {
-            return bellRingRepo.GetAll().Where(x => x.Description != null && x.OutputPaths.Count() > 1);
+            return bellRingRepo.GetAll().Where(x => x.Description != null && x.OutputPaths.Count() > 1 && x.Type.Equals(BellRingType.Special));
         }
 
         public string CheckForIntersect(DateTime dayDate, Template template)
