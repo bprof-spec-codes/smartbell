@@ -21,21 +21,46 @@ namespace SmartBell.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void DeleteBellRing(string id)
+        public IActionResult DeleteBellRing(string id)
         {
-            BellRing bellring = logic.GetOneBellring(id);
-            logic.DeleteBellring(bellring);
+            try
+            {
+                BellRing bellring = logic.GetOneBellring(id);
+                logic.DeleteBellring(bellring);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+            
         }
         [HttpGet("{id}")]
-        public BellRing GetBellRing(string id)
+        public IActionResult GetBellRing(string id)
         {
-            return logic.GetOneBellring(id);
+            try
+            {
+                return Ok(logic.GetOneBellring(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+            
         }
 
         [HttpGet]
-        public IEnumerable<BellRing> GetAllBellRings()
+        public IActionResult GetAllBellRings()
         {
-            return logic.GetAllBellring();
+            try
+            {
+                return Ok(logic.GetAllBellring());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+            
         }
 
         [HttpPost]
