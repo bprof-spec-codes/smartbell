@@ -94,6 +94,11 @@ namespace Logic
         {
             return templateElementRepo.GetOne(id);
         }
+        public OutputPath GetOneOutputPath(string id)
+        {
+            return outputPathRepo.GetOne(id);
+        }
+
         // Get all
         public IQueryable<BellRing> GetAllBellring()
         {
