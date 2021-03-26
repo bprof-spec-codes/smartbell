@@ -7,7 +7,7 @@ const Header = ({title, onAdd, showAdd}) => {
 
     return (
         <header className='header'>
-            <h1>{title} Kiválasztott nap</h1>
+            <h1>Kiválasztva: {title}</h1>
             <Button 
                 onClicked={onAdd} 
                 color={showAdd? 'red' : 'green'} 
