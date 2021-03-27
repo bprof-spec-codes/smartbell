@@ -10,7 +10,7 @@ namespace Repository
 {
     public interface IRepository<T> where T:class
     {
-        void Insert(T entity);
+        void InsertOne(T entity);
 
         T GetOne(string id);
 
@@ -44,7 +44,7 @@ namespace Repository
         public abstract T GetOne(string id);
         
 
-        public void Insert(T entity)
+        public void InsertOne(T entity)
         {
             context.Set<T>().Add(entity);
             SaveChanges();

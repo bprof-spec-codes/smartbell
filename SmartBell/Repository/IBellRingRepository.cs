@@ -13,6 +13,7 @@ namespace Repository
     public interface IBellRingRepository : IRepository<BellRing>
     {
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate);
+        public void Update(string oid,BellRing nItem);
     }
     public class BellRingRepository : Repository<BellRing>, IBellRingRepository
     {
@@ -24,41 +25,17 @@ namespace Repository
         {
             return GetAll().SingleOrDefault(x => x.Id == id);
         }
-
-        // TODO: Method must move to-> IOutPutPath repository as an entity specific method
-        /*public bool PathExists(string id)
+        public void Update(string oid, BellRing nItem)
         {
-            var bellRing = GetOne(id);
-            try
-            {
-                string outPutDirpath = Path.Combine(Directory.GetCurrentDirectory(), @"Output");
-                string fullPath = Path.Combine(outPutDirpath, bellRing.AudioPath);
-                if (File.Exists(fullPath))
-                {
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            BellRing old_bellRing = this.GetOne(oid);
+
+            old_bellRing.Description = nItem.Description;
+            old_bellRing.BellRingTime = nItem.BellRingTime;
+            old_bellRing.Interval = nItem.Interval;
+            old_bellRing.IntervalSeconds = nItem.IntervalSeconds;
+            old_bellRing.Type = nItem.Type;
+            this.SaveChanges();
         }
-
-        // TODO: This method is not entity specific it's dependent by output paths
-        public void SetIntervalByAudioPath(string id)
-        {
-            var bellRing = GetOne(id);
-            if (bellRing == null)
-            {
-                return;
-            } 
-
-            // TODO: If possible Interval should be able to be set by the mp3 file's duration
-            
-            Bellring.Interval = ???;
-             
-        }*/
-
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
         {
             IQueryable<BellRing> BellringsOfDay = GetAll().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);

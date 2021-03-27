@@ -25,7 +25,7 @@ namespace Logic
             this.outputPathRepo = outputPathRepo;
         }
 
-        // Insert
+        // Insert One and Multiple
         public void InsertBellRing(BellRing bellRing)
         {
             bellRing.Id = Guid.NewGuid().ToString();
@@ -33,15 +33,32 @@ namespace Logic
             {
                 bellRing.Interval = new TimeSpan(0, 0, bellRing.IntervalSeconds);
             }
-            bellRingRepo.Insert(bellRing);
+            else
+            {
+                SetBellRingIntervalByPath(bellRing.Id);
+            }
+            bellRingRepo.InsertOne(bellRing);
+        }
+        public void InsertMultipleBellRings(IQueryable<BellRing> bellRings)
+        {
+            foreach (BellRing bellRing in bellRings)
+            {
+                if (GetOneBellring(bellRing.Id)!=null)
+                {
+                    InsertBellRing(bellRing); // Important to use the Logic's method which generates id-s
+                }
+                else
+                {
+                    bellRingRepo.Update(bellRing.Id, GetOneBellring(bellRing.Id));
+                }
+            }
         }
 
         public void InsertHoliday(Holiday holiday)
         {
             holiday.Id = Guid.NewGuid().ToString();
-            holidayRepo.Insert(holiday);
+            holidayRepo.InsertOne(holiday);
         }
-
         public void InsertTemplate(Template template)
         {
             template.Id = Guid.NewGuid().ToString();
@@ -51,8 +68,9 @@ namespace Logic
                 template.Name += i;
                 i++;
             }
-            templateRepo.Insert(template);
+            templateRepo.InsertOne(template);
         }
+
         private bool VerifyTemplateName(string name)
         {
             IQueryable<Template> SameNames = GetAllTemplate().Where(x => x.Name == name);
@@ -70,14 +88,18 @@ namespace Logic
                 throw new Exception("This parameter should never be zero, it's required.");
             }
             templateElement.Interval = new TimeSpan(0, 0, templateElement.IntervalSeconds);
-            templateElementRepo.Insert(templateElement);
+            templateElementRepo.InsertOne(templateElement);
         }
         public void InsertOutputPath(OutputPath outputPath)
         {
             outputPath.Id = Guid.NewGuid().ToString();
-            outputPathRepo.Insert(outputPath);
+            outputPathRepo.InsertOne(outputPath);
         }
-
+        // Update
+        public void UpdateBellRing(string oid,BellRing bellRing)
+        {
+            bellRingRepo.Update(oid, bellRing);
+        }
         // Get one
         public BellRing GetOneBellring(string id)
         {
@@ -190,20 +212,35 @@ namespace Logic
                 if (File.Exists(path))
                 {
                     string ct;
-                    var x = new FileExtensionContentTypeProvider().TryGetContentType(item.FilePath, out ct);
+                    var x = new FileExtensionContentTypeProvider().TryGetContentType(path, out ct);
                     if (ct == "text/plain")
                     {
                         // TODO: For txt files we should implement a mathematical function to assume an interval.
+                        char[] delims = { '.', '!', '?', ',', '(', ')', '\t', '\n', '\r', ' ' };
+
+                        string[] words = File.ReadAllText(path)
+                            .Split(delims, StringSplitOptions.RemoveEmptyEntries);
+                        TimeSpan avrageWordsDuration = new TimeSpan(0, 0, 0, 0, words.Length * 650);
+                        t += avrageWordsDuration;
+
                     }
-                    var tfile = TagLib.File.Create(path);
-                    TimeSpan duration = tfile.Properties.Duration;
-                    t+=duration.Add(new TimeSpan(0, 0, 0, 1));
+                    else
+                    {
+                        var tfile = TagLib.File.Create(path);
+                        TimeSpan duration = tfile.Properties.Duration;
+                        t += duration.Add(new TimeSpan(0, 0, 0, 1));
+                    }
+
+                    
                 }
                 else
                 {
                     throw new Exception($"Couldn't get file with the name: {item}");
                 }
             }
+            BellRing b = GetOneBellring(id);
+            b.Interval = t;
+            bellRingRepo.Update(id, b);
         }
 
         // This method will allow us to get all Elements for a cerating template (one to many)
@@ -224,40 +261,6 @@ namespace Logic
         public BellRing GetSequencedBellring(string id)
         {
             return GetAllSequencedBellRings().Where(x => x.Id == id).FirstOrDefault();
-        }
-
-        public string CheckForIntersect(DateTime dayDate, Template template)
-        {
-            string output = "";
-            List<BellRing> BellringsOfDay = bellRingRepo.GetBellRingsForDay(dayDate).Where(x => x.Type.Equals(BellRingType.Special)).ToList();
-            List<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id).ToList();
-            if (ElementsOfTemplate.Count() % 2 != 0)
-            {
-                throw new Exception("Template elements declaration is incorrect, all start types have a separate end type");
-            }
-            List<BellRing> ElementsOfTemplateForThisDay = new List<BellRing>();
-            foreach (var item in ElementsOfTemplate)
-            {
-                BellRing b = AssignNewBellRingByTemplateElement(item, dayDate);
-                ElementsOfTemplateForThisDay.Add(b);
-            }
-            for (int i = 1; i < ElementsOfTemplateForThisDay.Count() - 1; i += 2)
-            {
-                foreach (var item in BellringsOfDay)
-                {
-                    if (BellringsOfDay[i - 1].BellRingTime < item.BellRingTime && item.BellRingTime < BellringsOfDay[i].BellRingTime)
-                    {
-                        output += $"\n Template Modification intersect between type StartTime:{BellringsOfDay[i - 1].BellRingTime} " +
-                            $"and EndTime:{BellringsOfDay[i].BellRingTime} there is a Special type with which shall not rang at: {item.BellRingTime}";
-                    }
-                    else if (BellringsOfDay[i - 1].BellRingTime > item.BellRingTime && BellringsOfDay[i - 1].BellRingTime < item.BellRingTime + item.Interval)
-                    {
-                        output += $"\n Template Modification intersect Special type of bellring starts at : {item.BellRingTime} " +
-                            $"has the interval of {item.Interval} which creates an intersect with the StartTime:{BellringsOfDay[i - 1].BellRingTime}";
-                    }
-                }
-            }
-            return output;
         }
 
         public void ModifyByTemplate(DateTime dayDate, Template template)
@@ -321,7 +324,7 @@ namespace Logic
         {
             if (template == null)
             {
-                return;
+                throw new Exception("Template element must be set to fill a year.");
             }
             List<BellRing> bellRingsForADay = new List<BellRing>();
             IQueryable<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id);
@@ -346,14 +349,14 @@ namespace Logic
                 Type = templateElement.Type,
                 BellRingTime = new DateTime(dayDate.Year, dayDate.Month, dayDate.Day, templateElement.BellRingTime.Hour, templateElement.BellRingTime.Minute, templateElement.BellRingTime.Second),
             };
-            bellRingRepo.Insert(b);
+            bellRingRepo.InsertOne(b);
             OutputPath outputPath = new OutputPath()
             {
                 Id = Guid.NewGuid().ToString(),
                 FilePath = templateElement.FilePath,
                 BellRingId = b.Id,
             };
-            outputPathRepo.Insert(outputPath);
+            outputPathRepo.InsertOne(outputPath);
             return new BellRing();
         }
         private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
