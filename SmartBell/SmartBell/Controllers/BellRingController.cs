@@ -31,7 +31,7 @@ namespace SmartBell.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex}");
+                return StatusCode(400, $"Bad request error: {ex}");
             }
             
         }
@@ -103,6 +103,9 @@ namespace SmartBell.Controllers
                 return StatusCode(400, $"Bad request error: {ex}");
             }
         }
+
+        [HttpPost("SetBellRingIntervalByPath")]
+
 
     }
 }

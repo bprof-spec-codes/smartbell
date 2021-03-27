@@ -191,7 +191,7 @@ namespace Logic
                 {
                     string ct;
                     var x = new FileExtensionContentTypeProvider().TryGetContentType(item.FilePath, out ct);
-                    if (ct == "text / plain")
+                    if (ct == "text/plain")
                     {
                         // TODO: For txt files we should implement a mathematical function to assume an interval.
                     }
