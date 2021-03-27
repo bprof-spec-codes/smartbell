@@ -328,6 +328,8 @@ namespace Logic
             }
             List<BellRing> bellRingsForADay = new List<BellRing>();
             IQueryable<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id);
+            DisableSequencedBellRingsInRange(StartDate, EndDate);
+            DeleteRegularBellRingsInRange(StartDate, EndDate);
             foreach (DateTime day in EachDay(StartDate, EndDate)) // loops through an entire school year
             {
                 if (day.Day < 6) // checks if it's a workday Monday->Friday
@@ -338,6 +340,26 @@ namespace Logic
                         InsertBellRing(b);
                     }
                 }
+            }
+        }
+        private void DisableSequencedBellRingsInRange(DateTime StartDate, DateTime EndDate)
+        {
+           IQueryable<BellRing> inRange = GetAllSequencedBellRings().Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate));
+            foreach (BellRing bellRing in inRange)
+            {
+                BellRing b = GetOneBellring(bellRing.Id);
+                b.BellRingTime = new DateTime(1, 1, 1, bellRing.BellRingTime.Hour, bellRing.BellRingTime.Minute, bellRing.BellRingTime.Second);
+                bellRingRepo.Update(b.Id, b);
+            }
+        }
+        private void DeleteRegularBellRingsInRange(DateTime StartDate, DateTime EndDate)
+        {
+            List<BellRing> inRange = GetAllBellring()
+                .Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate))
+                .ToList();
+            foreach (BellRing bellRing in inRange)
+            {
+                bellRingRepo.Delete(bellRing);
             }
         }
         private BellRing AssignNewBellRingByTemplateElement(TemplateElement templateElement, DateTime dayDate)
