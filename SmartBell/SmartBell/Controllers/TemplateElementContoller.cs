@@ -12,30 +12,32 @@ namespace SmartBell.Controllers
     [Route("TemplateElement")]
     public class TemplateElementContoller:ControllerBase
     {
-        ModificationLogic logic;
+        ModificationLogic modlogic;
+        ReadLogic readlogic;
 
-        public TemplateElementContoller(ModificationLogic logic)
+        public TemplateElementContoller(ModificationLogic logic, ReadLogic readlogic)
         {
-            this.logic = logic;
+            this.modlogic = logic;
+            this.readlogic = readlogic;
         }
 
         [HttpDelete("{id}")]
         public void DeleteTemplateElement(string id)
         {
-            TemplateElement templateElement = logic.GetOneTemplateElement(id);
-            logic.DeleteTemplateElement(templateElement);
+            TemplateElement templateElement = readlogic.GetOneTemplateElement(id);
+            modlogic.DeleteTemplateElement(templateElement);
         }
 
         [HttpGet("{id}")]
         public TemplateElement GetTemplateElement(string id)
         {
-            return logic.GetOneTemplateElement(id);
+            return readlogic.GetOneTemplateElement(id);
         }
 
         [HttpGet]
         public IEnumerable<TemplateElement> GetAllTemplate()
         {
-            return logic.GetAllTemplateElement();
+            return readlogic.GetAllTemplateElement();
         }
 
         [HttpPost]
@@ -43,7 +45,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                logic.InsertTemplateElement(item);
+                modlogic.InsertTemplateElement(item);
                 return Ok();
             }
             catch (Exception ex)
