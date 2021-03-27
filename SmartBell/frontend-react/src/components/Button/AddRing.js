@@ -2,6 +2,7 @@ import React from 'react'
 import {useState} from 'react'
 
 import UploadFile from '../Button/UploadFile'
+import DDMenu from './DDMenu';
 
 const AddRing = ({onAdd}) => {
     const [text, setText]=useState('');
@@ -26,7 +27,11 @@ const AddRing = ({onAdd}) => {
 
     return (
         <form className='add-form' onSubmit={onSubmit}>
-            <UploadFile/>
+            <div>
+                <label>Szünet fajtája </label>
+                <DDMenu/>
+            </div>
+            <UploadFile/>        
             <div className='form-control'>
                 <label>Csengetés</label>
                 <input 
