@@ -12,41 +12,42 @@ namespace ApiEndpoint.Controllers
     [Route("Template")]
     public class TemplateController:ControllerBase
     {
-        ModificationLogic logic;
+        ModificationLogic modlogic;
+        ReadLogic readlogic;
 
         public TemplateController(ModificationLogic logic)
         {
-            this.logic = logic;
+            this.modlogic = logic;
         }
 
         [HttpDelete("{id}")]
         public void DeleteTemplate(string id)
         {
-            Template template = logic.GetOneTemplate(id);
-            logic.DeleteTemplate(template);
+            Template template = readlogic.GetOneTemplate(id);
+            modlogic.DeleteTemplate(template);
         }
         [HttpGet("{id}")]
         public Template GetTemplate(string id)
         {
-            return logic.GetOneTemplate(id);
+            return readlogic.GetOneTemplate(id);
         }
 
         [HttpGet]
         public IEnumerable<Template> GetAllTemplate()
         {
-            return logic.GetAllTemplate();
+            return readlogic.GetAllTemplate();
         }
 
         [HttpPost]
         public void AddTemplate([FromBody] Template item)
         {
-            logic.InsertTemplate(item);
+            modlogic.InsertTemplate(item);
         }
 
         [HttpGet("GetAllSampleTemplate")]
         public IQueryable GetAllSampleTemplate()
         {
-            return logic.GetAllSampleTemplate();
+            return readlogic.GetAllSampleTemplate();
         }
 
     }
