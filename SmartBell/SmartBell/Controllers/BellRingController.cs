@@ -13,11 +13,13 @@ namespace SmartBell.Controllers
     [Route("Bellring")]
     public class BellRingController : ControllerBase
     {
-        ModificationLogic logic;
+        ModificationLogic modlogic;
+        ReadLogic readlogic;
 
-        public BellRingController(ModificationLogic logic)
+        public BellRingController(ModificationLogic logic, ReadLogic readlogic)
         {
-            this.logic = logic;
+            this.modlogic = logic;
+            this.readlogic = readlogic;
         }
 
         [HttpDelete("{id}")]
@@ -25,8 +27,8 @@ namespace SmartBell.Controllers
         {
             try
             {
-                BellRing bellring = logic.GetOneBellring(id);
-                logic.DeleteBellring(bellring);
+                BellRing bellring = readlogic.GetOneBellring(id);
+                modlogic.DeleteBellring(bellring);
                 return Ok();
             }
             catch (Exception ex)
@@ -40,7 +42,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                return Ok(logic.GetOneBellring(id));
+                return Ok(readlogic.GetOneBellring(id));
             }
             catch (Exception ex)
             {
@@ -54,7 +56,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                return Ok(logic.GetAllBellring());
+                return Ok(readlogic.GetAllBellring());
             }
             catch (Exception ex)
             {
@@ -68,7 +70,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                logic.InsertBellRing(item);
+                modlogic.InsertBellRing(item);
                 return Ok();
             }
             catch (Exception ex)
@@ -82,7 +84,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                return Ok(logic.GetAllSequencedBellRings());
+                return Ok(readlogic.GetAllSequencedBellRings());
             }
             catch (Exception ex)
             {
@@ -95,7 +97,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                return Ok(logic.GetSequencedBellring(id));
+                return Ok(readlogic.GetSequencedBellring(id));
 
             }
             catch (Exception ex)
@@ -109,7 +111,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                logic.SetBellRingIntervalByPath(id);
+                modlogic.SetBellRingIntervalByPath(id);
                 return Ok();
             }
             catch (Exception ex)
