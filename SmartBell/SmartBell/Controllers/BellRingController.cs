@@ -104,8 +104,19 @@ namespace SmartBell.Controllers
             }
         }
 
-        [HttpPost("SetBellRingIntervalByPath")]
-
+        [HttpPost("SetBellRingIntervalByPath/{id}")]
+        public IActionResult SetBellRingIntervalByPath(string id)
+        {
+            try
+            {
+                logic.SetBellRingIntervalByPath(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
 
     }
 }

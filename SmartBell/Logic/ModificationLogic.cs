@@ -33,11 +33,9 @@ namespace Logic
             {
                 bellRing.Interval = new TimeSpan(0, 0, bellRing.IntervalSeconds);
             }
-            else
-            {
-                SetBellRingIntervalByPath(bellRing.Id);
-            }
             bellRingRepo.InsertOne(bellRing);
+            if (bellRing.IntervalSeconds == 0) 
+                SetBellRingIntervalByPath(bellRing.Id);
         }
         public void InsertMultipleBellRings(IQueryable<BellRing> bellRings)
         {
@@ -203,12 +201,17 @@ namespace Logic
 
         public void SetBellRingIntervalByPath(string id)
         {
+            if (GetOneBellring(id).IntervalSeconds>0)
+            {
+                throw new Exception("This Bellring has a static interval, so it shall not be changed.");
+            }
             TimeSpan t = new TimeSpan(0, 0, 0, 0);
+            ;
             IQueryable<OutputPath> outputPaths = GetOutputsForBellRing(id);
             foreach (var item in outputPaths)
             {
                 string path =
-                Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"/Output/", item.FilePath);
+                Path.Combine(Environment.CurrentDirectory + @"\Output\", item.FilePath);
                 if (File.Exists(path))
                 {
                     string ct;
@@ -238,9 +241,12 @@ namespace Logic
                     throw new Exception($"Couldn't get file with the name: {item}");
                 }
             }
-            BellRing b = GetOneBellring(id);
-            b.Interval = t;
-            bellRingRepo.Update(id, b);
+            if (t> new TimeSpan(0, 0, 0, 0))
+            {
+                BellRing b = GetOneBellring(id);
+                b.Interval = t;
+                bellRingRepo.Update(id, b);
+            }
         }
 
         // This method will allow us to get all Elements for a cerating template (one to many)
@@ -251,7 +257,7 @@ namespace Logic
 
         public IQueryable<OutputPath> GetOutputsForBellRing(string bellringId)
         {
-            return bellRingRepo.GetOne(bellringId).OutputPaths.AsQueryable();
+            return outputPathRepo.GetAll().Where(x=> x.BellRingId==bellringId);
         }
 
         public IQueryable<BellRing> GetAllSequencedBellRings()
