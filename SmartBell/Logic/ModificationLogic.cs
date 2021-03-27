@@ -175,7 +175,7 @@ namespace Logic
                         t += avrageWordsDuration;
 
                     }
-                    else
+                    else if (ct == "audio/mpeg")
                     {
                         var tfile = TagLib.File.Create(path);
                         TimeSpan duration = tfile.Properties.Duration;

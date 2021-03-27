@@ -67,20 +67,20 @@ namespace Logic
             return networkDateTime.ToLocalTime(); // without ToLocalTime() = faster
         }
 
-        public DateTime GetCurrentDateTime()
+        public DateTime GetCurrentDateTime(string NtpServerAddress)
         {
-            DateTime dt = GetNetworkTime();
+            DateTime dt = GetNetworkTime(NtpServerAddress);
             if (dt!=default)
             {
                 return dt;
             }
             return System.DateTime.Now;
         }
-        public DateTime GetNextBellRing(DateTime DayDate)
+        public DateTime GetNextBellRing(DateTime DayDate, string NtpServerAddress)
         {
             IQueryable<BellRing> DaysBellRings = bellRingRepo.GetBellRingsForDay(DayDate);
             DateTime dt = (from x in DaysBellRings
-                           where x.BellRingTime > GetCurrentDateTime()
+                           where x.BellRingTime > GetCurrentDateTime(NtpServerAddress)
                            orderby x ascending
                            select x).FirstOrDefault().BellRingTime;
             return dt;
