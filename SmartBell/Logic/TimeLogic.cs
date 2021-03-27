@@ -13,7 +13,7 @@ namespace Logic
 {
     public class TimeLogic
     {
-        const string NtpServerAddress= "hu.pool.ntp.org";
+        
         IBellRingRepository bellRingRepo;
 
         public TimeLogic(IBellRingRepository bellRingRepo)
@@ -22,9 +22,9 @@ namespace Logic
         }
 
 
-        private DateTime GetNetworkTime()
+        private DateTime GetNetworkTime(string NtpServerAddress)
         {
-            const string NtpServer = NtpServerAddress;
+            string NtpServer = NtpServerAddress;
 
             const int DaysTo1900 = 1900 * 365 + 95; // 95 = offset for leap-years etc.
             const long TicksPerSecond = 10000000L;
