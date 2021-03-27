@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 
+
 namespace Logic
 {
     public class ModificationLogic
@@ -16,13 +17,15 @@ namespace Logic
         IHolidayRepository holidayRepo;
         ITemplateElementRepository templateElementRepo;
         IOutputPathRepository outputPathRepo;
-        public ModificationLogic(IBellRingRepository bellRingRepo, ITemplateRepository templateRepo, IHolidayRepository holidayRepo, ITemplateElementRepository templateElementRepo, IOutputPathRepository outputPathRepo)
+        ReadLogic readlogic;
+        public ModificationLogic(IBellRingRepository bellRingRepo, ITemplateRepository templateRepo, IHolidayRepository holidayRepo, ITemplateElementRepository templateElementRepo, IOutputPathRepository outputPathRepo, ReadLogic readLogic)
         {
             this.bellRingRepo = bellRingRepo;
             this.templateRepo = templateRepo;
             this.holidayRepo = holidayRepo;
             this.templateElementRepo = templateElementRepo;
             this.outputPathRepo = outputPathRepo;
+            this.readlogic = readLogic;
         }
 
         // Insert One and Multiple
@@ -41,13 +44,13 @@ namespace Logic
         {
             foreach (BellRing bellRing in bellRings)
             {
-                if (GetOneBellring(bellRing.Id)!=null)
+                if (bellRingRepo.GetOne(bellRing.Id)!=null)
                 {
                     InsertBellRing(bellRing); // Important to use the Logic's method which generates id-s
                 }
                 else
                 {
-                    bellRingRepo.Update(bellRing.Id, GetOneBellring(bellRing.Id));
+                    bellRingRepo.Update(bellRing.Id, bellRingRepo.GetOne(bellRing.Id));
                 }
             }
         }
@@ -71,7 +74,7 @@ namespace Logic
 
         private bool VerifyTemplateName(string name)
         {
-            IQueryable<Template> SameNames = GetAllTemplate().Where(x => x.Name == name);
+            IQueryable<Template> SameNames = templateRepo.GetAll().Where(x => x.Name == name);
             if (SameNames.Count() == 0)
             {
                 return true;
@@ -98,63 +101,9 @@ namespace Logic
         {
             bellRingRepo.Update(oid, bellRing);
         }
-        // Get one
-        public BellRing GetOneBellring(string id)
-        {
-            return bellRingRepo.GetOne(id);
-        }
+        
 
-        public Holiday GetOneHoliday(string id)
-        {
-            return holidayRepo.GetOne(id);
-        }
-
-        public Template GetOneTemplate(string id)
-        {
-            return templateRepo.GetOne(id);
-        }
-        public TemplateElement GetOneTemplateElement(string id)
-        {
-            return templateElementRepo.GetOne(id);
-        }
-        public OutputPath GetOneOutputPath(string id)
-        {
-            return outputPathRepo.GetOne(id);
-        }
-
-        // Get all
-        public IQueryable<BellRing> GetAllBellring()
-        {
-            return bellRingRepo.GetAll();
-        }
-
-        public IQueryable<Holiday> GetAllHoliday()
-        {
-            return holidayRepo.GetAll();
-        }
-
-        public IQueryable<Template> GetAllTemplate()
-        {
-            return templateRepo.GetAll();
-        }
-        public IQueryable<TemplateElement> GetAllTemplateElement()
-        {
-            return templateElementRepo.GetAll();
-        }
-        public IQueryable<OutputPath> GetAllOutputPath()
-        {
-            return outputPathRepo.GetAll();
-        }
-
-        public IQueryable<Template> GetAllSampleTemplate()
-        {
-            return templateRepo.GetAll().Where(x => x.Id.Length < 4); ;
-        }
-
-        public IQueryable<Holiday> GetAllCalendarHoliday()
-        {
-            return holidayRepo.GetAll().Where(x => x.Type.Equals(HolidayType.Holiday));
-        }
+        
         // Delete
         public void DeleteBellring(BellRing bellRing)
         {
@@ -201,13 +150,13 @@ namespace Logic
 
         public void SetBellRingIntervalByPath(string id)
         {
-            if (GetOneBellring(id).IntervalSeconds>0)
+            if (bellRingRepo.GetOne(id).IntervalSeconds>0)
             {
                 throw new Exception("This Bellring has a static interval, so it shall not be changed.");
             }
             TimeSpan t = new TimeSpan(0, 0, 0, 0);
             ;
-            IQueryable<OutputPath> outputPaths = GetOutputsForBellRing(id);
+            IQueryable<OutputPath> outputPaths = readlogic.GetOutputsForBellRing(id);
             foreach (var item in outputPaths)
             {
                 string path =
@@ -243,36 +192,19 @@ namespace Logic
             }
             if (t> new TimeSpan(0, 0, 0, 0))
             {
-                BellRing b = GetOneBellring(id);
+                BellRing b = bellRingRepo.GetOne(id);
                 b.Interval = t;
                 bellRingRepo.Update(id, b);
             }
         }
 
         // This method will allow us to get all Elements for a cerating template (one to many)
-        public IQueryable<TemplateElement> GetElementsForTemplate(string templateId)
-        {
-            return templateRepo.GetOne(templateId).TemplateElements.AsQueryable();
-        }
-
-        public IQueryable<OutputPath> GetOutputsForBellRing(string bellringId)
-        {
-            return outputPathRepo.GetAll().Where(x=> x.BellRingId==bellringId);
-        }
-
-        public IQueryable<BellRing> GetAllSequencedBellRings()
-        {
-            return bellRingRepo.GetAll().Where(x => x.Description != null && x.OutputPaths.Count() > 1 && x.Type.Equals(BellRingType.Special));
-        }
-        public BellRing GetSequencedBellring(string id)
-        {
-            return GetAllSequencedBellRings().Where(x => x.Id == id).FirstOrDefault();
-        }
+        
 
         public void ModifyByTemplate(DateTime dayDate, Template template)
         {
             IQueryable<BellRing> BellringsOfDay = bellRingRepo.GetBellRingsForDay(dayDate);
-            IQueryable<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id);
+            IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
             if (BellringsOfDay == null || ElementsOfTemplate == null)
             {
                 return;
@@ -333,7 +265,7 @@ namespace Logic
                 throw new Exception("Template element must be set to fill a year.");
             }
             List<BellRing> bellRingsForADay = new List<BellRing>();
-            IQueryable<TemplateElement> ElementsOfTemplate = GetElementsForTemplate(template.Id);
+            IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
             DisableSequencedBellRingsInRange(StartDate, EndDate);
             DeleteRegularBellRingsInRange(StartDate, EndDate);
             foreach (DateTime day in EachDay(StartDate, EndDate)) // loops through an entire school year
@@ -350,17 +282,17 @@ namespace Logic
         }
         private void DisableSequencedBellRingsInRange(DateTime StartDate, DateTime EndDate)
         {
-           IQueryable<BellRing> inRange = GetAllSequencedBellRings().Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate));
+           IQueryable<BellRing> inRange = readlogic.GetAllSequencedBellRings().Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate));
             foreach (BellRing bellRing in inRange)
             {
-                BellRing b = GetOneBellring(bellRing.Id);
+                BellRing b = bellRingRepo.GetOne(bellRing.Id);
                 b.BellRingTime = new DateTime(1, 1, 1, bellRing.BellRingTime.Hour, bellRing.BellRingTime.Minute, bellRing.BellRingTime.Second);
                 bellRingRepo.Update(b.Id, b);
             }
         }
         private void DeleteRegularBellRingsInRange(DateTime StartDate, DateTime EndDate)
         {
-            List<BellRing> inRange = GetAllBellring()
+            List<BellRing> inRange = bellRingRepo.GetAll()
                 .Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate))
                 .ToList();
             foreach (BellRing bellRing in inRange)
