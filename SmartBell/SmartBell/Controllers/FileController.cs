@@ -13,6 +13,7 @@ namespace SmartBell.Controllers
     [Route("File")]
     public class FileController : ControllerBase
     {
+        public static readonly string[] fileExceptions = { "default.mp3" };
 
         [HttpPost,DisableRequestSizeLimit]
         public IActionResult Upload(IFormFile FileToUpload)
@@ -84,6 +85,10 @@ namespace SmartBell.Controllers
                 var fullpath = Path.Combine(pathToSave, filename);
                 if (System.IO.File.Exists(fullpath))
                 {
+                    if (fileExceptions.Contains(filename))
+                    {
+                        return BadRequest("This file cannot be deleted.");
+                    }
                     System.IO.File.Delete(fullpath);
                     return Ok();
                 }
@@ -93,6 +98,12 @@ namespace SmartBell.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        }
+
+        [HttpGet("GetFileExceptions")]
+        public IActionResult GetFileExceptions()
+        {
+            return Ok(fileExceptions);
         }
     }
 }
