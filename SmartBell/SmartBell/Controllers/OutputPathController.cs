@@ -22,26 +22,56 @@ namespace SmartBell.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void DeleteOutputPath(string id)
+        public IActionResult DeleteOutputPath(string id)
         {
-            OutputPath outputPath = readlogic.GetOneOutputPath(id);
-            modlogic.DeleteOutputPath(outputPath);
+            try
+            {
+                OutputPath outputPath = readlogic.GetOneOutputPath(id);
+                modlogic.DeleteOutputPath(outputPath);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
         [HttpGet("{id}")]
-        public OutputPath GetOutputPath(string id)
+        public IActionResult GetOutputPath(string id)
         {
-            return readlogic.GetOneOutputPath(id);
+            try
+            {
+                return Ok(readlogic.GetOneOutputPath(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
         [HttpGet]
-        public IEnumerable<OutputPath> GetAllOutputPaths()
+        public IActionResult GetAllOutputPaths()
         {
-            return readlogic.GetAllOutputPath();
+            try
+            {
+                return Ok(readlogic.GetAllOutputPath());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpPost]
-        public void AddOutputPath([FromBody] OutputPath item)
+        public IActionResult AddOutputPath([FromBody] OutputPath item)
         {
-            modlogic.InsertOutputPath(item);
+            try
+            {
+                modlogic.InsertOutputPath(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
     }
 }
