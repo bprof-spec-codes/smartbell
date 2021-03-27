@@ -12,6 +12,8 @@ namespace Repository
     {
         void InsertOne(T entity);
 
+        void InsertMultiple(IQueryable<T> entities);
+
         T GetOne(string id);
 
         IQueryable<T> GetAll();
@@ -48,6 +50,14 @@ namespace Repository
         {
             context.Set<T>().Add(entity);
             SaveChanges();
+        }
+
+        public void InsertMultiple(IQueryable<T> entities)
+        {
+            foreach (T entity in entities)
+            {
+                InsertOne(entity);
+            }
         }
 
         public void SaveChanges()
