@@ -28,6 +28,7 @@ namespace SmartBell
             services.AddControllers();
             services.AddDbContext<SbDbContext>();
             services.AddTransient<ModificationLogic, ModificationLogic>();
+            services.AddTransient<ReadLogic, ReadLogic>();
             services.AddTransient<ITemplateRepository, TemplateRepository>();
             services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();
             services.AddTransient<IBellRingRepository, BellRingRepository>();
