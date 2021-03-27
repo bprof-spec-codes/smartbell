@@ -12,40 +12,42 @@ namespace SmartBell.Controllers
     [Route("Holiday")]
     public class HolidayController : ControllerBase
     {
-        ModificationLogic logic;
+        ModificationLogic modlogic;
+        ReadLogic readlogic;
 
-        public HolidayController(ModificationLogic logic)
+        public HolidayController(ModificationLogic logic, ReadLogic readlogic)
         {
-            this.logic = logic;
+            this.modlogic = logic;
+            this.readlogic = readlogic;
         }
 
         [HttpDelete("{id}")]
         public void DeleteHoliday(string id)
         {
-            Holiday holiday = logic.GetOneHoliday(id);
-            logic.DeleteHoliday(holiday);
+            Holiday holiday = readlogic.GetOneHoliday(id);
+            modlogic.DeleteHoliday(holiday);
         }
         [HttpGet("{id}")]
         public Holiday GetHoliday(string id)
         {
-            return logic.GetOneHoliday(id);
+            return readlogic.GetOneHoliday(id);
         }
         [HttpGet]
         public IEnumerable<Holiday> GetAllHolidays()
         {
-            return logic.GetAllHoliday();
+            return readlogic.GetAllHoliday();
         }
 
         [HttpPost]
         public void AddHoliday([FromBody] Holiday item)
         {
-            logic.InsertHoliday(item);
+            modlogic.InsertHoliday(item);
         }
 
         [HttpGet("GetAllCalendarHoliday")]
         public IQueryable GetAllCalenderHoliday()
         {
-            return logic.GetAllCalendarHoliday();
+            return readlogic.GetAllCalendarHoliday();
         }
     }
 }
