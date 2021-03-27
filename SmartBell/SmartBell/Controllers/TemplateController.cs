@@ -15,39 +15,77 @@ namespace ApiEndpoint.Controllers
         ModificationLogic modlogic;
         ReadLogic readlogic;
 
-        public TemplateController(ModificationLogic logic)
+        public TemplateController(ModificationLogic logic,ReadLogic readlogic)
         {
             this.modlogic = logic;
+            this.readlogic = readlogic;
         }
 
         [HttpDelete("{id}")]
-        public void DeleteTemplate(string id)
+        public IActionResult DeleteTemplate(string id)
         {
-            Template template = readlogic.GetOneTemplate(id);
-            modlogic.DeleteTemplate(template);
+            try
+            {
+                Template template = readlogic.GetOneTemplate(id);
+                modlogic.DeleteTemplate(template);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
         [HttpGet("{id}")]
-        public Template GetTemplate(string id)
+        public IActionResult GetTemplate(string id)
         {
-            return readlogic.GetOneTemplate(id);
+            try
+            {
+                return Ok(readlogic.GetOneTemplate(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpGet]
-        public IEnumerable<Template> GetAllTemplate()
+        public IActionResult GetAllTemplate()
         {
-            return readlogic.GetAllTemplate();
+            try
+            {
+                return Ok(readlogic.GetAllTemplate());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpPost]
-        public void AddTemplate([FromBody] Template item)
+        public IActionResult AddTemplate([FromBody] Template item)
         {
-            modlogic.InsertTemplate(item);
+            try
+            {
+                modlogic.InsertTemplate(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpGet("GetAllSampleTemplate")]
-        public IQueryable GetAllSampleTemplate()
+        public IActionResult GetAllSampleTemplate()
         {
-            return readlogic.GetAllSampleTemplate();
+            try
+            {
+                return Ok(readlogic.GetAllSampleTemplate());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
     }
