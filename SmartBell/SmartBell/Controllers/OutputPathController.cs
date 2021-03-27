@@ -12,34 +12,36 @@ namespace SmartBell.Controllers
     [Route("OutPutPath")]
     public class OutputPathController : ControllerBase
     {
-        ModificationLogic logic;
+        ModificationLogic modlogic;
+        ReadLogic readlogic;
 
-        public OutputPathController(ModificationLogic logic)
+        public OutputPathController(ModificationLogic logic, ReadLogic readlogic)
         {
-            this.logic = logic;
+            this.modlogic = logic;
+            this.readlogic = readlogic;
         }
 
         [HttpDelete("{id}")]
         public void DeleteOutputPath(string id)
         {
-            OutputPath outputPath = logic.GetOneOutputPath(id);
-            logic.DeleteOutputPath(outputPath);
+            OutputPath outputPath = readlogic.GetOneOutputPath(id);
+            modlogic.DeleteOutputPath(outputPath);
         }
         [HttpGet("{id}")]
         public OutputPath GetOutputPath(string id)
         {
-            return logic.GetOneOutputPath(id);
+            return readlogic.GetOneOutputPath(id);
         }
         [HttpGet]
         public IEnumerable<OutputPath> GetAllOutputPaths()
         {
-            return logic.GetAllOutputPath();
+            return readlogic.GetAllOutputPath();
         }
 
         [HttpPost]
         public void AddOutputPath([FromBody] OutputPath item)
         {
-            logic.InsertOutputPath(item);
+            modlogic.InsertOutputPath(item);
         }
     }
 }
