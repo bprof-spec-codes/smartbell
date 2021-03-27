@@ -22,32 +22,70 @@ namespace SmartBell.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void DeleteHoliday(string id)
+        public IActionResult DeleteHoliday(string id)
         {
-            Holiday holiday = readlogic.GetOneHoliday(id);
-            modlogic.DeleteHoliday(holiday);
+            try
+            {
+                Holiday holiday = readlogic.GetOneHoliday(id);
+                modlogic.DeleteHoliday(holiday);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
         [HttpGet("{id}")]
-        public Holiday GetHoliday(string id)
+        public IActionResult GetHoliday(string id)
         {
-            return readlogic.GetOneHoliday(id);
+            try
+            {
+                return Ok(readlogic.GetOneHoliday(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+            
         }
         [HttpGet]
-        public IEnumerable<Holiday> GetAllHolidays()
+        public IActionResult GetAllHolidays()
         {
-            return readlogic.GetAllHoliday();
+            try
+            {
+                return Ok(readlogic.GetAllHoliday());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpPost]
-        public void AddHoliday([FromBody] Holiday item)
+        public IActionResult AddHoliday([FromBody] Holiday item)
         {
-            modlogic.InsertHoliday(item);
+            try
+            {
+                modlogic.InsertHoliday(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
 
         [HttpGet("GetAllCalendarHoliday")]
-        public IQueryable GetAllCalenderHoliday()
+        public IActionResult GetAllCalenderHoliday()
         {
-            return readlogic.GetAllCalendarHoliday();
+            try
+            {
+                return Ok(readlogic.GetAllCalendarHoliday());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
     }
 }
