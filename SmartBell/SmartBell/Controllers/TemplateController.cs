@@ -88,5 +88,19 @@ namespace ApiEndpoint.Controllers
             }
         }
 
+        [HttpPost("ModifyByTemplate/{dateTime}&{template}")]
+        public IActionResult ModifyByTemaplate(DateTime dateTime, Template template)
+        {
+            try
+            {
+                modlogic.ModifyByTemplate(dateTime,template);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
+
     }
 }

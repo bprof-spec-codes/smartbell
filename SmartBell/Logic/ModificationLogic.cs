@@ -155,7 +155,6 @@ namespace Logic
                 throw new Exception("This Bellring has a static interval, so it shall not be changed.");
             }
             TimeSpan t = new TimeSpan(0, 0, 0, 0);
-            ;
             IQueryable<OutputPath> outputPaths = readlogic.GetOutputsForBellRing(id);
             foreach (var item in outputPaths)
             {
