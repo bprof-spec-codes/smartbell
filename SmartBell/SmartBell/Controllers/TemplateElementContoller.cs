@@ -22,22 +22,44 @@ namespace SmartBell.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void DeleteTemplateElement(string id)
+        public IActionResult DeleteTemplateElement(string id)
         {
-            TemplateElement templateElement = readlogic.GetOneTemplateElement(id);
-            modlogic.DeleteTemplateElement(templateElement);
+            try
+            {
+                TemplateElement templateElement = readlogic.GetOneTemplateElement(id);
+                modlogic.DeleteTemplateElement(templateElement);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpGet("{id}")]
-        public TemplateElement GetTemplateElement(string id)
+        public IActionResult GetTemplateElement(string id)
         {
-            return readlogic.GetOneTemplateElement(id);
+            try
+            {
+                return Ok(readlogic.GetOneTemplateElement(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpGet]
-        public IEnumerable<TemplateElement> GetAllTemplate()
+        public IActionResult GetAllTemplate()
         {
-            return readlogic.GetAllTemplateElement();
+            try
+            {  
+                return Ok(readlogic.GetAllTemplateElement());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
         }
 
         [HttpPost]
