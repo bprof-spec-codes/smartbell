@@ -100,5 +100,30 @@ namespace Logic
         {
             return GetAllSequencedBellRings().Where(x => x.Id == id).FirstOrDefault();
         }
+        public IQueryable<Holiday> GetBreaksForDay(DateTime dayDate)
+        {
+            
+            List<BellRing> Starts = bellRingRepo.GetAll().Where(x=>x.BellRingTime.Date==dayDate.Date && x.Type.Equals(BellRingType.Start)).OrderBy(x => x.BellRingTime).ToList<BellRing>();
+            List<BellRing> Ends = bellRingRepo.GetAll().Where(x => x.BellRingTime.Date == dayDate.Date && x.Type.Equals(BellRingType.End)).OrderBy(x=>x.BellRingTime).ToList<BellRing>();
+            List<Holiday> Breaks = new List<Holiday>();
+            if (Starts.Count()==Ends.Count())
+                for (int i = 0; i < Starts.Count(); i++)
+                {
+                        Holiday h = new Holiday
+                        {
+                            Id = new Guid().ToString(),
+                            StartTime = Starts[i].BellRingTime,
+                            EndTime= (DateTime)(Ends[i].BellRingTime+Ends[i].Interval),
+                            Type=HolidayType.Break,
+                        };
+                        Breaks.Add(h);
+
+
+                }
+            return Breaks.AsQueryable();
+            throw new Exception("Can't check for breaks, all start values must have an end value.");
+
+
+        }
     }
 }
