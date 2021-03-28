@@ -87,5 +87,33 @@ namespace SmartBell.Controllers
                 return StatusCode(400, $"Bad request error: {ex}");
             }
         }
+
+        [HttpDelete("RemoveAllHolidays")]
+        public IActionResult RemoveAllHolidays()
+        {
+            try
+            {
+                modlogic.RemoveAllHolidays();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
+
+        [HttpDelete("RemoveByHoliday/{id}")]
+        public IActionResult RemoveByHoliday(string id)
+        {
+            try
+            {
+                modlogic.RemoveByHoliday(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
     }
 }

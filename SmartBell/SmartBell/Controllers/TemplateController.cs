@@ -102,5 +102,19 @@ namespace ApiEndpoint.Controllers
             }
         }
 
+        [HttpPost("FillDbByTemplate")]
+        public IActionResult FillDbByTemplate(string id, DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                Template template = readlogic.GetOneTemplate(id);
+                modlogic.FillDbByTemplate(template, StartDate, EndDate);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
     }
 }
