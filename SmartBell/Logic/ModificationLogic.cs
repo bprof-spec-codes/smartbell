@@ -244,8 +244,9 @@ namespace Logic
             }
         }
 
-        public void RemoveByHoliday(Holiday h)
+        public void RemoveByHoliday(string id)
         {
+            Holiday h = holidayRepo.GetOne(id);
             IQueryable<BellRing> bellRingsDuringHoliday =
                     bellRingRepo.GetAll().Where(bellring => bellring.BellRingTime >= h.StartTime && h.EndTime >= bellring.BellRingTime);
             if (bellRingsDuringHoliday != null)
