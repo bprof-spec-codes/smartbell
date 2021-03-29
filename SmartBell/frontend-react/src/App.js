@@ -7,6 +7,7 @@ import AddRing from './components/Button/AddRing'
 
 //calendar
 import MainCalendar from './components/Calendar/MainCalendar'
+import ConfigButton from './components/Button/ConfigButton'
 
 //id, bellringtime, interval, intervalseconds, audiopath, type(int)
 const App = () =>{
@@ -63,6 +64,7 @@ const App = () =>{
 
   return(
     <div className='container'>
+      <ConfigButton/>
       <MainCalendar
         onAdd={()=>setShowAddRing(!showAddRing)} 
         showAdd={showAddRing}
