@@ -13,6 +13,7 @@ body {
 
 .container {
   max-width: 700px;
+  min-width: 20px;
   margin: 30px auto;
   overflow: auto;
   min-height: 40px;
@@ -27,6 +28,22 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.headerlink{
+  background: rgb(19, 90, 122);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: inherit;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  width: max-content;
 }
 
 .btn {
