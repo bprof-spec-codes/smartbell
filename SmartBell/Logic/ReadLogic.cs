@@ -84,7 +84,7 @@ namespace Logic
 
         public IQueryable<TemplateElement> GetElementsForTemplate(string templateId)
         {
-            return templateRepo.GetOne(templateId).TemplateElements.AsQueryable();
+            return templateElementRepo.GetAll().Where(x => x.TemplateId == templateId);
         }
 
         public IQueryable<OutputPath> GetOutputsForBellRing(string bellringId)
