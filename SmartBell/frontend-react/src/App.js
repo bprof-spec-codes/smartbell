@@ -69,22 +69,23 @@ const App = () =>{
         onAdd={()=>setShowAddRing(!showAddRing)} 
         showAdd={showAddRing}
       />
-        {showAddRing && <AddRing onAdd={addRing} />}
-        {
-          rings.length > 0 ? 
-          (
-            <Rings 
-              rings={rings} 
-              onDelete={deleteRing}
-              onToggle={toggleReminder}
-            />
-          ) 
-          : 
-          (
-            'A mai napra nincsenek csengetések'
-          )
-        }
-      </div>
+
+      {showAddRing && <AddRing onAdd={addRing} />}
+      {
+        rings.length > 0 ? 
+         (
+          <Rings 
+            rings={rings} 
+            onDelete={deleteRing}
+            onToggle={toggleReminder}
+         />
+         ) 
+         : 
+         (
+           'A mai napra nincsenek csengetések'
+         )
+      }
+    </div>
   )
 }
 export default App;

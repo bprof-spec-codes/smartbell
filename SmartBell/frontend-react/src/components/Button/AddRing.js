@@ -26,7 +26,7 @@ const AddRing = ({onAdd}) => {
     }
 
     return (
-        <form className='add-form' onSubmit={onSubmit}>
+        <form className='container' onSubmit={onSubmit}>
             <div>
                 <label>Szünet fajtája </label>
                 <DDMenu/>

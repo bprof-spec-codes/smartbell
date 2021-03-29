@@ -5,9 +5,9 @@ import Ring from './Ring'
 const Rings = ({rings, onDelete, onToggle}) => {
 
     return (
-        <div>
+        <div className='container'>
             {rings.map((ring)=>(
-                <Ring 
+                <Ring
                     key={ring.id} 
                     ring={ring} 
                     onDelete={onDelete}
