@@ -10,6 +10,7 @@
     "react-dropdown": "^1.9.2",
     "react-icons": "^4.2.0",
     "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "1.1.5"
   },
   "scripts": {
