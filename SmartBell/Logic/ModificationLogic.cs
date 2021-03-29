@@ -55,6 +55,21 @@ namespace Logic
             }
         }
 
+        public void InsertLessonBellrings
+           ( BellRing startBellRing, BellRing endBellring,
+            OutputPath startOutputpath,OutputPath endOutputpath)
+        {
+            startBellRing.Id = Guid.NewGuid().ToString();
+            bellRingRepo.InsertOne(startBellRing);
+            endBellring.Id = Guid.NewGuid().ToString();
+            bellRingRepo.InsertOne(endBellring);
+            startOutputpath.Id = Guid.NewGuid().ToString();
+            outputPathRepo.InsertOne(startOutputpath);
+            endOutputpath.Id = Guid.NewGuid().ToString();
+            outputPathRepo.InsertOne(endOutputpath);
+
+        }
+
         public void InsertHoliday(Holiday holiday)
         {
             holiday.Id = Guid.NewGuid().ToString();

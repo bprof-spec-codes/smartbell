@@ -48,7 +48,6 @@ namespace SmartBell.Controllers
             {
                 return StatusCode(400, $"Bad request error: {ex}");
             }
-            
         }
 
         [HttpGet]
@@ -62,7 +61,6 @@ namespace SmartBell.Controllers
             {
                 return StatusCode(400, $"Bad request error: {ex}");
             }
-            
         }
 
         [HttpPost]
@@ -77,6 +75,22 @@ namespace SmartBell.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        }
+        [HttpPost("InsertLessonBellrings")]
+        public IActionResult InsertLessonBellrings
+            ([FromBody] BellRing startBellRing, [FromBody] BellRing endBellring,
+            [FromBody] OutputPath startOutputpath, [FromBody] OutputPath endOutputpath)
+        {
+            try
+            {
+                modlogic.InsertLessonBellrings(startBellRing, endBellring, startOutputpath, endOutputpath);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+           
         }
 
         [HttpGet("GetAllSequencedBellRings")]
