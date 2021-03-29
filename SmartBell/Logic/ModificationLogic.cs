@@ -64,8 +64,10 @@ namespace Logic
             endBellring.Id = Guid.NewGuid().ToString();
             bellRingRepo.InsertOne(endBellring);
             startOutputpath.Id = Guid.NewGuid().ToString();
+            startOutputpath.BellRingId = startBellRing.Id;
             outputPathRepo.InsertOne(startOutputpath);
             endOutputpath.Id = Guid.NewGuid().ToString();
+            endOutputpath.BellRingId = endBellring.Id;
             outputPathRepo.InsertOne(endOutputpath);
 
         }
@@ -85,6 +87,18 @@ namespace Logic
                 i++;
             }
             templateRepo.InsertOne(template);
+        }
+        public void InsertSequencedBellRings(BellRing bellRing,IQueryable<OutputPath> outputPaths)
+        {
+            bellRing.Id = Guid.NewGuid().ToString();
+            bellRingRepo.InsertOne(bellRing);
+            foreach (OutputPath outputPath in outputPaths)
+            {
+                outputPath.Id = Guid.NewGuid().ToString();
+                outputPath.BellRingId = bellRing.Id;
+            }
+            outputPathRepo.InsertMultiple(outputPaths);
+            SetBellRingIntervalByPath(bellRing.Id);
         }
 
         private bool VerifyTemplateName(string name)
@@ -221,7 +235,7 @@ namespace Logic
             IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
             if (BellringsOfDay == null || ElementsOfTemplate == null)
             {
-                return;
+                throw new Exception("There is no data set for this template and/or day.");
             }
             foreach (var item in BellringsOfDay)
             {
