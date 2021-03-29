@@ -63,7 +63,7 @@ const App = () =>{
   }
 
   return(
-    <div className='container'>
+    <div>
       <ConfigButton/>
       <MainCalendar
         onAdd={()=>setShowAddRing(!showAddRing)} 

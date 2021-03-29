@@ -14,7 +14,7 @@ const MainCalendar = ({onAdd, showAdd}) => {
     };
 
     return (
-        <div>
+        <div className='container'>
             
             <Calendar onChange={onChange} value={date}/>
             <Header

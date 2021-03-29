@@ -2,7 +2,7 @@ import React from 'react'
 
 const ConfigButton = () => {
     return (
-        <header>
+        <header className='container'>
             <a href='/calendarConfig'>Naptárkezelő</a>
         </header>
     )
