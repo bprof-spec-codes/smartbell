@@ -59,15 +59,32 @@ namespace Logic
            ( BellRing startBellRing, BellRing endBellring,
             OutputPath startOutputpath,OutputPath endOutputpath)
         {
+            if (startBellRing==default || endBellring==default
+                || startOutputpath == default || endOutputpath == default)
+            {
+                throw new Exception("All parameters must be declared in the body.");
+            }
+            if (startBellRing.BellRingTime>endBellring.BellRingTime)
+            {
+                throw new Exception("The start of a lesson must be earlier than the end.");
+            }
+            if ((TimeSpan)(endBellring.BellRingTime-startBellRing.BellRingTime)>new TimeSpan(1,0,0))
+            {
+                throw new Exception("All bellRings must be with in a 60 minute range to each other.");
+            }
             startBellRing.Id = Guid.NewGuid().ToString();
+            startBellRing.Type = BellRingType.Start;
             bellRingRepo.InsertOne(startBellRing);
             endBellring.Id = Guid.NewGuid().ToString();
+            startBellRing.Type = BellRingType.End;
             bellRingRepo.InsertOne(endBellring);
             startOutputpath.Id = Guid.NewGuid().ToString();
             startOutputpath.BellRingId = startBellRing.Id;
+            startOutputpath.SequenceID = 0;
             outputPathRepo.InsertOne(startOutputpath);
             endOutputpath.Id = Guid.NewGuid().ToString();
             endOutputpath.BellRingId = endBellring.Id;
+            startOutputpath.SequenceID = 0;
             outputPathRepo.InsertOne(endOutputpath);
 
         }
