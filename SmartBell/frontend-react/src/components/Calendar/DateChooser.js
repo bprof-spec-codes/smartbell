@@ -41,6 +41,8 @@ const DateChooser = ({onAdd}) => {
             /><br/>
             <p>Válassz csengetési rendet:</p><br/>
             <DDMenu/>
+            <p>Válassz rádióműsort (opcionális):</p><br/>
+            <DDMenu/>
 
             <input type='submit' className='btn btn-block' value='Csengetési rend hozzáadása'/>
         </form>
