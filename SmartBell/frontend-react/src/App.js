@@ -88,10 +88,11 @@ const App = () =>{
                 'A mai napra nincsenek csengetések'
               )
             }
+            <ConfigButton/>
           </div>
         )}/>              
         <Route path='/calConfig' component={CalendarConfig}/>
-        <ConfigButton/>
+
       </div>
     </Router>   
   )
