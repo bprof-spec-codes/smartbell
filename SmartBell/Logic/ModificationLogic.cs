@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 
 
 namespace Logic
@@ -110,6 +109,10 @@ namespace Logic
             if (bellRing == default || outputPaths == default)
             {
                 throw new Exception("All parameters must be declared in the body.");
+            }
+            if (bellRing.Description == null)
+            {
+                throw new Exception("All sequenced bellrings must have a description to describe their purpose.");
             }
             if (outputPaths.Count() == 0)
             {
@@ -262,10 +265,6 @@ namespace Logic
                 bellRingRepo.Update(id, b);
             }
         }
-
-        // This method will allow us to get all Elements for a cerating template (one to many)
-        
-
         public void ModifyByTemplate(DateTime dayDate, Template template)
         {
             IQueryable<BellRing> BellringsOfDay = bellRingRepo.GetBellRingsForDay(dayDate);
