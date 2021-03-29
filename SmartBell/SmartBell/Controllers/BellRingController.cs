@@ -90,7 +90,20 @@ namespace SmartBell.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
-           
+        }
+
+        [HttpPost("InsertSequencedBellRings")]
+        public IActionResult InsertSequencedBellRings([FromBody] SequencedBellRingViewModel sequencedBellRingViewModel)
+        {
+            try
+            {
+                modlogic.InsertSequencedBellRings(sequencedBellRingViewModel.bellRing, sequencedBellRingViewModel.outputPaths);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
 
         [HttpGet("GetAllSequencedBellRings")]

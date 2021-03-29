@@ -40,7 +40,7 @@ namespace Logic
             if (bellRing.IntervalSeconds == 0) 
                 SetBellRingIntervalByPath(bellRing.Id);
         }
-        public void InsertMultipleBellRings(IQueryable<BellRing> bellRings)
+        public void InsertMultipleBellRings(IList<BellRing> bellRings)
         {
             foreach (BellRing bellRing in bellRings)
             {
@@ -105,16 +105,36 @@ namespace Logic
             }
             templateRepo.InsertOne(template);
         }
-        public void InsertSequencedBellRings(BellRing bellRing,IQueryable<OutputPath> outputPaths)
+        public void InsertSequencedBellRings(BellRing bellRing,List<OutputPath> outputPaths)
         {
+            if (bellRing == default || outputPaths == default)
+            {
+                throw new Exception("All parameters must be declared in the body.");
+            }
+            if (outputPaths.Count() == 0)
+            {
+                throw new Exception("There are no outputs setup for this sequenced bellring.");
+            }
+            if (outputPaths.All(output => output.SequenceID>0))
+            {
+                throw new Exception("Indexing of the seuqence must start from 1.");
+            }
+            if (outputPaths.Select(output => output.SequenceID).Distinct().Count() == outputPaths.Count())
+            {
+                throw new Exception("All of the sequence ID-s must be unique starting from 1.");
+            }
+            outputPaths = outputPaths.OrderBy(output => output.SequenceID).ToList();
             bellRing.Id = Guid.NewGuid().ToString();
+            bellRing.Type = BellRingType.Special;
             bellRingRepo.InsertOne(bellRing);
+            int i = 1;
             foreach (OutputPath outputPath in outputPaths)
             {
                 outputPath.Id = Guid.NewGuid().ToString();
                 outputPath.BellRingId = bellRing.Id;
+                outputPath.SequenceID = i++;
             }
-            outputPathRepo.InsertMultiple(outputPaths);
+            outputPathRepo.InsertMultiple(outputPaths.ToList());
             SetBellRingIntervalByPath(bellRing.Id);
         }
 

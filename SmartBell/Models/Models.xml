@@ -168,5 +168,20 @@
             Ending output for the bellring of a lesson.
             </summary>
         </member>
+        <member name="T:Models.UI.VM.SequencedBellRingViewModel">
+            <summary>
+            View model for inserting sequenced bellrings.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.SequencedBellRingViewModel.bellRing">
+            <summary>
+            Specifies a bellring which is sequenced.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.SequencedBellRingViewModel.outputPaths">
+            <summary>
+            Specifies the containing outputs.
+            </summary>
+        </member>
     </members>
 </doc>
