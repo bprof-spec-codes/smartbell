@@ -4,7 +4,7 @@ import DateChooser from '../Calendar/DateChooser'
 const CalendarConfig = () => {
     return (
         <div>
-            <div>
+            <div>           
                 <DateChooser/>
             </div>
             <div className='calcontainer'>
