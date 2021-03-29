@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {useState} from 'react'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 import Rings from './components/Rings/Rings'
 import AddRing from './components/Button/AddRing'
@@ -63,29 +64,32 @@ const App = () =>{
   }
 
   return(
-    <div>
-      <ConfigButton/>
-      <MainCalendar
-        onAdd={()=>setShowAddRing(!showAddRing)} 
-        showAdd={showAddRing}
-      />
+    <Router>
+      <div>
+            <ConfigButton/>
+            <MainCalendar
+              onAdd={()=>setShowAddRing(!showAddRing)} 
+              showAdd={showAddRing}
+            />
 
-      {showAddRing && <AddRing onAdd={addRing} />}
-      {
-        rings.length > 0 ? 
-         (
-          <Rings 
-            rings={rings} 
-            onDelete={deleteRing}
-            onToggle={toggleReminder}
-         />
-         ) 
-         : 
-         (
-           'A mai napra nincsenek csengetések'
-         )
-      }
-    </div>
+            {showAddRing && <AddRing onAdd={addRing} />}
+            {
+              rings.length > 0 ? 
+              (
+                <Rings 
+                  rings={rings} 
+                  onDelete={deleteRing}
+                  onToggle={toggleReminder}
+              />
+              ) 
+              : 
+              (
+                'A mai napra nincsenek csengetések'
+              )
+            }
+          </div>
+    </Router>
+    
   )
 }
 export default App;
