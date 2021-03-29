@@ -1,6 +1,7 @@
 ﻿using Logic;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.UI.VM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -76,14 +77,13 @@ namespace SmartBell.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
         [HttpPost("InsertLessonBellrings")]
-        public IActionResult InsertLessonBellrings
-            ([FromBody] BellRing startBellRing, [FromBody] BellRing endBellring,
-            [FromBody] OutputPath startOutputpath, [FromBody] OutputPath endOutputpath)
+        public IActionResult InsertLessonBellrings([FromBody]LessonViewModel Lesson)
         {
             try
             {
-                modlogic.InsertLessonBellrings(startBellRing, endBellring, startOutputpath, endOutputpath);
+                modlogic.InsertLessonBellrings(Lesson.startBellRing, Lesson.endBellring, Lesson.startOutputpath, Lesson.endOutputpath);
                 return Ok();
             }
             catch (Exception ex)

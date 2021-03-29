@@ -143,5 +143,30 @@
         <member name="P:Models.TemplateElement.ParentTemplate">
             <summary>Specifies the parent of this child element for the database connection.</summary>
         </member>
+        <member name="T:Models.UI.VM.LessonViewModel">
+            <summary>
+            View model for inserting lessons.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.LessonViewModel.startBellRing">
+            <summary>
+            Starting bellring of a lesson.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.LessonViewModel.endBellring">
+            <summary>
+            Ending bellring of a lesson.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.LessonViewModel.startOutputpath">
+            <summary>
+            Starting output for the bellring of a lesson.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.LessonViewModel.endOutputpath">
+            <summary>
+            Ending output for the bellring of a lesson.
+            </summary>
+        </member>
     </members>
 </doc>
