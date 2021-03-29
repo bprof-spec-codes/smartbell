@@ -1,10 +1,7 @@
 import React from 'react';
 
 import {useState} from 'react'
-import { FaTasks } from 'react-icons/fa';
 
-//crash course
-//npm install react-icons
 import Rings from './components/Rings/Rings'
 import AddRing from './components/Button/AddRing'
 
