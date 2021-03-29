@@ -23,6 +23,19 @@ body {
   background: rgb(226, 250, 255);
 }
 
+.calontainer {
+  max-width: 700px;
+  min-width: 20px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 40px;
+  border: 1px solid rgb(21, 142, 255);
+  padding: 30px;
+  border-radius: 5px;
+  background: rgb(226, 250, 255);
+  align-items: center;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -40,10 +53,7 @@ body {
   cursor: pointer;
   font-size: 15px;
   font-family: inherit;
-  align-items: center;
-  text-align: center;
   text-transform: uppercase;
-  width: max-content;
 }
 
 .btn {

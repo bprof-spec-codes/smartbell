@@ -9,6 +9,7 @@ import AddRing from './components/Button/AddRing'
 //calendar
 import MainCalendar from './components/Calendar/MainCalendar'
 import ConfigButton from './components/Button/ConfigButton'
+import CalendarConfig from './components/Calendar/CalendarConfig';
 
 //id, bellringtime, interval, intervalseconds, audiopath, type(int)
 const App = () =>{
@@ -65,13 +66,13 @@ const App = () =>{
 
   return(
     <Router>
-      <div>
-            <ConfigButton/>
+      <div>  
+        <Route path='/' exact render={(props)=> (
+          <div>
             <MainCalendar
               onAdd={()=>setShowAddRing(!showAddRing)} 
               showAdd={showAddRing}
             />
-
             {showAddRing && <AddRing onAdd={addRing} />}
             {
               rings.length > 0 ? 
@@ -80,7 +81,7 @@ const App = () =>{
                   rings={rings} 
                   onDelete={deleteRing}
                   onToggle={toggleReminder}
-              />
+                />
               ) 
               : 
               (
@@ -88,8 +89,11 @@ const App = () =>{
               )
             }
           </div>
-    </Router>
-    
+        )}/>              
+        <Route path='/calConfig' component={CalendarConfig}/>
+        <ConfigButton/>
+      </div>
+    </Router>   
   )
 }
 export default App;
