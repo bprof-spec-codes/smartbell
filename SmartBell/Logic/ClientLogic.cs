@@ -11,13 +11,14 @@ namespace Logic
     public class ClientLogic
     {
         ModificationLogic modLogic;
-        ReadLogic readlogic;
+        ReadLogic readLogic;
         IBellRingRepository bellRingRepo;
         ITemplateRepository templateRepo;
 
-        public ClientLogic(ModificationLogic logic,IBellRingRepository bellRingRepo, ITemplateRepository templateRepo)
+        public ClientLogic(ModificationLogic modLogic,IBellRingRepository bellRingRepo, ITemplateRepository templateRepo,ReadLogic readLoigc)
         {
-            this.modLogic = logic;
+            this.modLogic = modLogic;
+            this.readLogic = readLoigc;
             this.bellRingRepo = bellRingRepo;
             this.templateRepo = templateRepo;
         }
@@ -28,7 +29,7 @@ namespace Logic
         }
         public IQueryable<TemplateElement> GetElementsForTemplate(string id)
         {
-            return readlogic.GetElementsForTemplate(id);
+            return readLogic.GetElementsForTemplate(id);
         }
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
         {
