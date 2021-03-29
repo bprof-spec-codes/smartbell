@@ -4,7 +4,7 @@ import 'react-dropdown/style.css';
 
 const DDMenu = () => {
     const options = [
-        'Alapértelmezett', 'Custom - 1', 'Custom - 2', 'Custom - 3','Vészcsengő','Iskolarádió','Beolvasás'
+        'Alapértelmezett', 'Rövidített', 'Nornál', 'Ünnepnap','Vészcsengő','Iskolarádió','Beolvasás'
       ];
       const defaultOption = options[0];
 

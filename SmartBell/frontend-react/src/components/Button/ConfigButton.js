@@ -5,8 +5,7 @@ import '../Button/Buttons.css';
 
 const ConfigButton = () => {
     return (      
-        <div className='calcontainer'>
-            
+        <div className='calcontainer'>           
             <a href='/calConfig' className='headerlink'>Naptárkezelő</a>              
         </div>
     )
