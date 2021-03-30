@@ -1,16 +1,15 @@
 import React from 'react';
 
 import {useState} from 'react'
-import { FaTasks } from 'react-icons/fa';
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 
-//crash course
-//npm install react-icons
-import Header from './components/Header/Header'
 import Rings from './components/Rings/Rings'
 import AddRing from './components/Button/AddRing'
 
 //calendar
 import MainCalendar from './components/Calendar/MainCalendar'
+import ConfigButton from './components/Button/ConfigButton'
+import CalendarConfig from './components/Calendar/CalendarConfig';
 
 //id, bellringtime, interval, intervalseconds, audiopath, type(int)
 const App = () =>{
@@ -66,28 +65,36 @@ const App = () =>{
   }
 
   return(
-    <div className='container'>
-      <MainCalendar/>
-        <Header 
-          onAdd={()=>setShowAddRing(!showAddRing)} 
-          showAdd={showAddRing}
-        />
-        {showAddRing && <AddRing onAdd={addRing} />}
-        {
-          rings.length > 0 ? 
-          (
-            <Rings 
-              rings={rings} 
-              onDelete={deleteRing}
-              onToggle={toggleReminder}
+    <Router>
+      <div>  
+        <Route path='/' exact render={(props)=> (
+          <div>
+            <MainCalendar
+              onAdd={()=>setShowAddRing(!showAddRing)} 
+              showAdd={showAddRing}
             />
-          ) 
-          : 
-          (
-            'A mai napra nincsenek csengetések'
-          )
-        }
+            {showAddRing && <AddRing onAdd={addRing} />}
+            {
+              rings.length > 0 ? 
+              (
+                <Rings 
+                  rings={rings} 
+                  onDelete={deleteRing}
+                  onToggle={toggleReminder}
+                />
+              ) 
+              : 
+              (
+                'A mai napra nincsenek csengetések'
+              )
+            }
+            <ConfigButton/>
+          </div>
+        )}/>              
+        <Route path='/calConfig' component={CalendarConfig}/>
+
       </div>
+    </Router>   
   )
 }
 export default App;
