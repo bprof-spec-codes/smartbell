@@ -118,7 +118,7 @@ namespace Logic
             {
                 throw new Exception("There are no outputs setup for this sequenced bellring.");
             }
-            if (outputPaths.All(output => output.SequenceID>0))
+            if (!outputPaths.All(output => output.SequenceID>0))
             {
                 throw new Exception("Indexing of the seuqence must start from 1.");
             }
