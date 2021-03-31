@@ -26,9 +26,11 @@ namespace SmartBell
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc().AddNewtonsoftJson();
             services.AddDbContext<SbDbContext>();
             services.AddTransient<ModificationLogic, ModificationLogic>();
             services.AddTransient<ReadLogic, ReadLogic>();
+            services.AddTransient<ClientLogic, ClientLogic>();            
             services.AddTransient<ITemplateRepository, TemplateRepository>();
             services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();
             services.AddTransient<IBellRingRepository, BellRingRepository>();
@@ -57,7 +59,6 @@ namespace SmartBell
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseStaticFiles();

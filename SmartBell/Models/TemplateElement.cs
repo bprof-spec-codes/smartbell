@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Models
@@ -24,10 +24,9 @@ namespace Models
         public DateTime BellRingTime { get; set; }
 
         /// <summary>The interval of outputing sound.</summary>
-        public TimeSpan? Interval { get; set; } //TODO this property should not be null, set automatically.
+        public TimeSpan Interval { get; set; } //TODO this property should not be null, set automatically.
 
         /// <summary>The interval of outputing sound in seconds for manual setup.</summary>
-        [Required]
         public int IntervalSeconds { get; set; }
 
         /// <summary>

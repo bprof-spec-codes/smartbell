@@ -30,7 +30,7 @@ namespace SmartBell.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan?>("Interval")
+                    b.Property<TimeSpan>("Interval")
                         .HasColumnType("time");
 
                     b.Property<int>("IntervalSeconds")
@@ -131,7 +131,7 @@ namespace SmartBell.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<TimeSpan?>("Interval")
+                    b.Property<TimeSpan>("Interval")
                         .HasColumnType("time");
 
                     b.Property<int>("IntervalSeconds")
@@ -155,7 +155,8 @@ namespace SmartBell.Migrations
                             Id = "1",
                             BellRingTime = new DateTime(1, 1, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -164,7 +165,8 @@ namespace SmartBell.Migrations
                             Id = "2",
                             BellRingTime = new DateTime(1, 1, 1, 8, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -173,7 +175,8 @@ namespace SmartBell.Migrations
                             Id = "3",
                             BellRingTime = new DateTime(1, 1, 1, 8, 55, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -182,7 +185,8 @@ namespace SmartBell.Migrations
                             Id = "4",
                             BellRingTime = new DateTime(1, 1, 1, 9, 40, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -191,7 +195,8 @@ namespace SmartBell.Migrations
                             Id = "5",
                             BellRingTime = new DateTime(1, 1, 1, 9, 55, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -200,7 +205,8 @@ namespace SmartBell.Migrations
                             Id = "6",
                             BellRingTime = new DateTime(1, 1, 1, 10, 40, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -209,7 +215,8 @@ namespace SmartBell.Migrations
                             Id = "7",
                             BellRingTime = new DateTime(1, 1, 1, 10, 50, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -218,7 +225,8 @@ namespace SmartBell.Migrations
                             Id = "8",
                             BellRingTime = new DateTime(1, 1, 1, 11, 35, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -227,7 +235,8 @@ namespace SmartBell.Migrations
                             Id = "9",
                             BellRingTime = new DateTime(1, 1, 1, 11, 55, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -236,7 +245,8 @@ namespace SmartBell.Migrations
                             Id = "10",
                             BellRingTime = new DateTime(1, 1, 1, 12, 40, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -245,7 +255,8 @@ namespace SmartBell.Migrations
                             Id = "11",
                             BellRingTime = new DateTime(1, 1, 1, 12, 50, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -254,7 +265,8 @@ namespace SmartBell.Migrations
                             Id = "12",
                             BellRingTime = new DateTime(1, 1, 1, 13, 35, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -263,7 +275,8 @@ namespace SmartBell.Migrations
                             Id = "13",
                             BellRingTime = new DateTime(1, 1, 1, 13, 40, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -272,7 +285,8 @@ namespace SmartBell.Migrations
                             Id = "14",
                             BellRingTime = new DateTime(1, 1, 1, 14, 25, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -281,7 +295,8 @@ namespace SmartBell.Migrations
                             Id = "15",
                             BellRingTime = new DateTime(1, 1, 1, 14, 35, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -290,7 +305,8 @@ namespace SmartBell.Migrations
                             Id = "16",
                             BellRingTime = new DateTime(1, 1, 1, 15, 20, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -299,7 +315,8 @@ namespace SmartBell.Migrations
                             Id = "17",
                             BellRingTime = new DateTime(1, 1, 1, 15, 25, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 0
                         },
@@ -308,7 +325,8 @@ namespace SmartBell.Migrations
                             Id = "18",
                             BellRingTime = new DateTime(1, 1, 1, 16, 10, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "1",
                             Type = 1
                         },
@@ -317,7 +335,8 @@ namespace SmartBell.Migrations
                             Id = "19",
                             BellRingTime = new DateTime(1, 1, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -326,7 +345,8 @@ namespace SmartBell.Migrations
                             Id = "20",
                             BellRingTime = new DateTime(1, 1, 1, 8, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -335,7 +355,8 @@ namespace SmartBell.Migrations
                             Id = "21",
                             BellRingTime = new DateTime(1, 1, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -344,7 +365,8 @@ namespace SmartBell.Migrations
                             Id = "22",
                             BellRingTime = new DateTime(1, 1, 1, 9, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -353,7 +375,8 @@ namespace SmartBell.Migrations
                             Id = "23",
                             BellRingTime = new DateTime(1, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -362,7 +385,8 @@ namespace SmartBell.Migrations
                             Id = "24",
                             BellRingTime = new DateTime(1, 1, 1, 10, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -371,7 +395,8 @@ namespace SmartBell.Migrations
                             Id = "25",
                             BellRingTime = new DateTime(1, 1, 1, 11, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -380,7 +405,8 @@ namespace SmartBell.Migrations
                             Id = "26",
                             BellRingTime = new DateTime(1, 1, 1, 11, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -389,7 +415,8 @@ namespace SmartBell.Migrations
                             Id = "27",
                             BellRingTime = new DateTime(1, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -398,7 +425,8 @@ namespace SmartBell.Migrations
                             Id = "28",
                             BellRingTime = new DateTime(1, 1, 1, 12, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -407,7 +435,8 @@ namespace SmartBell.Migrations
                             Id = "29",
                             BellRingTime = new DateTime(1, 1, 1, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -416,7 +445,8 @@ namespace SmartBell.Migrations
                             Id = "30",
                             BellRingTime = new DateTime(1, 1, 1, 13, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -425,7 +455,8 @@ namespace SmartBell.Migrations
                             Id = "31",
                             BellRingTime = new DateTime(1, 1, 1, 13, 55, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -434,7 +465,8 @@ namespace SmartBell.Migrations
                             Id = "32",
                             BellRingTime = new DateTime(1, 1, 1, 14, 40, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -443,7 +475,8 @@ namespace SmartBell.Migrations
                             Id = "33",
                             BellRingTime = new DateTime(1, 1, 1, 14, 50, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -452,7 +485,8 @@ namespace SmartBell.Migrations
                             Id = "34",
                             BellRingTime = new DateTime(1, 1, 1, 15, 35, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -461,7 +495,8 @@ namespace SmartBell.Migrations
                             Id = "35",
                             BellRingTime = new DateTime(1, 1, 1, 15, 40, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 0
                         },
@@ -470,7 +505,8 @@ namespace SmartBell.Migrations
                             Id = "36",
                             BellRingTime = new DateTime(1, 1, 1, 16, 25, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "2",
                             Type = 1
                         },
@@ -479,7 +515,8 @@ namespace SmartBell.Migrations
                             Id = "37",
                             BellRingTime = new DateTime(1, 1, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 0
                         },
@@ -488,7 +525,8 @@ namespace SmartBell.Migrations
                             Id = "38",
                             BellRingTime = new DateTime(1, 1, 1, 8, 35, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 1
                         },
@@ -497,7 +535,8 @@ namespace SmartBell.Migrations
                             Id = "39",
                             BellRingTime = new DateTime(1, 1, 1, 8, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 0
                         },
@@ -506,7 +545,8 @@ namespace SmartBell.Migrations
                             Id = "40",
                             BellRingTime = new DateTime(1, 1, 1, 9, 20, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 1
                         },
@@ -515,7 +555,8 @@ namespace SmartBell.Migrations
                             Id = "41",
                             BellRingTime = new DateTime(1, 1, 1, 9, 25, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 0
                         },
@@ -524,7 +565,8 @@ namespace SmartBell.Migrations
                             Id = "42",
                             BellRingTime = new DateTime(1, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 1
                         },
@@ -533,7 +575,8 @@ namespace SmartBell.Migrations
                             Id = "43",
                             BellRingTime = new DateTime(1, 1, 1, 10, 5, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 0
                         },
@@ -542,7 +585,8 @@ namespace SmartBell.Migrations
                             Id = "44",
                             BellRingTime = new DateTime(1, 1, 1, 10, 40, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 1
                         },
@@ -551,7 +595,8 @@ namespace SmartBell.Migrations
                             Id = "45",
                             BellRingTime = new DateTime(1, 1, 1, 10, 45, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 0
                         },
@@ -560,7 +605,8 @@ namespace SmartBell.Migrations
                             Id = "46",
                             BellRingTime = new DateTime(1, 1, 1, 11, 20, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 1
                         },
@@ -569,7 +615,8 @@ namespace SmartBell.Migrations
                             Id = "47",
                             BellRingTime = new DateTime(1, 1, 1, 11, 25, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 0
                         },
@@ -578,7 +625,8 @@ namespace SmartBell.Migrations
                             Id = "48",
                             BellRingTime = new DateTime(1, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             FilePath = "default.mp3",
-                            IntervalSeconds = 15,
+                            Interval = new TimeSpan(0, 0, 0, 10, 0),
+                            IntervalSeconds = 10,
                             TemplateId = "3",
                             Type = 1
                         });
