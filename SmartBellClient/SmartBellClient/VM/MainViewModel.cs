@@ -8,28 +8,39 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace SmartBellClient.VM
 {
     internal class MainViewModel : ViewModelBase
     {
         private IReadLogic readLogic;
+        private ITimeLogic timeLogic;
         public ObservableCollection<BellRing> BellRings { get; private set; }
-        public MainViewModel(IReadLogic readLogic)
+        private DateTime clock;
+        public DateTime Clock {
+            get { return clock; }
+            private set { Set(ref this.clock,value); }
+        }
+        public MainViewModel(IReadLogic readLogic,ITimeLogic timeLogic)
         {
             this.readLogic = readLogic;
+            this.timeLogic = timeLogic; 
 
             if (!this.IsInDesignMode)
             {
-                this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(new DateTime())); // We must implement getting time from the server
+                Clock = timeLogic.GetNetworkTime();
+                startClock();
+                this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x=>x.BellRingTime)); // We must implement getting time from the server
             }
             else
             {
                 this.BellRings = FillWithSamples();
+                Clock = new DateTime(1999, 07, 18, 12, 34, 56);
             }
         }
         public MainViewModel()
-            : this(IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<IReadLogic>()) // IoC
+            : this(IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<IReadLogic>(), IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<ITimeLogic>()) // IoC
         {
         }
 
@@ -181,6 +192,17 @@ namespace SmartBellClient.VM
             brings.Add(br17);
             brings.Add(br18);
             return brings;
+        }
+        private void startClock()
+        {
+            DispatcherTimer clock = new DispatcherTimer();
+            clock.Interval = TimeSpan.FromSeconds(1);
+            clock.Tick += this.TicksOfClock;
+            clock.Start();
+        }
+        private void TicksOfClock(object sender, EventArgs e)
+        {
+            this.Clock = this.Clock.AddSeconds(1);
         }
     }
 }

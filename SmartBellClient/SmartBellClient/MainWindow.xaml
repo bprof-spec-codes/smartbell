@@ -8,7 +8,11 @@
         xmlns:repo="clr-namespace:Repository;assembly=Repository"
         xmlns:data="clr-namespace:Data;assembly=Data"
         mc:Ignorable="d"
-        Title="MainWindow" Width="{x:Static repo:ConstConfig.Width}" Height="{x:Static repo:ConstConfig.Height}">
+        Title="SmartBell Client"
+        Width="{x:Static repo:ConstConfig.Width}"
+        Height="{x:Static repo:ConstConfig.Height}"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
     <Window.Resources>
         <vm:MainViewModel x:Key="VM"/>
         <DataTemplate x:Key="listTemplate" DataType="{x:Type data:BellRing}">
@@ -22,14 +26,11 @@
     </Window.Resources>
     <Grid DataContext="{StaticResource VM}">
         <ListBox ItemTemplate="{StaticResource listTemplate}" ItemsSource="{Binding Path=BellRings}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" Height="232" Margin="0,10,0,0" VerticalAlignment="Top" Width="480" />
-        <Button Command="{Binding Path=AddCmd}" Content="ADD" HorizontalAlignment="Left"
-                Margin="697,17,0,0" VerticalAlignment="Top" Width="100" />
-        <Button Command="{Binding Path=ModCmd}" Content="MOD" HorizontalAlignment="Left"
-                Margin="697,55,0,0" VerticalAlignment="Top" Width="100" />
-        <Button Command="{Binding Path=DelCmd}" Content="DEL" HorizontalAlignment="Left"
-                Margin="697,90,0,0" VerticalAlignment="Top" Width="100" />
+        <Label Content="Date:"  Margin="10,250,351,160"/>
+        <Label Content="{Binding Path=Clock}" ContentStringFormat="yyyy.MM.dd"  Margin="62,250,351,160"/>
+        <Label Content="Time:"  Margin="10,269,351,160"/>
+        <Label Content="{Binding Path=Clock}" ContentStringFormat="hh:mm:ss"  Margin="62,269,351,160"/>
     </Grid>
-
 
 
 </Window>
