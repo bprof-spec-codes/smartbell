@@ -14,7 +14,7 @@ namespace Data
         private string id;
         private string description;
         private DateTime bellRingTime;
-        private TimeSpan? interval;
+        private TimeSpan interval;
         private int intervalSeconds;
         private BellRingType type;
         public string Id
@@ -32,7 +32,7 @@ namespace Data
             get { return this.bellRingTime; }
             set { this.Set(ref this.bellRingTime, value); }
         }
-        public TimeSpan? Interval
+        public TimeSpan Interval
         {
             get { return this.interval; }
             set { this.Set(ref this.interval, value); }

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <setup>
-	<domain></domain>
-	<port></port>
-	<ntp></ntp>
+	<domain>https://localhost</domain>
+	<port>5001</port>
+	<ntp>hu.pool.ntp.org</ntp>
 </setup>
