@@ -30,6 +30,7 @@ namespace SmartBell
             services.AddDbContext<SbDbContext>();
             services.AddTransient<ModificationLogic, ModificationLogic>();
             services.AddTransient<ReadLogic, ReadLogic>();
+            services.AddTransient<TimeLogic, TimeLogic>();
             services.AddTransient<ClientLogic, ClientLogic>();            
             services.AddTransient<ITemplateRepository, TemplateRepository>();
             services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();

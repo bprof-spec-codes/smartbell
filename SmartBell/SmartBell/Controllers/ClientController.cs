@@ -13,10 +13,12 @@ namespace SmartBell.Controllers
     public class ClientController : ControllerBase
     {
         ClientLogic clientLogic;
+        TimeLogic timeLogic;
 
-        public ClientController(ClientLogic clientLogic)
+        public ClientController(ClientLogic clientLogic, TimeLogic timeLogic)
         {
             this.clientLogic = clientLogic;
+            this.timeLogic = timeLogic;
         }
 
        [HttpGet("GetBellRingsForDay/{dayDate}")]
@@ -24,6 +26,18 @@ namespace SmartBell.Controllers
         {
 
             return clientLogic.GetBellRingsForDay(dayDate);
+        }
+        [HttpGet("GetCurrentDateTime/{ntpServerAddress}")]
+        public DateTime GetCurrentDateTime(string ntpServerAddress)
+        {
+
+            return timeLogic.GetCurrentDateTime(ntpServerAddress);
+        }
+        [HttpGet("GetNextBellRing/{dayDate}&{ntpServerAddress}")]
+        public DateTime GetNextBellRing(DateTime dayDate,string ntpServerAddress)
+        {
+
+            return timeLogic.GetNextBellRing(dayDate, ntpServerAddress);
         }
     }
 }
