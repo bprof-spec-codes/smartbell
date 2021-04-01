@@ -49,7 +49,8 @@ namespace Models
 
         /// <summary>Specifies the parent of this child element for the database connection.</summary>
         [NotMapped]
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual Template ParentTemplate { get; set; }
 
     }

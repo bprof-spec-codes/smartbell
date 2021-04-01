@@ -21,7 +21,8 @@ namespace Models
 
         /// <summary>Database storage reference for pattern elements.</summary>
         [NotMapped]
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual ICollection<TemplateElement> TemplateElements { get; set; }
 
     }

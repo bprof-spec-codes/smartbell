@@ -27,6 +27,13 @@ namespace SmartBell.Controllers
 
             return clientLogic.GetBellRingsForDay(dayDate);
         }
+        [HttpGet("GetAllOutputPathsForDay/{dayDate}")]
+        public IQueryable<OutputPath> GetAllOutputPathsForDay(DateTime dayDate)
+        {
+
+            return clientLogic.GetAllOutputPathsForDay(dayDate);
+        }
+        
         [HttpGet("GetCurrentDateTime/{ntpServerAddress}")]
         public DateTime GetCurrentDateTime(string ntpServerAddress)
         {

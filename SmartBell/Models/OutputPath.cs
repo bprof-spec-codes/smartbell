@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Models
@@ -35,7 +36,8 @@ namespace Models
 
         /// <summary>Specifies the parent of this child element for the database connection.</summary>
         [NotMapped]
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual BellRing ParentBellRing { get; set; }
 
     }

@@ -41,7 +41,8 @@ namespace Models
         /// Database storage reference of storing one or multiple outputPaths for a bellringing.
         /// </summary>
         [NotMapped]
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual ICollection<OutputPath> OutputPaths { get; set; }
 
         /// <summary>Specifies the reasoning of a bellring 0=Start of a lesson 1=end of a lesson 2= special reason</summary>
