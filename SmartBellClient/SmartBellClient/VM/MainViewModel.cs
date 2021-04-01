@@ -5,19 +5,30 @@ using Logic;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace SmartBellClient.VM
 {
     internal class MainViewModel : ViewModelBase
     {
+        private System.Threading.Timer timer;
         private IReadLogic readLogic;
         private ITimeLogic timeLogic;
         public ObservableCollection<BellRing> BellRings { get; private set; }
         public ObservableCollection<OutputPath> Outputs { get; private set; }
+        private BellRing nextBellRingTime;
+        public BellRing NextBellRingTime
+        {
+            get { return nextBellRingTime; }
+            private set { Set(ref this.nextBellRingTime, value); }
+        }
         private DateTime clock;
         public DateTime Clock {
             get { return clock; }
@@ -32,6 +43,8 @@ namespace SmartBellClient.VM
             {
                 Clock = timeLogic.GetNetworkTime();
                 startClock();
+                NextBellRingTime = timeLogic.GetNextBellRingTime(Clock);
+                BellRingUpdate(NextBellRingTime);
                 this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x=>x.BellRingTime)); // We must implement getting time from the server
                 this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
                 readLogic.GetAllFiles(Outputs);
@@ -39,6 +52,8 @@ namespace SmartBellClient.VM
             else
             {
                 this.BellRings = FillWithSamples();
+                NextBellRingTime = new BellRing();
+                NextBellRingTime.BellRingTime = new DateTime(2069, 04, 20, 12, 34, 56); //This is the only part wich is displayed for the moment
                 Clock = new DateTime(1999, 07, 18, 12, 34, 56);
             }
         }
@@ -196,6 +211,35 @@ namespace SmartBellClient.VM
             brings.Add(br18);
             return brings;
         }
+        private void BellRingUpdate(BellRing nextbellring)
+        {
+            if (nextbellring == null)
+            {
+                return;
+            }
+            DateTime calledForTime = Clock;
+            TimeSpan scheduledTime = new TimeSpan(nextbellring.BellRingTime.Hour, nextbellring.BellRingTime.Minute, nextbellring.BellRingTime.Second)-clock.TimeOfDay;
+            //TimeSpan scheduledTime = nextbellring.BellRingTime;
+            //if (calledForTime > scheduledTime)
+                //throw new Exception("This method should never be called for other than the current day.");
+
+            //double tickTime = (double)(scheduledTime - Clock).TotalMilliseconds;
+            this.timer = new System.Threading.Timer(x =>
+            {
+                
+                this.PlayAudio();
+            }, null, scheduledTime, Timeout.InfiniteTimeSpan);
+        }
+        private void PlayAudio()
+        {
+            MediaPlayer mplayer = new MediaPlayer();
+
+            mplayer.Open(new Uri(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @"\default.mp3"));
+            this.NextBellRingTime = this.timeLogic.GetNextBellRingTime(Clock.AddSeconds(5));
+            BellRingUpdate(NextBellRingTime);
+            mplayer.Play();
+            
+        }
         private void startClock()
         {
             DispatcherTimer clock = new DispatcherTimer();
@@ -207,5 +251,6 @@ namespace SmartBellClient.VM
         {
             this.Clock = this.Clock.AddSeconds(1);
         }
+
     }
 }
