@@ -11,7 +11,7 @@ const Header = ({title, onAdd, showAdd}) => {
             <Button 
                 onClicked={onAdd} 
                 color={showAdd? 'red' : 'green'} 
-                text={showAdd ? 'Mégse' : 'Új szünet hozzáadása'}
+                text={showAdd ? 'Mégse' : 'Új csengetés hozzáadása'}
             />
         </header>
     )

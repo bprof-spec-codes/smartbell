@@ -1,6 +1,8 @@
 import React from 'react'
 import DDMenu from '../Button/DDMenu'
 
+//rádióműsorokat egytől indexelni
+
 const RadioMaker = () => {
     return (
         <div className='container'>
@@ -17,6 +19,7 @@ const RadioMaker = () => {
                         placeholder='Adj nevet a rádióműsorodnak' 
                     />
             <input type='submit' className='btn btn-block' value='Új rádióműsor hozzáadása'/>
+            <input type='submit' className='btn btn-block' value='Rádióműsorok mentése'/>
             </form>
             
         </div>

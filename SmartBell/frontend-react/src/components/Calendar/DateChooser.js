@@ -45,7 +45,7 @@ const DateChooser = ({onAdd}) => {
             <p>Válassz csengőhangot:</p><br/>
             <DDMenu/>
             <br/>
-            <p>Válassz rádióműsort (opcionális):</p><br/>
+            <p>Ez ide nem kell majd:</p><br/>
             <DDMenu/>
             <br/><br/>
             <input type='submit' className='btn btn-block' value='Csengetési rend hozzáadása'/>
