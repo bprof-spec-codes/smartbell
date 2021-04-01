@@ -17,6 +17,7 @@ namespace SmartBellClient.VM
         private IReadLogic readLogic;
         private ITimeLogic timeLogic;
         public ObservableCollection<BellRing> BellRings { get; private set; }
+        public ObservableCollection<OutputPath> Outputs { get; private set; }
         private DateTime clock;
         public DateTime Clock {
             get { return clock; }
@@ -32,6 +33,8 @@ namespace SmartBellClient.VM
                 Clock = timeLogic.GetNetworkTime();
                 startClock();
                 this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x=>x.BellRingTime)); // We must implement getting time from the server
+                this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
+                readLogic.GetAllFiles(Outputs);
             }
             else
             {
