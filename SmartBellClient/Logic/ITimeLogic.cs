@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace Logic
     public interface ITimeLogic
     {
         DateTime GetNetworkTime();
-        DateTime GetNextBellRingTime(DateTime dayDate);
+        BellRing GetNextBellRingTime(DateTime dayDate);
     }
 }

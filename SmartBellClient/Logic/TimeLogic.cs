@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Data;
+using Newtonsoft.Json;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,12 @@ namespace Logic
             return JsonConvert.DeserializeObject<DateTime>(jsonContent);
         }
 
-        public DateTime GetNextBellRingTime(DateTime dayDate)
+        public BellRing GetNextBellRingTime(DateTime dayDate)
         {
-            string url = ConstConfig.DomainAddress + @$"/Client/GetNextBellRing/{dayDate}&{ConstConfig.NtpAddress}";
+            string url = ConstConfig.DomainAddress + @$"/Client/GetNextBellRing/{dayDate}";
             WebClient wc = new WebClient();
             string jsonContent = wc.DownloadString(url);
-            return JsonConvert.DeserializeObject<DateTime>(jsonContent);
+            return JsonConvert.DeserializeObject<BellRing>(jsonContent);
         }
     }
 }
