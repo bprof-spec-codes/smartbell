@@ -38,6 +38,25 @@ namespace SmartBell.Controllers
             }
             
         }
+        [HttpDelete("DeleteAllBellRings")]
+        public IActionResult DeleteAllBellRing()
+        {
+            try
+            {
+                
+                List<BellRing> brings = readlogic.GetAllBellring().ToList();
+                foreach (var item in brings)
+                {
+                    modlogic.DeleteBellring(item);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+
+        }
         [HttpGet("{id}")]
         public IActionResult GetBellRing(string id)
         {

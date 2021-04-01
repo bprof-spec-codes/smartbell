@@ -40,11 +40,11 @@ namespace SmartBell.Controllers
 
             return timeLogic.GetCurrentDateTime(ntpServerAddress);
         }
-        [HttpGet("GetNextBellRing/{dayDate}&{ntpServerAddress}")]
-        public DateTime GetNextBellRing(DateTime dayDate,string ntpServerAddress)
+        [HttpGet("GetNextBellRing/{dayDate}")]
+        public BellRing GetNextBellRing(DateTime dayDate)
         {
 
-            return timeLogic.GetNextBellRing(dayDate, ntpServerAddress);
+            return timeLogic.GetNextBellRing(dayDate);
         }
     }
 }
