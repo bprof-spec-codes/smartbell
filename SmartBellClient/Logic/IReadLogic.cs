@@ -8,7 +8,7 @@ namespace Logic
     public interface IReadLogic
     {
         IList<BellRing> GetBellRingsForDay(DateTime dayDate);
-        IList<OutputPath> GetOutputForBellring(string bellringId);
+        IList<OutputPath> GetAllOutputPathsForDay(DateTime dayDate);
         void GetAllFiles(IList<OutputPath> outputs);
     }
 }
