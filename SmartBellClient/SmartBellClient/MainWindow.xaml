@@ -30,8 +30,8 @@
         <Label Content="{Binding Path=Clock}" ContentStringFormat="yyyy.MM.dd"  Margin="62,250,351,160"/>
         <Label Content="Time:"  Margin="10,269,351,160"/>
         <Label Content="{Binding Path=Clock}" ContentStringFormat="hh:mm:ss"  Margin="62,269,351,160"/>
-        <Label Content="Next bellring time:"  Margin="234,250,124,179"/>
-        <Label Content="{Binding Path=NextBellRing.BellRingTime}" ContentStringFormat="hh:mm:ss"  Margin="234,269,134,160"/>
+        <Label Content="{Binding Path=BellRingInfo}"  Margin="234,250,10,179"/>
+        <Label Content="{Binding Path=NextBellRing.BellRingTime}" ContentStringFormat="hh:mm:ss"  Margin="234,269,10,160"/>
     </Grid>
 
 
