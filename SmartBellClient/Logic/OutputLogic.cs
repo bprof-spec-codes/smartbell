@@ -11,6 +11,13 @@ namespace Logic
     {
         public void TTS(string txt)
         {
+            string path = Directory.GetParent(
+                Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\{txt}";
+            TimeSpan avrageWordsDuration = new TimeSpan();
+            char[] delims = { '.', '!', '?', ',', '(', ')', '\t', '\n', '\r', ' ' };
+
+            string[] words = File.ReadAllText(path)
+                .Split(delims, StringSplitOptions.RemoveEmptyEntries);
             SpVoice voice = new SpVoice();
             SpObjectTokenCategory otc = new SpObjectTokenCategory();
             // otc.SetId("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices"); // the original route
@@ -37,22 +44,28 @@ namespace Logic
             if (found)
             {
                 voice.Voice = (SpObjectToken)tokenEnum.Item(i);
-                voice.Speak(File.ReadAllText(txt)); 
+                voice.Speak(File.ReadAllText(path));
+                avrageWordsDuration = new TimeSpan(0, 0, 0, 0, words.Length * 650);
             }
             else
             {
-                voice.Speak(File.ReadAllText(txt));
+                voice.Speak(File.ReadAllText(path));
+                avrageWordsDuration = new TimeSpan(0, 0, 0, 0, words.Length * 750);
             }
-            Thread.Sleep(10000);
+            Thread.Sleep(avrageWordsDuration);
         }
 
         public void MP3(string audio)
         {
+            var tfile = TagLib.File.Create(Directory.GetParent(
+                Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\{audio}");
+            TimeSpan duration = tfile.Properties.Duration+TimeSpan.FromSeconds(1);
+            //TimeSpan duration = tfile.p
             MediaPlayer mplayer = new MediaPlayer();
             mplayer.Open(new Uri(Directory.GetParent(
                 Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\{audio}"));
             mplayer.Play();
-            Thread.Sleep(10000);
+            Thread.Sleep((int)duration.TotalMilliseconds);
         }
         
 

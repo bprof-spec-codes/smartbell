@@ -9,5 +9,6 @@ namespace Logic
         DateTime GetNetworkTime();
         BellRing GetNextBellRingTime(DateTime dayDate);
         IList<BellRing> RemoveElapsedBellRing(string id,List<BellRing> list);
+        IList<BellRing> RemoveAllElapsedBellRings(DateTime comaprertime, List<BellRing> list);
     }
 }
