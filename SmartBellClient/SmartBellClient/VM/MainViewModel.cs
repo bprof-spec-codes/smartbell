@@ -21,44 +21,54 @@ namespace SmartBellClient.VM
         private System.Threading.Timer timer;
         private IReadLogic readLogic;
         private ITimeLogic timeLogic;
-        public ObservableCollection<BellRing> BellRings { get; private set; }
-        public ObservableCollection<OutputPath> Outputs { get; private set; }
-        private BellRing nextBellRingTime;
-        public BellRing NextBellRingTime
+        private IOutputLogic outputLogic;
+        private ObservableCollection<BellRing> bellRings;
+        public ObservableCollection<BellRing> BellRings
         {
-            get { return nextBellRingTime; }
-            private set { Set(ref this.nextBellRingTime, value); }
+            get { return bellRings; }
+            private set { Set(ref this.bellRings, value); }
+        }
+        public ObservableCollection<OutputPath> Outputs { get; private set; }
+        private BellRing nextBellRing;
+        public BellRing NextBellRing
+        {
+            get { return nextBellRing; }
+            private set { Set(ref this.nextBellRing, value); }
         }
         private DateTime clock;
         public DateTime Clock {
             get { return clock; }
             private set { Set(ref this.clock,value); }
         }
-        public MainViewModel(IReadLogic readLogic,ITimeLogic timeLogic)
+        public MainViewModel(IReadLogic readLogic,ITimeLogic timeLogic,IOutputLogic outputLogic)
         {
             this.readLogic = readLogic;
-            this.timeLogic = timeLogic; 
+            this.timeLogic = timeLogic;
+            this.outputLogic = outputLogic;
 
             if (!this.IsInDesignMode)
             {
                 Clock = timeLogic.GetNetworkTime();
                 startClock();
-                NextBellRingTime = timeLogic.GetNextBellRingTime(Clock);
-                BellRingUpdate(NextBellRingTime);
-                this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x=>x.BellRingTime)); // We must implement getting time from the server
+                NextBellRing = timeLogic.GetNextBellRingTime(Clock);
+                this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x => x.BellRingTime));
                 this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
                 readLogic.GetAllFiles(Outputs);
+                BellRingUpdate(NextBellRing);
             }
             else
             {
                 this.BellRings = FillWithSamples();
-                NextBellRingTime = new BellRing();
-                NextBellRingTime.BellRingTime = new DateTime(2069, 04, 20, 12, 34, 56); //This is the only part wich is displayed for the moment
+                NextBellRing = new BellRing(){
+                    BellRingTime = new DateTime(2069, 04, 20, 12, 34, 56), //This is the only part wich is displayed for the moment
+                };
                 Clock = new DateTime(1999, 07, 18, 12, 34, 56);
             }
         }
         public MainViewModel()
-            : this(IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<IReadLogic>(), IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<ITimeLogic>()) // IoC
+            : this(IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<IReadLogic>(),
+                  IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<ITimeLogic>(),
+                  IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<IOutputLogic>()) // IoC
         {
         }
 
@@ -218,26 +228,32 @@ namespace SmartBellClient.VM
                 return;
             }
             DateTime calledForTime = Clock;
-            TimeSpan scheduledTime = new TimeSpan(nextbellring.BellRingTime.Hour, nextbellring.BellRingTime.Minute, nextbellring.BellRingTime.Second)-clock.TimeOfDay;
-            //TimeSpan scheduledTime = nextbellring.BellRingTime;
-            //if (calledForTime > scheduledTime)
-                //throw new Exception("This method should never be called for other than the current day.");
-
-            //double tickTime = (double)(scheduledTime - Clock).TotalMilliseconds;
+            TimeSpan scheduledTime = new TimeSpan
+                (nextbellring.BellRingTime.Hour, nextbellring.BellRingTime.Minute,
+                nextbellring.BellRingTime.Second)-clock.TimeOfDay;
             this.timer = new System.Threading.Timer(x =>
             {
-                
                 this.PlayAudio();
             }, null, scheduledTime, Timeout.InfiniteTimeSpan);
         }
         private void PlayAudio()
         {
-            MediaPlayer mplayer = new MediaPlayer();
-
-            mplayer.Open(new Uri(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @"\default.mp3"));
-            this.NextBellRingTime = this.timeLogic.GetNextBellRingTime(Clock.AddSeconds(5));
-            BellRingUpdate(NextBellRingTime);
-            mplayer.Play();
+            List<OutputPath> currentOutputs = readLogic.GetOutputPathsForBellRing(NextBellRing.Id, Outputs.ToList()).ToList();
+            foreach (var item in currentOutputs)
+            {
+                //there should be a check whether it's an mp3 or txt 
+                /*MediaPlayer mplayer = new MediaPlayer();
+                mplayer.Open(new Uri(Directory.GetParent(
+                    Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\default.mp3"));
+                mplayer.Play();*/
+                outputLogic.MP3(item.FilePath);
+                //Thread.Sleep(10000);
+            }
+            //outputLogic.MP3(item.FilePath);
+            
+            BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveElapsedBellRing(NextBellRing.Id, BellRings.ToList()));
+            this.NextBellRing = this.timeLogic.GetNextBellRingTime(Clock.AddSeconds(5));
+            BellRingUpdate(NextBellRing);
             
         }
         private void startClock()
