@@ -1,9 +1,6 @@
 ﻿using Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic
 {
@@ -11,5 +8,6 @@ namespace Logic
     {
         DateTime GetNetworkTime();
         BellRing GetNextBellRingTime(DateTime dayDate);
+        IList<BellRing> RemoveElapsedBellRing(string id,List<BellRing> list);
     }
 }

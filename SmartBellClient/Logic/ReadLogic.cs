@@ -4,8 +4,8 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
-using System.Xml;
 
 namespace Logic
 {
@@ -18,7 +18,10 @@ namespace Logic
             {
                 string url = ConstConfig.DomainAddress + @$"/File/{item.FilePath}";
                 WebClient wc = new WebClient();
-                wc.DownloadFile(url, Path.Combine(outputFolder, item.FilePath));
+                if (!File.Exists(Path.Combine(outputFolder, item.FilePath)))
+                {
+                    wc.DownloadFile(url, Path.Combine(outputFolder, item.FilePath));
+                }
             }   
         }
 
@@ -39,6 +42,10 @@ namespace Logic
             WebClient wc = new WebClient();
             string jsonContent = wc.DownloadString(url);
             return JsonConvert.DeserializeObject<List<OutputPath>>(jsonContent);
+        }
+        public IList<OutputPath> GetOutputPathsForBellRing(string id, List<OutputPath> outputPaths)
+        {
+            return outputPaths.Where(x => x.BellRingId == id).OrderBy(x=>x.SequenceID).ToList();
         }
     }
 }
