@@ -22,6 +22,12 @@ namespace SmartBellClient.VM
         private IReadLogic readLogic;
         private ITimeLogic timeLogic;
         private IOutputLogic outputLogic;
+        private string bellRingInfo;
+        public string BellRingInfo
+        {
+            get { return bellRingInfo; }
+            private set { Set(ref this.bellRingInfo, value); }
+        }
         private ObservableCollection<BellRing> bellRings;
         public ObservableCollection<BellRing> BellRings
         {
@@ -50,8 +56,10 @@ namespace SmartBellClient.VM
             {
                 Clock = timeLogic.GetNetworkTime();
                 startClock();
+                //BellRingInfo = "Next bellring time:";
                 NextBellRing = timeLogic.GetNextBellRingTime(Clock);
                 this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x => x.BellRingTime));
+                this.BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveAllElapsedBellRings(Clock,BellRings.ToList()).ToList());
                 this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
                 readLogic.GetAllFiles(Outputs);
                 BellRingUpdate(NextBellRing);
@@ -59,6 +67,7 @@ namespace SmartBellClient.VM
             else
             {
                 this.BellRings = FillWithSamples();
+                BellRingInfo = "Next bellring time:";
                 NextBellRing = new BellRing(){
                     BellRingTime = new DateTime(2069, 04, 20, 12, 34, 56), //This is the only part wich is displayed for the moment
                 };
@@ -223,8 +232,10 @@ namespace SmartBellClient.VM
         }
         private void BellRingUpdate(BellRing nextbellring)
         {
+            BellRingInfo = "Next bellring time:";
             if (nextbellring == null)
             {
+                BellRingInfo = "No more bellrings for "+Clock.Date.ToString("yyyy:MM:dd");
                 return;
             }
             DateTime calledForTime = Clock;
@@ -238,6 +249,7 @@ namespace SmartBellClient.VM
         }
         private void PlayAudio()
         {
+            BellRingInfo = "Current bellringing:";
             List<OutputPath> currentOutputs = readLogic.GetOutputPathsForBellRing(NextBellRing.Id, Outputs.ToList()).ToList();
             foreach (var item in currentOutputs)
             {
@@ -246,8 +258,14 @@ namespace SmartBellClient.VM
                 mplayer.Open(new Uri(Directory.GetParent(
                     Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\default.mp3"));
                 mplayer.Play();*/
-                outputLogic.MP3(item.FilePath);
-                //Thread.Sleep(10000);
+                if (item.FilePath.Substring(item.FilePath.LastIndexOf('.') + 1).ToLower() == "mp3")
+                {
+                    outputLogic.MP3(item.FilePath);
+                }
+                else if(item.FilePath.Substring(item.FilePath.LastIndexOf('.') + 1).ToLower() == "txt")
+                {
+                    outputLogic.TTS(item.FilePath);
+                }
             }
             //outputLogic.MP3(item.FilePath);
             
