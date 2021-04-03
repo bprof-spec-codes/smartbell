@@ -26,6 +26,7 @@ namespace SmartBellClient
             ServiceLocator.SetLocatorProvider(() => MyIoc.Instance);
             MyIoc.Instance.Register<IReadLogic, ReadLogic>();
             MyIoc.Instance.Register<ITimeLogic, TimeLogic>();
+            MyIoc.Instance.Register<IOutputLogic, OutputLogic>();
             MyIoc.Instance.Register<IMessenger>(() => Messenger.Default);
 
         }
