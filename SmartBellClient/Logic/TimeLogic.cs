@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic
 {
@@ -26,6 +24,12 @@ namespace Logic
             WebClient wc = new WebClient();
             string jsonContent = wc.DownloadString(url);
             return JsonConvert.DeserializeObject<BellRing>(jsonContent);
+        }
+        public IList<BellRing> RemoveElapsedBellRing(string id,List<BellRing> list)
+        {
+            BellRing b = list.Where(x => x.Id == id).FirstOrDefault();
+            list.Remove(b);
+            return list;            
         }
     }
 }
