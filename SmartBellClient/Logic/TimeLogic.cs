@@ -31,5 +31,9 @@ namespace Logic
             list.Remove(b);
             return list;            
         }
+        public IList<BellRing> RemoveAllElapsedBellRings(DateTime comaprertime,List<BellRing> list)
+        {
+            return list.FindAll(x => !(x.BellRingTime < comaprertime));
+        }
     }
 }
