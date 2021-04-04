@@ -2,19 +2,15 @@ import React from 'react'
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
-const DDMenu = () => {
-    const options = [
-        'Alapértelmezett', 'Rövidített', 'Nornál', 'Ünnepnap','Vészcsengő','Iskolarádió','Beolvasás'
-      ];
-      const defaultOption = options[0];
+const DDMenu = ({props, first}) => {
+      const defaultOption = first;
 
     return (
         <div>
-            <Dropdown options={options} onChange={this._onSelect} value={defaultOption} placeholder="Válassz a módok közül" />
+            <Dropdown options={props} onChange={this._onSelect} value={defaultOption} placeholder="Válassz egyet az opciók közül:" />
             <br/>
         </div>
     )
 }
-
 
 export default DDMenu
