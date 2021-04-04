@@ -34,15 +34,27 @@ const RadioMaker = () => {
             used: true
         },
     ])
-    
+
     return (
         <div className='container'>
             <h1>Rádióműsor-összeállító</h1><br/>
             <h3>Eddigi rádióműsorjaid: </h3><br/>
             <DDMenu props={radioOptions} first={radioOption}/>
             <h3>Kiválaszott rádióműsor zenéi:</h3>
-            <p>Zeneszámok: - to be implemented</p>
-            <p>Zeneszámok hozzáadása, eltávolítása: - to be implemented</p><br/>
+            {
+              songs.length > 0 ? 
+              (
+                <Rings 
+                  rings={rings} 
+                  onDelete={deleteRing}
+                  onToggle={toggleReminder}
+                />
+              ) 
+              : 
+              (
+                'A mai napra nincsenek csengetések'
+              )
+            }
             <form className='form-control'>
                 <h3>Új műsor:</h3>
                 <label>Rádióműsor neve</label>
