@@ -11,8 +11,13 @@ const AddRing = ({onAdd}) => {
     const [time,setTime]=useState('');
     const [normal,setNormal]=useState(false);
     const [toRead, settoRead]=useState('');
-    const ringOptions = ['Normál', 'Ünnepnap','Iskolarádió','Beolvasás'];
+
+    const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Beolvasás'];
     const ringOption = ringOptions[0];
+    const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
+    const radioOption = radioOptions[0];
+    const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
+    const ttrOption = ttrOptions[0];
 
     
     const onSubmit = (e)=>{
@@ -35,7 +40,7 @@ const AddRing = ({onAdd}) => {
             <div className='form-control'>
                 <label>Szünet típusa </label>
                 <DDMenu props={ringOptions} first={ringOption} />
-            </div>       
+            </div>
             
             <div className='form-control'>
                 <label>Szünet kezdete</label>
@@ -44,15 +49,14 @@ const AddRing = ({onAdd}) => {
             <div className='form-control'>
                 <label>Szünet vége</label>
                 <TPicker/>
-
             </div>
             <div className='form-control'>
                 <label>Válassz rádióműsort</label>
-                <DDMenu props={ringOptions} first={ringOptions[0]} />
+                <DDMenu props={radioOptions} first={radioOptions[0]} />
             </div>
             <div className='form-control'>
                 <label>Válassz felolvasandó szöveget</label>
-                <DDMenu props={ringOptions} first={ringOptions[0]} />
+                <DDMenu props={ttrOptions} first={ttrOptions[0]} />
             </div>
 
             <input type='submit' className='btn btn-block' value='Csengetés hozzáadása'/>
