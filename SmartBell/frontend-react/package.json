@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "antd": "^4.15.0",
     "axios": "^0.21.1",
     "rc-time-picker": "^3.7.3",
