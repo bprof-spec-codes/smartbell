@@ -1,9 +1,17 @@
 import React from 'react'
+import Tts from './Tts'
 
-const Ttss = () => {
+const Ttss = ({ttss, onDelete}) => {
+    
     return (
-        <div>
-            
+        <div className='container'>
+            {ttss.map((tts)=>(
+                <Tts
+                    key={tts.id} 
+                    tts={tts} 
+                    onDelete={onDelete}
+                />
+            ))}
         </div>
     )
 }
