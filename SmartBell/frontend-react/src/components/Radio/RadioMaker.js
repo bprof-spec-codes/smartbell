@@ -2,6 +2,8 @@ import React from 'react'
 import DDMenu from '../Button/DDMenu'
 import {useState} from 'react'
 
+import Songs from './Songs'
+
 //rádióműsorokat egytől indexelni
 const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
 const radioOption = radioOptions[0];
@@ -13,7 +15,7 @@ const RadioMaker = () => {
             id:1,
             text: 'BasicSong.mp3',
             length: '3:25',
-            used: false
+            used: true
         },
         {
             id:2,
@@ -25,7 +27,7 @@ const RadioMaker = () => {
             id:3,
             text: 'HouseMusic.mp3',
             length: '10:02',
-            used: false
+            used: true
         },
         {
             id:4,
@@ -34,6 +36,11 @@ const RadioMaker = () => {
             used: true
         },
     ])
+
+     //delete song
+    const deleteSong = (id) =>{
+    setSongs(songs.filter((song) => song.id!==id))
+    }
 
     return (
         <div className='container'>
@@ -44,15 +51,14 @@ const RadioMaker = () => {
             {
               songs.length > 0 ? 
               (
-                <Rings 
-                  rings={rings} 
-                  onDelete={deleteRing}
-                  onToggle={toggleReminder}
+                <Songs 
+                  songs={songs} 
+                  onDelete={deleteSong}
                 />
               ) 
               : 
               (
-                'A mai napra nincsenek csengetések'
+                'A kiválasztott rádióműsor nem tartalmaz számokat'
               )
             }
             <form className='form-control'>
