@@ -1,6 +1,7 @@
 import React from 'react'
 import {useState} from 'react'
 import Songs from './Songs'
+import UploadFile from '../Button/UploadFile'
 
 const SoundUploader = () => {
     const [songs, setSongs] = useState([
@@ -49,8 +50,9 @@ const SoundUploader = () => {
 
     return (
         <div className='container'>
-            <h1>Zenék kezelése</h1>
+            <h1>Zenék kezelése</h1><br/>
             <h2>Új zeneszám feltöltése</h2>
+            <UploadFile/><br/>
             <h2>Feltöltött zeneszámok</h2>
             {
               songs.length > 0 ? 
