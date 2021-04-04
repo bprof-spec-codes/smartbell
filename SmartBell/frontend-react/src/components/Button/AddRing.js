@@ -3,13 +3,18 @@ import {useState} from 'react'
 
 import UploadFile from '../Button/UploadFile'
 import DDMenu from './DDMenu';
+import TPicker from '../Calendar/TPicker'
+import '../../index.css'
 
 const AddRing = ({onAdd}) => {
     const [text, setText]=useState('');
     const [time,setTime]=useState('');
     const [normal,setNormal]=useState(false);
     const [toRead, settoRead]=useState('');
+    const ringOptions = ['Normál', 'Ünnepnap','Iskolarádió','Beolvasás'];
+    const ringOption = ringOptions[0];
 
+    
     const onSubmit = (e)=>{
         e.preventDefault()
 
@@ -27,46 +32,27 @@ const AddRing = ({onAdd}) => {
 
     return (
         <form className='container' onSubmit={onSubmit}>
-            <div>
-                <label>Szünet fajtája </label>
-                <DDMenu/>
-            </div>
-            <UploadFile/>        
             <div className='form-control'>
-                <label>Csengetés</label>
-                <input 
-                    type='text' 
-                    placeholder='Adj címet a csengetésnek' 
-                    value={text}
-                    onChange={(e)=>setText(e.target.value)}
-                />
+                <label>Szünet típusa </label>
+                <DDMenu props={ringOptions} first={ringOption} />
+            </div>       
+            
+            <div className='form-control'>
+                <label>Szünet kezdete</label>
+                <TPicker/>
             </div>
             <div className='form-control'>
-                <label>Időpont</label>
-                <input 
-                    type='text' 
-                    placeholder='Add meg a csengetés kezdetét' 
-                    value={time}
-                    onChange={(e)=>setTime(e.target.value)}
-                />
-            </div>
-            <div className='form-control form-control-check'>
-                <label>Normál csengetés?</label>
-                <input
-                    type='checkbox' 
-                    checked={normal}
-                    value={normal}
-                    onChange={(e)=>setNormal(e.currentTarget.checked)}
-                 />
+                <label>Szünet vége</label>
+                <TPicker/>
+
             </div>
             <div className='form-control'>
-                <label>Felolvasás</label>
-                <input 
-                    type='text' 
-                    placeholder='Add meg a hangosan beolvasandó szöveget' 
-                    value={toRead}
-                    onChange={(e)=>settoRead(e.target.value)}
-                />
+                <label>Válassz rádióműsort</label>
+                <DDMenu props={ringOptions} first={ringOptions[0]} />
+            </div>
+            <div className='form-control'>
+                <label>Válassz felolvasandó szöveget</label>
+                <DDMenu props={ringOptions} first={ringOptions[0]} />
             </div>
 
             <input type='submit' className='btn btn-block' value='Csengetés hozzáadása'/>
