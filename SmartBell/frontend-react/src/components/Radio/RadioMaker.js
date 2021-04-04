@@ -45,8 +45,17 @@ const RadioMaker = () => {
     return (
         <div className='container'>
             <h1>Rádióműsor-összeállító</h1><br/>
+            <form className='form-control'>
+                <h3>Új műsor:</h3>
+                <label>Rádióműsor neve</label>
+                    <input  
+                        placeholder='Adj nevet a rádióműsorodnak' 
+                    />
+                <input type='submit' className='btn btn-block' value='Új rádióműsor hozzáadása'/>
+            <br/><br/>
             <h3>Eddigi rádióműsorjaid: </h3><br/>
             <DDMenu props={radioOptions} first={radioOption}/>
+            
             <h3>Kiválaszott rádióműsor zenéi:</h3>
             {
               songs.length > 0 ? 
@@ -61,14 +70,7 @@ const RadioMaker = () => {
                 'A kiválasztott rádióműsor nem tartalmaz számokat'
               )
             }
-            <form className='form-control'>
-                <h3>Új műsor:</h3>
-                <label>Rádióműsor neve</label>
-                    <input  
-                        placeholder='Adj nevet a rádióműsorodnak' 
-                    />
-                <input type='submit' className='btn btn-block' value='Új rádióműsor hozzáadása'/>
-            <br/><br/>
+            
             <input type='submit' className='btn btn-block' value='Rádióműsorok mentése'/>
             </form>
             
