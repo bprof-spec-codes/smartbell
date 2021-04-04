@@ -15,6 +15,13 @@ const DateChooser = ({onAdd}) => {
     const [sound,setSound]=useState('');
     const [radio, setRadio]=useState('');
     
+    const ringOptions = ['Normál', 'Rövidített'];
+    const ringOption = ringOptions[0];
+    const soundOptions = ['Alap csengőhang', 'Rövid csengőhang', 'Különleges csengőhang'];
+    const soundOption = soundOptions[0];
+    const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
+    const ttrOption = ttrOptions[0];
+
     const onSubmit = (e)=>{
         e.preventDefault()
     
@@ -39,15 +46,13 @@ const DateChooser = ({onAdd}) => {
                 startDate={new Date()}
                 endDate={new Date()}
             /><br/>
-            <p>Válassz csengetési rendet:</p><br/>
-            <DDMenu/>
+            <p>Válasszd ki a csengetések típusát:</p><br/>
+            <DDMenu props={ringOptions} first={ringOption}/>
             <br/>
             <p>Válassz csengőhangot:</p><br/>
-            <DDMenu/>
+            <DDMenu props={soundOptions} first={soundOption}/>
             <br/>
-            <p>Ez ide nem kell majd:</p><br/>
-            <DDMenu/>
-            <br/><br/>
+            <div><br/><br/><br/><br/><br/><br/></div>
             <input type='submit' className='btn btn-block' value='Csengetési rend hozzáadása'/>
         </form>
     )
