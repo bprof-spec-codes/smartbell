@@ -37,7 +37,7 @@ class UploadFile extends React.Component{
             <div>
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                            <p className="text-white">Tölsd fel a lejátszandó hangot/szöveget</p>
+                            <p className="text-white"></p>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label className="text-white">Válassz fájlt : </label>
@@ -46,7 +46,7 @@ class UploadFile extends React.Component{
                             </div>
                             <div className="form-row">
                                 <div className="col-md-6">
-                                    <button type="submit" className="btn btn-dark" onClick={()=>this.submit()}>Save</button>
+                                    <button type="submit" className="btn btn-dark" onClick={()=>this.submit()}>Feltöltés</button>
                                 </div>
                             </div>
                     </div>
