@@ -75,7 +75,7 @@ namespace Logic
             startBellRing.Type = BellRingType.Start;
             bellRingRepo.InsertOne(startBellRing);
             endBellring.Id = Guid.NewGuid().ToString();
-            startBellRing.Type = BellRingType.End;
+            endBellring.Type = BellRingType.End;
             bellRingRepo.InsertOne(endBellring);
             startOutputpath.Id = Guid.NewGuid().ToString();
             startOutputpath.BellRingId = startBellRing.Id;
@@ -85,7 +85,73 @@ namespace Logic
             endOutputpath.BellRingId = endBellring.Id;
             startOutputpath.SequenceID = 0;
             outputPathRepo.InsertOne(endOutputpath);
+            SetBellRingIntervalByPath(startBellRing.Id);
+            SetBellRingIntervalByPath(endBellring.Id);
+            if (LessonIntersects(startBellRing,endBellring))
+            {
+                bellRingRepo.Delete(startBellRing);
+                bellRingRepo.Delete(endBellring);
+                throw new Exception($"This lesson must not intersect with other lessons during date {startBellRing.BellRingTime:d}");
+            }
+            if (SingleIntersect(startBellRing) || SingleIntersect(endBellring))
+            {
+                bellRingRepo.Delete(startBellRing);
+                bellRingRepo.Delete(endBellring);
+                throw new Exception($"A bellring must not intersect with any other bellrigns during date {startBellRing.BellRingTime:d}");
+            }
+        }
+        private bool SingleIntersect(BellRing bellRing)
+        {
+            List<BellRing> bellRingsOfDay = bellRingRepo.GetBellRingsForDay(bellRing.BellRingTime).Where(x=>x.Id!=bellRing.Id).OrderBy(x=>x.BellRingTime).ToList();
+            // checks if bellrign's inetrval "sticks into" the next bellring in the period 
+            for (int i = 0; i < bellRingsOfDay.Count(); i++)
+            {
+                if (bellRingsOfDay[i].BellRingTime>bellRing.BellRingTime)
+                {
+                    if (bellRingsOfDay[i].BellRingTime <= bellRing.BellRingTime || bellRing.BellRingTime + bellRing.Interval >= bellRingsOfDay[i].BellRingTime)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (bellRing.BellRingTime >= bellRingsOfDay[i].BellRingTime && bellRing.BellRingTime <= bellRingsOfDay[i].BellRingTime + bellRingsOfDay[i].Interval)
+                    {
+                        return true;
+                    }
+                }
+                
+            }
 
+            // checks if bellring sticks into a special bellring
+            List<BellRing> specials = bellRingsOfDay.Where(x => x.Type.Equals(BellRingType.Special) && x.Id != bellRing.Id).OrderBy(x => x.BellRingTime).ToList();
+            for (int i = 0; i < specials.Count(); i++)
+            {
+                if (specials[i].BellRingTime <= bellRing.BellRingTime && specials[i].BellRingTime + specials[i].Interval >= bellRing.BellRingTime)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool LessonIntersects(BellRing startBellRing, BellRing endBellring)
+        {
+            // checks if bellring sticks in between a lesson's bellring
+            List<BellRing> starts = bellRingRepo.GetAll().Where(x => x.Type.Equals(BellRingType.Start) && x.Id != startBellRing.Id).OrderBy(x => x.BellRingTime).ToList();
+            List<BellRing> ends = bellRingRepo.GetAll().Where(x => x.Type.Equals(BellRingType.End) && x.Id != endBellring.Id).OrderBy(x => x.BellRingTime).ToList();
+            if (starts.Count() != ends.Count())
+            {
+                throw new Exception($"This date : {startBellRing.BellRingTime:D} is not initialized properly, all start types must have a corresponding end type.");
+            }
+            for (int i = 0; i < starts.Count(); i++)
+            {
+                if (starts[i].BellRingTime <= startBellRing.BellRingTime && startBellRing.BellRingTime <= ends[i].BellRingTime + ends[i].Interval
+                    || (starts[i].BellRingTime <= endBellring.BellRingTime && endBellring.BellRingTime <= ends[i].BellRingTime + ends[i].Interval))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void InsertHoliday(Holiday holiday)
@@ -122,7 +188,7 @@ namespace Logic
             {
                 throw new Exception("Indexing of the seuqence must start from 1.");
             }
-            if (outputPaths.Select(output => output.SequenceID).Distinct().Count() == outputPaths.Count())
+            if (outputPaths.Select(output => output.SequenceID).Distinct().Count() != outputPaths.Count())
             {
                 throw new Exception("All of the sequence ID-s must be unique starting from 1.");
             }
@@ -221,7 +287,9 @@ namespace Logic
         {
             if (bellRingRepo.GetOne(id).IntervalSeconds>0)
             {
-                throw new Exception("This Bellring has a static interval, so it shall not be changed.");
+                // No exception should be thrown this method should be automated
+                // throw new Exception("This Bellring has a static interval, so it shall not be changed."); 
+                return;
             }
             TimeSpan t = new TimeSpan(0, 0, 0, 0);
             IQueryable<OutputPath> outputPaths = readlogic.GetOutputsForBellRing(id);
