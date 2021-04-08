@@ -14,11 +14,12 @@ const CalendarConfig = () => {
                 <RadioMaker/>
             </div>
             <div>
-                <TtsMaker/>
-            </div>
-            <div>
                 <SoundUploader/>
             </div>
+            <div>
+                <TtsMaker/>
+            </div>
+            
             <div className='calcontainer'>
                 <br />
                 <a className='headerlink' href='/'> Naptár</a>

@@ -18,26 +18,30 @@ const App = () =>{
   const [rings, setRings] = useState([
     {
         id:1, //3 fajta csengetés, 4-es ha user által feltöltött zeneszám
-        text: 'Alap becsengetés',
-        time: '8:00',//a kurzusban "day"
+        text: 'Szünet',
+        startTime: '8:00',//a kurzusban "day"
+        endTime: '8:20',
         normal: true //false, ha rendkívüli
     },
     {
         id:2,
-        text:'Alap kicsengetés',
-        time: '8:50',
+        text:'Szünet',
+        startTime: '8:50',
+        endTime: '9:20',
         normal: true
     },
     {
         id:3,
-        text:'Alap becsengetés',
-        time: '9:00',
+        text:'Szünet',
+        startTime: '9:00',
+        endTime: '9:20',
         normal: true
     },
     {
         id:4,
-        text: 'Tűzriadó-próba',
-        time: '9:32',
+        text: 'Szünet',
+        startTime: '9:32',
+        endTime: '9:40',
         normal: false
     }
 ])
@@ -47,6 +51,7 @@ const App = () =>{
     //console.log(ring);
     const id=Math.floor(Math.random()*10000)+1
     const newRing = {id, ...ring}
+    newRing.text='Szünet'
     setRings([...rings, newRing]) //hozzáadjuk a már meglévő tömhöz
   }
 
@@ -97,4 +102,5 @@ const App = () =>{
     </Router>   
   )
 }
+
 export default App;
