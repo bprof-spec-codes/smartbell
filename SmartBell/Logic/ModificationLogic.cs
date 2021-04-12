@@ -236,9 +236,6 @@ namespace Logic
         {
             bellRingRepo.Update(oid, bellRing);
         }
-        
-
-        
         // Delete
         public void DeleteBellring(BellRing bellRing)
         {
@@ -281,8 +278,6 @@ namespace Logic
         {
             templateElementRepo.SaveChanges();
         }
-
-
         public void SetBellRingIntervalByPath(string id)
         {
             if (bellRingRepo.GetOne(id).IntervalSeconds>0)
@@ -317,9 +312,7 @@ namespace Logic
                         var tfile = TagLib.File.Create(path);
                         TimeSpan duration = tfile.Properties.Duration;
                         t += duration.Add(new TimeSpan(0, 0, 0, 1));
-                    }
-
-                    
+                    } 
                 }
                 else
                 {
@@ -355,7 +348,6 @@ namespace Logic
                 InsertBellRing(b);
             }
         }
-
         public void RemoveAllHolidays()
         {
             IQueryable<Holiday> holidays = holidayRepo.GetAll();
@@ -376,7 +368,6 @@ namespace Logic
                 }
             }
         }
-
         public void RemoveByHoliday(string id)
         {
             Holiday h = holidayRepo.GetOne(id);
@@ -457,6 +448,5 @@ namespace Logic
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
         }
-
     }
 }

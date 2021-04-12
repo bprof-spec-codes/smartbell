@@ -88,11 +88,12 @@ namespace ApiEndpoint.Controllers
             }
         }
 
-        [HttpPost("ModifyByTemplate/{dateTime}&{template}")]
-        public IActionResult ModifyByTemaplate(DateTime dateTime, Template template)
+        [HttpPost("ModifyByTemplate/{dateTime}&{id}")]
+        public IActionResult ModifyByTemaplate(DateTime dateTime, string id)
         {
             try
             {
+                Template template = readlogic.GetOneTemplate(id);
                 modlogic.ModifyByTemplate(dateTime,template);
                 return Ok();
             }
