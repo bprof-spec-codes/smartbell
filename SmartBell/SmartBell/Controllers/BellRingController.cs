@@ -1,6 +1,7 @@
 ﻿using Logic;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.UI.VM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,6 +38,25 @@ namespace SmartBell.Controllers
             }
             
         }
+        [HttpDelete("DeleteAllBellRings")]
+        public IActionResult DeleteAllBellRing()
+        {
+            try
+            {
+                
+                List<BellRing> brings = readlogic.GetAllBellring().ToList();
+                foreach (var item in brings)
+                {
+                    modlogic.DeleteBellring(item);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+
+        }
         [HttpGet("{id}")]
         public IActionResult GetBellRing(string id)
         {
@@ -48,7 +68,6 @@ namespace SmartBell.Controllers
             {
                 return StatusCode(400, $"Bad request error: {ex}");
             }
-            
         }
 
         [HttpGet]
@@ -62,7 +81,6 @@ namespace SmartBell.Controllers
             {
                 return StatusCode(400, $"Bad request error: {ex}");
             }
-            
         }
 
         [HttpPost]
@@ -71,6 +89,34 @@ namespace SmartBell.Controllers
             try
             {
                 modlogic.InsertBellRing(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        [HttpPost("InsertLessonBellrings")]
+        public IActionResult InsertLessonBellrings([FromBody]LessonViewModel Lesson)
+        {
+            try
+            {
+                modlogic.InsertLessonBellrings(Lesson.startBellRing, Lesson.endBellring, Lesson.startOutputpath, Lesson.endOutputpath);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        [HttpPost("InsertSequencedBellRings")]
+        public IActionResult InsertSequencedBellRings([FromBody] SequencedBellRingViewModel sequencedBellRingViewModel)
+        {
+            try
+            {
+                modlogic.InsertSequencedBellRings(sequencedBellRingViewModel.bellRing, sequencedBellRingViewModel.outputPaths);
                 return Ok();
             }
             catch (Exception ex)

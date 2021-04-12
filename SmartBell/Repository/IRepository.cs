@@ -12,7 +12,7 @@ namespace Repository
     {
         void InsertOne(T entity);
 
-        void InsertMultiple(IQueryable<T> entities);
+        void InsertMultiple(IList<T> entities);
 
         T GetOne(string id);
 
@@ -52,7 +52,7 @@ namespace Repository
             SaveChanges();
         }
 
-        public void InsertMultiple(IQueryable<T> entities)
+        public void InsertMultiple(IList<T> entities)
         {
             foreach (T entity in entities)
             {
