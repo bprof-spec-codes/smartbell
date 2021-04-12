@@ -2,5 +2,5 @@
 <setup>
 	<domain>https://localhost</domain>
 	<port>5001</port>
-	<ntp>hu.pool.ntp.org</ntp>
+	<ntp>INVALIDhu.pool.ntp.org</ntp>
 </setup>
