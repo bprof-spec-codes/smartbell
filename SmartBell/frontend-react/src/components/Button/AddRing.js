@@ -23,10 +23,10 @@ const AddRing = ({onAdd}) => {
     const onSubmit = (e)=>{
         e.preventDefault()
 
-        if(!text){
+        /*if(!text){
             alert('Kérlek nevezd el a csengetést')
             return
-        }
+        }*/
 
         onAdd({text, time, normal})
         setText('')
