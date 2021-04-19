@@ -71,7 +71,12 @@ const App = () =>{
 
   return(
     <Router>
-      <div>  
+      <div style={{
+        backgroundImage: "url(/logo.png)",
+        backgroundRepeat: 'no-repeat',
+        backgroundPositionX: '40px',
+        backgroundSize: '150px'
+        }}>  
         <Route path='/' exact render={(props)=> (
           <div>
             <MainCalendar
