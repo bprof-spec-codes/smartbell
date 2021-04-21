@@ -23,7 +23,7 @@ namespace Repository
             } 
         }
 
-        public static double Width = 500;
-        public static double Height = 500;
+        //public static double Width = 500;
+        //public static double Height = 500;
     }
 }
