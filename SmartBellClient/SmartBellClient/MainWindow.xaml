@@ -11,6 +11,8 @@
         Title="SmartBell Client"
         Width="{x:Static repo:ConstConfig.Width}"
         Height="{x:Static repo:ConstConfig.Height}"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
         Loaded="Window_Loaded"
         Closing="Window_Closing">
     <Window.Resources>

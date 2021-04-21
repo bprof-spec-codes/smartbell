@@ -52,7 +52,9 @@ namespace Logic
                 voice.Speak(File.ReadAllText(path));
                 avrageWordsDuration = new TimeSpan(0, 0, 0, 0, words.Length * 750);
             }
+            #region wait
             Thread.Sleep(avrageWordsDuration);
+            #endregion
         }
 
         public void MP3(string audio)
@@ -65,9 +67,9 @@ namespace Logic
             mplayer.Open(new Uri(Directory.GetParent(
                 Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\{audio}"));
             mplayer.Play();
+            #region wait
             Thread.Sleep((int)duration.TotalMilliseconds);
+            #endregion
         }
-        
-
     }
 }
