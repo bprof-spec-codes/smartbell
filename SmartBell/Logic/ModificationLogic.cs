@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.StaticFiles;
 using Models;
+using Models.UI.VM;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -53,38 +54,80 @@ namespace Logic
                 }
             }
         }
-
-        public void InsertLessonBellrings
-           ( BellRing startBellRing, BellRing endBellring,
-            OutputPath startOutputpath,OutputPath endOutputpath)
+        public void InsertSpecialBellring(BellRing specialBellRing, string fileName)
         {
-            if (startBellRing==default || endBellring==default
-                || startOutputpath == default || endOutputpath == default)
+            if (specialBellRing == default || fileName==default)
             {
                 throw new Exception("All parameters must be declared in the body.");
             }
-            if (startBellRing.BellRingTime>endBellring.BellRingTime)
+            if (specialBellRing.Description == null)
+            {
+                throw new Exception("All special bellrings must have a description to describe their purpose.");
+            }
+            specialBellRing.Id = Guid.NewGuid().ToString();
+            specialBellRing.Type = BellRingType.Special;
+            bellRingRepo.InsertOne(specialBellRing);
+            OutputPath outputPath = new OutputPath();
+            outputPath.FilePath = fileName;
+            outputPath.Id = Guid.NewGuid().ToString();
+            outputPath.BellRingId = specialBellRing.Id;
+            outputPath.SequenceID = 0;
+            outputPathRepo.InsertOne(outputPath);
+            SetBellRingIntervalByPath(specialBellRing.Id);
+            if (SingleIntersect(specialBellRing) || BetweenLessonsIntersect(specialBellRing))
+            {
+                bellRingRepo.Delete(specialBellRing);
+                throw new Exception($"A bellring must not intersect with any other bellrigns during date {specialBellRing.BellRingTime:d}");
+            }
+        }
+
+        public void InsertLessonBellrings
+           ( Lesson startOfLesson, Lesson endOfLesson,
+            string startFileName,string endFileName)
+        {
+            if (startOfLesson == default || endOfLesson == default
+                || startFileName == default || endFileName == default)
+            {
+                throw new Exception("All parameters must be declared in the body.");
+            }
+            if (startOfLesson.BellRingTime> endOfLesson.BellRingTime)
             {
                 throw new Exception("The start of a lesson must be earlier than the end.");
             }
-            if ((TimeSpan)(endBellring.BellRingTime-startBellRing.BellRingTime)>new TimeSpan(1,0,0))
+            if ((TimeSpan)(endOfLesson.BellRingTime- startOfLesson.BellRingTime)>new TimeSpan(1,0,0))
             {
                 throw new Exception("All bellRings must be with in a 60 minute range to each other.");
             }
+            BellRing startBellRing = new BellRing
+            {
+                Description = startOfLesson.Description,
+                BellRingTime=startOfLesson.BellRingTime,
+                IntervalSeconds = startOfLesson.IntervalSeconds,                
+            };
             startBellRing.Id = Guid.NewGuid().ToString();
             startBellRing.Type = BellRingType.Start;
             bellRingRepo.InsertOne(startBellRing);
+            BellRing endBellring = new BellRing
+            {
+                Description = endOfLesson.Description,
+                BellRingTime = endOfLesson.BellRingTime,
+                IntervalSeconds = endOfLesson.IntervalSeconds,
+            };
             endBellring.Id = Guid.NewGuid().ToString();
             endBellring.Type = BellRingType.End;
             bellRingRepo.InsertOne(endBellring);
-            startOutputpath.Id = Guid.NewGuid().ToString();
-            startOutputpath.BellRingId = startBellRing.Id;
-            startOutputpath.SequenceID = 0;
-            outputPathRepo.InsertOne(startOutputpath);
-            endOutputpath.Id = Guid.NewGuid().ToString();
-            endOutputpath.BellRingId = endBellring.Id;
-            startOutputpath.SequenceID = 0;
-            outputPathRepo.InsertOne(endOutputpath);
+            OutputPath startOutput = new OutputPath();
+            startOutput.FilePath = startFileName;
+            startOutput.Id = Guid.NewGuid().ToString();
+            startOutput.BellRingId = startBellRing.Id;
+            startOutput.SequenceID = 0;
+            outputPathRepo.InsertOne(startOutput);
+            OutputPath endOutput = new OutputPath();
+            endOutput.FilePath = endFileName;
+            endOutput.Id = Guid.NewGuid().ToString();
+            endOutput.BellRingId = endBellring.Id;
+            endOutput.SequenceID = 0;
+            outputPathRepo.InsertOne(endOutput);
             SetBellRingIntervalByPath(startBellRing.Id);
             SetBellRingIntervalByPath(endBellring.Id);
             if (LessonIntersects(startBellRing,endBellring))
@@ -100,6 +143,31 @@ namespace Logic
                 throw new Exception($"A bellring must not intersect with any other bellrigns during date {startBellRing.BellRingTime:d}");
             }
         }
+
+
+        private bool BetweenLessonsIntersect(BellRing bellRing)
+        {
+            List<BellRing> starts = bellRingRepo.GetAll().Where(x => x.Type.Equals(BellRingType.Start)).OrderBy(x => x.BellRingTime).ToList();
+            List<BellRing> ends = bellRingRepo.GetAll().Where(x => x.Type.Equals(BellRingType.End)).OrderBy(x => x.BellRingTime).ToList();
+            if (starts.Count() != ends.Count())
+            {
+                throw new Exception($"This date : {bellRing.BellRingTime:D} is not initialized properly, all start types must have a corresponding end type.");
+            }
+            for (int i = 0; i < starts.Count(); i++)
+            {
+                if (starts[i].BellRingTime <= bellRing.BellRingTime && bellRing.BellRingTime <= ends[i].BellRingTime + ends[i].Interval)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Defines whether bellring intersects happen at their intervals.
+        /// </summary>
+        /// <param name="bellRing">A bellring which is checked</param>
+        /// <returns>A binary value which defines whether intersect's occurred or not.</returns>
         private bool SingleIntersect(BellRing bellRing)
         {
             List<BellRing> bellRingsOfDay = bellRingRepo.GetBellRingsForDay(bellRing.BellRingTime).Where(x=>x.Id!=bellRing.Id).OrderBy(x=>x.BellRingTime).ToList();
@@ -119,10 +187,8 @@ namespace Logic
                     {
                         return true;
                     }
-                }
-                
+                }   
             }
-
             // checks if bellring sticks into a special bellring
             List<BellRing> specials = bellRingsOfDay.Where(x => x.Type.Equals(BellRingType.Special) && x.Id != bellRing.Id).OrderBy(x => x.BellRingTime).ToList();
             for (int i = 0; i < specials.Count(); i++)
@@ -170,6 +236,9 @@ namespace Logic
             }
             templateRepo.InsertOne(template);
         }
+
+
+
         public void InsertSequencedBellRings(BellRing bellRing,List<OutputPath> outputPaths)
         {
             if (bellRing == default || outputPaths == default)
@@ -239,7 +308,31 @@ namespace Logic
         // Delete
         public void DeleteBellring(BellRing bellRing)
         {
+            switch (bellRing.Type)
+            {
+                case BellRingType.Start:
+                    BellRing nextBellRinging = (from x in bellRingRepo.GetBellRingsForDay(bellRing.BellRingTime.Date)
+                    where x.BellRingTime > bellRing.BellRingTime
+                    orderby x.BellRingTime ascending
+                    select x).FirstOrDefault();
+                    if (nextBellRinging != null)
+                    {
+                        bellRingRepo.Delete(nextBellRinging);
+                    }
+                    break;
+                case BellRingType.End:
+                    BellRing previousBellRinging = (from x in bellRingRepo.GetBellRingsForDay(bellRing.BellRingTime.Date)
+                                                where x.BellRingTime < bellRing.BellRingTime
+                                                orderby x.BellRingTime descending
+                                                select x).FirstOrDefault();
+                    if (previousBellRinging != null)
+                    {
+                        bellRingRepo.Delete(previousBellRinging);
+                    }
+                    break;
+            }
             bellRingRepo.Delete(bellRing);
+
         }
 
         public void DeleteHoliday(Holiday holiday)

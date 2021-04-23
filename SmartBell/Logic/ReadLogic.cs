@@ -127,5 +127,14 @@ namespace Logic
 
 
         }
+        public int FileOccurrence(string fileName)
+        {
+            return (outputPathRepo.GetAll().Where(x => x.FilePath == fileName).Count() +
+                templateElementRepo.GetAll().Where(x => x.FilePath == fileName).Count());
+        }
+        public bool FileIsUsed(string filename)
+        {
+            return (FileOccurrence(filename) > 0);
+        }
     }
 }

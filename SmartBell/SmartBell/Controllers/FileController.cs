@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Logic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,12 @@ namespace SmartBell.Controllers
     public class FileController : ControllerBase
     {
         public static readonly string[] fileExceptions = { "default.mp3" };
+        ReadLogic readlogic;
+
+        public FileController(ReadLogic readlogic)
+        {
+            this.readlogic = readlogic;
+        }
 
         [HttpPost,DisableRequestSizeLimit]
         public IActionResult Upload(IFormFile FileToUpload)
@@ -73,11 +80,16 @@ namespace SmartBell.Controllers
             }
         }
 
-        [HttpDelete("DeleteTTSByName/ {filename}")]
-        public IActionResult DeleteTTSFileByName(string filename)
+        [HttpDelete("DeleteFile/ {filename}")]
+        public IActionResult DeleteFile(string filename)
         {
             try
             {
+                int occurrence = readlogic.FileOccurrence(filename);
+                if (occurrence != 0)
+                {
+                    throw new Exception($"This file's occurrence is {occurrence}.");
+                }
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
@@ -99,7 +111,19 @@ namespace SmartBell.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [HttpGet("GetFileUsage/{filename}")]
+        public IActionResult FileIsUsed(string filename)
+        {
+            try
+            {
+                return Ok(readlogic.FileIsUsed(filename));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+            
+        }
         [HttpGet("GetFileExceptions")]
         public IActionResult GetFileExceptions()
         {

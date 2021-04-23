@@ -183,5 +183,20 @@
             Specifies the containing outputs.
             </summary>
         </member>
+        <member name="T:Models.UI.VM.SpecialBellRingViewModel">
+            <summary>
+            View model for inserting a special bellring.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.SpecialBellRingViewModel.bellRing">
+            <summary>
+            Specifies a bellring which has the type of special.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.SpecialBellRingViewModel.outputPath">
+            <summary>
+            Specifies the containing output.
+            </summary>
+        </member>
     </members>
 </doc>
