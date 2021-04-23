@@ -143,6 +143,26 @@
         <member name="P:Models.TemplateElement.ParentTemplate">
             <summary>Specifies the parent of this child element for the database connection.</summary>
         </member>
+        <member name="T:Models.UI.VM.Lesson">
+            <summary>
+            Describe a lessons parameters as a viewModel.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.Lesson.Description">
+            <summary>
+            Describes the reason of a bellringing.
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.Lesson.BellRingTime">
+            <summary>
+            Starting point a of a bellringing
+            </summary>
+        </member>
+        <member name="P:Models.UI.VM.Lesson.IntervalSeconds">
+            <summary>
+            Property which can determine static length of a bellringing in seconds.
+            </summary>
+        </member>
         <member name="T:Models.UI.VM.LessonViewModel">
             <summary>
             View model for inserting lessons.
@@ -158,12 +178,12 @@
             Ending bellring of a lesson.
             </summary>
         </member>
-        <member name="P:Models.UI.VM.LessonViewModel.startOutputpath">
+        <member name="P:Models.UI.VM.LessonViewModel.startFilename">
             <summary>
             Starting output for the bellring of a lesson.
             </summary>
         </member>
-        <member name="P:Models.UI.VM.LessonViewModel.endOutputpath">
+        <member name="P:Models.UI.VM.LessonViewModel.endFilename">
             <summary>
             Ending output for the bellring of a lesson.
             </summary>
@@ -193,7 +213,7 @@
             Specifies a bellring which has the type of special.
             </summary>
         </member>
-        <member name="P:Models.UI.VM.SpecialBellRingViewModel.outputPath">
+        <member name="P:Models.UI.VM.SpecialBellRingViewModel.fileName">
             <summary>
             Specifies the containing output.
             </summary>

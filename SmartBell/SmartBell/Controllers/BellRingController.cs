@@ -102,7 +102,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                modlogic.InsertLessonBellrings(Lesson.startBellRing, Lesson.endBellring, Lesson.startOutputpath, Lesson.endOutputpath);
+                modlogic.InsertLessonBellrings(Lesson.startBellRing, Lesson.endBellring, Lesson.startFilename, Lesson.endFilename);
                 return Ok();
             }
             catch (Exception ex)
@@ -130,7 +130,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                modlogic.InsertSpecialBellring(specialBellRingViewModel.bellRing, specialBellRingViewModel.outputPath);
+                modlogic.InsertSpecialBellring(specialBellRingViewModel.bellRing, specialBellRingViewModel.fileName);
                 return Ok();
             }
             catch (Exception ex)

@@ -31,7 +31,8 @@ namespace SmartBell.Controllers
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (FileToUpload != null || FileToUpload.Length > 0)
                 {
-                    var fullpath = Path.Combine(pathToSave, FileToUpload.FileName);
+                    string filename = FileToUpload.FileName.ToLower();
+                    var fullpath = Path.Combine(pathToSave, filename);
 
                     using (var stream = new FileStream(fullpath, FileMode.Create))
                     {
@@ -62,6 +63,7 @@ namespace SmartBell.Controllers
         {
             try
             {
+                filename = filename.ToLower();
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
@@ -123,6 +125,26 @@ namespace SmartBell.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
             
+        }
+        [HttpGet("GetAllFiles")]
+        public IActionResult GetAllFiles()
+        {
+            try
+            {
+                var folderName = "Output";
+                var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string[] files = Directory.GetFiles(outputFolder);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string[] split = files[i].Split(@"\");
+                    files[i] = split.Last();
+                }
+                return Ok(files);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
         [HttpGet("GetFileExceptions")]
         public IActionResult GetFileExceptions()
