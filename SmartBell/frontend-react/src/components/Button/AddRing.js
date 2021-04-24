@@ -12,7 +12,7 @@ const AddRing = ({onAdd}) => {
     const [normal,setNormal]=useState(false);
     const [toRead, settoRead]=useState('');
 
-    const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Beolvasás'];
+    const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Speciális csengetés'];
     const ringOption = ringOptions[0];
     const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
     const radioOption = radioOptions[0];
