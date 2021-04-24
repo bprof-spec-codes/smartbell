@@ -641,8 +641,7 @@ namespace Logic
             }
             List<BellRing> bellRingsForADay = new List<BellRing>();
             IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
-            DisableSequencedBellRingsInRange(startDate, endDate);
-            DeleteRegularBellRingsInRange(startDate, endDate);
+            DeleteBellRingsInRange(startDate, endDate);
             foreach (DateTime day in EachDay(startDate, endDate)) // loops through an entire school year
             {
                 if (day.Day < 6) // checks if it's a workday Monday->Friday
@@ -671,8 +670,7 @@ namespace Logic
 
             List<BellRing> bellRingsForADay = new List<BellRing>();
             IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
-            DisableSequencedBellRingsInRange(startDate, endDate);
-            DeleteRegularBellRingsInRange(startDate, endDate);
+            DeleteBellRingsInRange(startDate, endDate);
             foreach (DateTime day in EachDay(startDate, endDate)) // loops through an entire school year
             {
                 if (day.Day < 6) // checks if it's a workday Monday->Friday
@@ -686,21 +684,10 @@ namespace Logic
             }
         }
 
-        private void DisableSequencedBellRingsInRange(DateTime StartDate, DateTime EndDate)
-        {
-            IQueryable<BellRing> inRange = readlogic.GetAllSequencedBellRings().Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate));
-            foreach (BellRing bellRing in inRange)
-            {
-                BellRing b = bellRingRepo.GetOne(bellRing.Id);
-                b.BellRingTime = new DateTime(1, 1, 1, bellRing.BellRingTime.Hour, bellRing.BellRingTime.Minute, bellRing.BellRingTime.Second);
-                bellRingRepo.Update(b.Id, b);
-            }
-        }
-
-        private void DeleteRegularBellRingsInRange(DateTime StartDate, DateTime EndDate) // Controllerre
+        public void DeleteBellRingsInRange(DateTime startDate, DateTime endDate)
         {
             List<BellRing> inRange = bellRingRepo.GetAll()
-                .Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate))
+                .Where(x => (x.BellRingTime >= startDate && x.BellRingTime <= endDate))
                 .ToList();
 
             BellRing first = inRange.FirstOrDefault();
