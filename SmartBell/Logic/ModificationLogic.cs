@@ -479,7 +479,7 @@ namespace Logic
         {
             if (template == null)
             {
-                throw new Exception("Template element must be set to fill a year.");
+                throw new Exception($"Template element must be set to fill the range between {StartDate} and {EndDate}.");
             }
             List<BellRing> bellRingsForADay = new List<BellRing>();
             IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
@@ -512,6 +512,19 @@ namespace Logic
             List<BellRing> inRange = bellRingRepo.GetAll()
                 .Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate))
                 .ToList();
+
+            BellRing first = inRange.FirstOrDefault();
+            if (first!=null && first.Type.Equals(BellRingType.End))
+            {
+                DeleteBellring(first); // If a template deletes a lesson this deletes the start of it when its out of range.
+                inRange.Remove(first);
+            }
+            BellRing last = inRange.LastOrDefault();
+            if (last != null && last.Type.Equals(BellRingType.Start))
+            {
+                DeleteBellring(last); // If a template deletes a lesson this deletes the end of it when its out of range.
+                inRange.Remove(last);
+            }
             foreach (BellRing bellRing in inRange)
             {
                 bellRingRepo.Delete(bellRing);
