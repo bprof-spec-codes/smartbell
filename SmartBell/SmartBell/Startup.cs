@@ -68,7 +68,8 @@ namespace SmartBell
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+            app.UseCors();
             app.UseRouting();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
