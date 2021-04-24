@@ -129,7 +129,7 @@ namespace SmartBell.Controllers
         {
             try
             {
-                modlogic.UpdateSequencedBellRings(sequencedBellRingViewModel.bellRing, sequencedBellRingViewModel.outputPaths);
+                modlogic.UpdateAssignedSequencedBellRing(sequencedBellRingViewModel.bellRing, sequencedBellRingViewModel.outputPaths);
                 return Ok();
             }
             catch (Exception ex)
