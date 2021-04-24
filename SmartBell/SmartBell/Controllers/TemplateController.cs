@@ -103,13 +103,28 @@ namespace ApiEndpoint.Controllers
             }
         }
 
-        [HttpPost("FillDbByTemplate")]
-        public IActionResult FillDbByTemplate(string id, DateTime StartDate, DateTime EndDate)
+        [HttpPost("ApplyTemplateWithoutFileAssign/{id}&{startDate}&{endDate}")]
+        public IActionResult ApplyTemplateWithoutFileAssign(string id, DateTime startDate, DateTime endDate)
         {
             try
             {
                 Template template = readlogic.GetOneTemplate(id);
-                modlogic.FillDbByTemplate(template, StartDate, EndDate);
+                modlogic.ApplyTemplateWithoutFileAssign(template, startDate, endDate);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
+
+        [HttpPost("ApplyTemplateWithFileAssign/{id}&{startDate}&{endDate}&{fileName}")]
+        public IActionResult FillDbByTemplateWithFileName(string id, DateTime startDate, DateTime endDate,string fileName)
+        {
+            try
+            {
+                Template template = readlogic.GetOneTemplate(id);
+                modlogic.ApplyTemplateWithFileAssign(template, startDate, endDate, fileName);
                 return Ok();
             }
             catch (Exception ex)

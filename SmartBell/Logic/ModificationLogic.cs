@@ -237,8 +237,6 @@ namespace Logic
             templateRepo.InsertOne(template);
         }
 
-
-
         public void InsertSequencedBellRings(BellRing bellRing,List<OutputPath> outputPaths)
         {
             if (bellRing == default || outputPaths == default)
@@ -346,6 +344,10 @@ namespace Logic
         public void InsertTemplateElement(TemplateElement templateElement)
         {
             templateElement.Id = Guid.NewGuid().ToString();
+            if (templateElement.FilePath==null)
+            {
+                templateElement.FilePath = "default.mp3";
+            }
             if (templateElement.IntervalSeconds == 0)
             {
                 throw new Exception("This parameter should never be zero, it's required.");
@@ -533,23 +535,53 @@ namespace Logic
             }
         }
         // this method should be "locked" from the frontend site to only allow years to be filled by a template with a name like "normal" 
-        public void FillDbByTemplate(Template template, DateTime StartDate, DateTime EndDate)
+        public void ApplyTemplateWithoutFileAssign(Template template, DateTime startDate, DateTime endDate)
         {
             if (template == null)
             {
-                throw new Exception($"Template element must be set to fill the range between {StartDate} and {EndDate}.");
+                throw new Exception($"Template element must be set to fill the range between {startDate} and {endDate}.");
             }
             List<BellRing> bellRingsForADay = new List<BellRing>();
             IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
-            DisableSequencedBellRingsInRange(StartDate, EndDate);
-            DeleteRegularBellRingsInRange(StartDate, EndDate);
-            foreach (DateTime day in EachDay(StartDate, EndDate)) // loops through an entire school year
+            DisableSequencedBellRingsInRange(startDate, endDate);
+            DeleteRegularBellRingsInRange(startDate, endDate);
+            foreach (DateTime day in EachDay(startDate, endDate)) // loops through an entire school year
             {
                 if (day.Day < 6) // checks if it's a workday Monday->Friday
                 {
                     foreach (var item in ElementsOfTemplate)
                     {
                         BellRing b = AssignNewBellRingByTemplateElement(item, day);
+                        InsertBellRing(b);
+                    }
+                }
+            }
+        }
+
+        public void ApplyTemplateWithFileAssign(Template template, DateTime startDate, DateTime endDate,string fileName)
+        {
+            if (template == null)
+            {
+                throw new Exception($"Template element must be set to fill the range between {startDate} and {endDate}.");
+            }
+            string path =
+               Path.Combine(Environment.CurrentDirectory + @"\Output\", fileName);
+            if (!File.Exists(path))
+            {
+                throw new Exception($"This file: {fileName} does not exist on the server please reupload it.");
+            }
+            
+            List<BellRing> bellRingsForADay = new List<BellRing>();
+            IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
+            DisableSequencedBellRingsInRange(startDate, endDate);
+            DeleteRegularBellRingsInRange(startDate, endDate);
+            foreach (DateTime day in EachDay(startDate, endDate)) // loops through an entire school year
+            {
+                if (day.Day < 6) // checks if it's a workday Monday->Friday
+                {
+                    foreach (var item in ElementsOfTemplate)
+                    {
+                        BellRing b = AssignNewBellRingByTemplateElementWithFile(item, day,fileName);
                         InsertBellRing(b);
                     }
                 }
@@ -602,6 +634,25 @@ namespace Logic
             {
                 Id = Guid.NewGuid().ToString(),
                 FilePath = templateElement.FilePath,
+                BellRingId = b.Id,
+            };
+            outputPathRepo.InsertOne(outputPath);
+            return new BellRing();
+        }
+        private BellRing AssignNewBellRingByTemplateElementWithFile(TemplateElement templateElement, DateTime dayDate,string fileName)
+        {
+            BellRing b = new BellRing()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Interval = templateElement.Interval,
+                Type = templateElement.Type,
+                BellRingTime = new DateTime(dayDate.Year, dayDate.Month, dayDate.Day, templateElement.BellRingTime.Hour, templateElement.BellRingTime.Minute, templateElement.BellRingTime.Second),
+            };
+            bellRingRepo.InsertOne(b);
+            OutputPath outputPath = new OutputPath()
+            {
+                Id = Guid.NewGuid().ToString(),
+                FilePath = fileName,
                 BellRingId = b.Id,
             };
             outputPathRepo.InsertOne(outputPath);
