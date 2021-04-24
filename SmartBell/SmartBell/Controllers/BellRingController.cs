@@ -137,6 +137,20 @@ namespace SmartBell.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+        [HttpPost("AssignTimeToSequencedBellRing/{id}&{startTime}")]
+        public IActionResult AssignTimeToSequencedBellRing(string id,DateTime startTime)
+        {
+            try
+            {
+                BellRing b = readlogic.GetOneBellring(id);
+                modlogic.AssignTimeToSequencedBellRing(b, startTime);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
 
         [HttpPost("InsertSpecialBellring")]
         public IActionResult InsertSpecialBellring([FromBody] SpecialBellRingViewModel specialBellRingViewModel)

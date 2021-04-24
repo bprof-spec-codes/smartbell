@@ -94,7 +94,7 @@ namespace Logic
 
         public IQueryable<BellRing> GetAllSequencedBellRings()
         {
-            return bellRingRepo.GetAll().Where(x => x.Description != null &&
+            return bellRingRepo.GetAll().Where(x => x.Description != null && x.BellRingTime==new DateTime(1,1,1) &&
             GetAllOutputPath().Where(y=>y.BellRingId==x.Id).Select(y=>y.SequenceID).Contains(1) &&
             x.Type.Equals(BellRingType.Special));
         }
