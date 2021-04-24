@@ -15,9 +15,12 @@ const DateChooser = ({onAdd}) => {
     const [sound,setSound]=useState('');
     const [radio, setRadio]=useState('');
     
-    const ringOptions = ['Normál', 'Rövidített'];
+    const ringOptions = ['Normál csengetési rend',
+     'Rövidített csengetési rend',
+        'Tanítási szünet',
+        'Pirosbetűs ünnep'];
     const ringOption = ringOptions[0];
-    const soundOptions = ['Alap csengőhang', 'Rövid csengőhang', 'Különleges csengőhang'];
+    const soundOptions = ['Alap csengőhang'];
     const soundOption = soundOptions[0];
     const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
     const ttrOption = ttrOptions[0];

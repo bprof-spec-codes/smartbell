@@ -51,6 +51,10 @@ const AddRing = ({onAdd}) => {
                 <TPicker/>
             </div>
             <div className='form-control'>
+                <p>Add meg a csengetések hosszát másodpercben:</p><br/>
+                <input placeholder='automatikus'/><br/>
+            </div>
+            <div className='form-control'>
                 <label>Válassz rádióműsort</label>
                 <DDMenu props={radioOptions} first={radioOptions[0]} />
             </div>
