@@ -565,7 +565,7 @@ namespace Logic
                 bellRingRepo.Update(b.Id, b);
             }
         }
-        private void DeleteRegularBellRingsInRange(DateTime StartDate, DateTime EndDate)
+        private void DeleteRegularBellRingsInRange(DateTime StartDate, DateTime EndDate) // Controllerre
         {
             List<BellRing> inRange = bellRingRepo.GetAll()
                 .Where(x => (x.BellRingTime >= StartDate && x.BellRingTime <= EndDate))

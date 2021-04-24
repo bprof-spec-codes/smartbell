@@ -62,6 +62,9 @@
         <member name="P:Models.Holiday.Id">
             <summary>Unique Id used for database storage.</summary>
         </member>
+        <member name="P:Models.Holiday.Name">
+            <summary>Defines the name of a holiday.</summary>
+        </member>
         <member name="P:Models.Holiday.Type">
             <summary>Specifies the type of the holiday 0=Manually setup , 1=Break ,2=Holiday.</summary>
         </member>
