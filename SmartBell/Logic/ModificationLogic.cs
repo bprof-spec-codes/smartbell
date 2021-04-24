@@ -274,6 +274,64 @@ namespace Logic
             }
             outputPathRepo.InsertMultiple(outputPaths.ToList());
             SetBellRingIntervalByPath(bellRing.Id);
+            if (SingleIntersect(bellRing) || BetweenLessonsIntersect(bellRing))
+            {
+                bellRingRepo.Delete(bellRing);
+                throw new Exception($"A bellring must not intersect with any other bellrigns during date {bellRing.BellRingTime:d}");
+            }
+        }
+        public void UpdateSequencedBellRings(BellRing bellRing, List<OutputPath> outputPaths)
+        {
+            if (bellRing == default || outputPaths == default)
+            {
+                throw new Exception("All parameters must be declared in the body.");
+            }
+            if (bellRing.Description == null)
+            {
+                throw new Exception("All sequenced bellrings must have a description to describe their purpose.");
+            }
+            if (bellRing.Id == null)
+            {
+                throw new Exception("Update method must get an Id to prefrom the updation.");
+            }
+            if (outputPaths.Count() == 0)
+            {
+                throw new Exception("There are no outputs setup for this sequenced bellring.");
+            }
+            if (!outputPaths.All(output => output.SequenceID > 0))
+            {
+                throw new Exception("Indexing of the seuqence must start from 1.");
+            }
+            if (outputPaths.Select(output => output.SequenceID).Distinct().Count() != outputPaths.Count())
+            {
+                throw new Exception("All of the sequence ID-s must be unique starting from 1.");
+            }
+            BellRing formerBellring = bellRingRepo.GetOne(bellRing.Id);
+            List<OutputPath> formerOutputs = outputPathRepo.GetAll().Where(x => x.BellRingId == bellRing.Id).ToList();
+            foreach (var item in formerOutputs)
+            {
+                outputPathRepo.Delete(item);
+            }
+            bellRingRepo.Update(bellRing.Id,bellRing);
+            int i = 1;
+            foreach (OutputPath outputPath in outputPaths)
+            {
+                outputPath.Id = Guid.NewGuid().ToString();
+                outputPath.BellRingId = bellRing.Id;
+                outputPath.SequenceID = i++;
+            }
+            outputPathRepo.InsertMultiple(outputPaths.ToList());
+            SetBellRingIntervalByPath(bellRing.Id);
+            if (SingleIntersect(bellRing) || BetweenLessonsIntersect(bellRing))
+            {
+                bellRingRepo.Update(formerBellring.Id, formerBellring);
+                foreach (var item in outputPaths)
+                {
+                    outputPathRepo.Delete(item);
+                }
+                outputPathRepo.InsertMultiple(formerOutputs);
+                throw new Exception($"A bellring must not intersect with any other bellrigns during date {bellRing.BellRingTime:d}");
+            }
         }
 
         private bool VerifyTemplateName(string name)
