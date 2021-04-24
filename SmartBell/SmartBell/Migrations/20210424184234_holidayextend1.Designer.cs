@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SmartBell.Migrations
 {
     [DbContext(typeof(SbDbContext))]
-    [Migration("20210331145349_intervalfix")]
-    partial class intervalfix
+    [Migration("20210424184234_holidayextend1")]
+    partial class holidayextend1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,6 +53,9 @@ namespace SmartBell.Migrations
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
