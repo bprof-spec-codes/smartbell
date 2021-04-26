@@ -6,7 +6,7 @@ const Ring = ({ring, onDelete, onToggle}) => {
     return (
         <div className={`task ${ring.normal? 'reminder':''}`} onDoubleClick={()=>onToggle(ring.id)}>
             <h3>
-                {ring.startTime} {' - '} {ring.endTime}
+                {ring.description};
                 <FaTimes 
                 style={{color: 'red', cursor: 'pointer'}}
                 onClick={() => onDelete(ring.id)}

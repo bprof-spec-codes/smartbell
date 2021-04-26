@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 import Rings from './components/Rings/Rings'
@@ -10,6 +10,11 @@ import AddRing from './components/Button/AddRing'
 import MainCalendar from './components/Calendar/MainCalendar'
 import ConfigButton from './components/Button/ConfigButton'
 import CalendarConfig from './components/Calendar/CalendarConfig';
+import TimeTable from './components/Calendar/TimeTable';
+
+import Header from '../src/components/Header/Header';
+import Calendar from 'react-calendar';
+import '../src/components/Calendar/MainCalendar.css';
 
 //id, bellringtime, interval, intervalseconds, audiopath, type(int)
 const App = () =>{
@@ -46,6 +51,14 @@ const App = () =>{
     }
 ])
 
+  const [date,setDate] = useState(new Date());   
+    useEffect(() => {
+      console.log(date);
+    }, [date])
+    const onChange = date => {
+        setDate(date);
+    };
+
   //add ring
   const addRing = (ring) =>{
     //console.log(ring);
@@ -53,20 +66,6 @@ const App = () =>{
     const newRing = {id, ...ring}
     newRing.text='Szünet'
     setRings([...rings, newRing]) //hozzáadjuk a már meglévő tömhöz
-  }
-
-  //delete ring
-  const deleteRing = (id) =>{
-    //console.log('delete', id)
-    setRings(rings.filter((ring) => ring.id!==id))
-  }
-
-  //toggle reminder
-  const toggleReminder = (id) => {
-    setRings(rings.map((ring)=>ring.id===id?
-    {...ring, normal: !ring.normal}
-    :
-    ring))
   }
 
   return(
@@ -79,25 +78,18 @@ const App = () =>{
         }}>  
         <Route path='/' exact render={(props)=> (
           <div>
-            <MainCalendar
-              onAdd={()=>setShowAddRing(!showAddRing)} 
-              showAdd={showAddRing}
+            <div className='container'>
+            
+            <Calendar onChange={onChange} value={date}/>
+            <Header
+                title={date.toDateString()}
+                onAdd={()=>setShowAddRing(!showAddRing)}
+                showAdd={showAddRing}
             />
+            {console.log(date)}
+        </div>
             {showAddRing && <AddRing onAdd={addRing} />}
-            {
-              rings.length > 0 ? 
-              (
-                <Rings 
-                  rings={rings} 
-                  onDelete={deleteRing}
-                  onToggle={toggleReminder}
-                />
-              ) 
-              : 
-              (
-                'A mai napra nincsenek csengetések'
-              )
-            }
+            <TimeTable date={date}/>
             <ConfigButton/>
           </div>
         )}/>              
