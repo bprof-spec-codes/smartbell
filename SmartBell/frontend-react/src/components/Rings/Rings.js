@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import axios from '../../axios';
 import Ring from './Ring';
@@ -13,6 +13,9 @@ import Ring from './Ring';
 
 const Rings = ({rings, onDelete, onToggle, date}) => {
     const [ringsFromBackend, setRingsFromBackend]=useState([]);
+    const [ringsToBe, setRingsToBe]=useState([]);
+
+    useEffect(()=>{renderrings()}, [ringsFromBackend])
 
     const dateFormatter = (date) => {
         let month = '' + (date.getMonth() + 1);

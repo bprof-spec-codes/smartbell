@@ -1,5 +1,5 @@
 import React from 'react'
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 import UploadFile from '../Button/UploadFile'
 import DDMenu from './DDMenu';
@@ -12,13 +12,22 @@ const AddRing = ({onAdd}) => {
     const [normal,setNormal]=useState(false);
     const [toRead, settoRead]=useState('');
 
+    
+
     const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Beolvasás'];
     const ringOption = ringOptions[0];
+
+    const [ringType, setRingType]=useState(ringOptions[0]);
+
     const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
     const radioOption = radioOptions[0];
     const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
     const ttrOption = ttrOptions[0];
 
+
+    useEffect(() => {
+        console.log(ringType)
+    }, [ringType])
     
     const onSubmit = (e)=>{
         e.preventDefault()
@@ -29,17 +38,31 @@ const AddRing = ({onAdd}) => {
         }*/
 
         onAdd({text, time, normal})
-        setText('')
+        /*setText('')
         setTime('')
         setNormal(false)
-        settoRead('')
+        settoRead('')*/
     }
 
     return (
         <form className='container' onSubmit={onSubmit}>
             <div className='form-control'>
                 <label>Szünet típusa </label>
-                <DDMenu props={ringOptions} first={ringOption} />
+                <select onChange={(e)=> setRingType(e.target.value)}>
+                    <option value={ringOptions[0]}>
+                        Normál
+                    </option>
+                    <option value={ringOptions[1]}>
+                        Csengetések némítása
+                    </option>
+                    <option value={ringOptions[2]}>
+                        Iskolarádió
+                    </option>
+                    <option value={ringOptions[3]}>
+                        Beolvasás
+                    </option>
+                </select>
+                {/*<DDMenu props={ringOptions} first={ringOption} />*/}
             </div>
             
             <div className='form-control'>
@@ -54,14 +77,20 @@ const AddRing = ({onAdd}) => {
                 <p>Add meg a csengetések hosszát másodpercben:</p><br/>
                 <input placeholder='automatikus'/><br/>
             </div>
-            <div className='form-control'>
-                <label>Válassz rádióműsort</label>
-                <DDMenu props={radioOptions} first={radioOptions[0]} />
-            </div>
-            <div className='form-control'>
-                <label>Válassz felolvasandó szöveget</label>
-                <DDMenu props={ttrOptions} first={ttrOptions[0]} />
-            </div>
+            {
+                ringType!=='Normál' && 
+                <div>
+                    <div className='form-control'>
+                        <label>Válassz rádióműsort</label>
+                        <DDMenu props={radioOptions} first={radioOptions[0]} />
+                    </div>
+                    <div className='form-control'>
+                        <label>Válassz felolvasandó szöveget</label>
+                        <DDMenu props={ttrOptions} first={ttrOptions[0]} />
+                    </div>
+                </div>
+            }
+            
 
             <input type='submit' className='btn btn-block' value='Csengetés hozzáadása'/>
         </form>
