@@ -41,7 +41,6 @@ namespace Repository
             IQueryable<BellRing> BellringsOfDay = GetAll().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
             return BellringsOfDay;
         }
-
         
     }
 }

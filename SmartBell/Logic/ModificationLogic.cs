@@ -301,18 +301,31 @@ namespace Logic
             {
                 throw new Exception("All of the sequence ID-s must be unique starting from 1.");
             }
-            bellRing.BellRingTime = time;
-            bellRing.Id = Guid.NewGuid().ToString();
-            bellRingRepo.InsertOne(bellRing);
+            BellRing newlyAssignedBellRing = new BellRing();
+            newlyAssignedBellRing.Interval = bellRing.Interval;
+            newlyAssignedBellRing.IntervalSeconds= bellRing.IntervalSeconds;
+            newlyAssignedBellRing.Description = bellRing.Description;
+            newlyAssignedBellRing.Type = BellRingType.Special;
+            newlyAssignedBellRing.BellRingTime = time;
+            newlyAssignedBellRing.Id = Guid.NewGuid().ToString();
+            bellRingRepo.InsertOne(newlyAssignedBellRing);
+            List<OutputPath> outputsToInsert = new List<OutputPath>();
             outputs.ForEach(x =>
             {
-                x.Id = Guid.NewGuid().ToString();
-                x.BellRingId = bellRing.Id;
+                OutputPath oneOutput = new OutputPath
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    BellRingId = newlyAssignedBellRing.Id,
+                    FilePath = x.FilePath,
+                    SequenceID = x.SequenceID,                    
+                };
+                outputsToInsert.Add(oneOutput);
             });
-            if (SingleIntersect(bellRing) || BetweenLessonsIntersect(bellRing))
+            outputPathRepo.InsertMultiple(outputsToInsert);
+            if (SingleIntersect(newlyAssignedBellRing) || BetweenLessonsIntersect(newlyAssignedBellRing))
             {
-                bellRingRepo.Delete(bellRing);
-                throw new Exception($"A bellring must not intersect with any other bellrigns during date {bellRing.BellRingTime:d}");
+                bellRingRepo.Delete(newlyAssignedBellRing);
+                throw new Exception($"A bellring must not intersect with any other bellrigns during date {newlyAssignedBellRing.BellRingTime:d}");
             }
         }
 
@@ -592,8 +605,7 @@ namespace Logic
 
             foreach (var item in ElementsOfTemplate)
             {
-                BellRing b = AssignNewBellRingByTemplateElement(item, dayDate);
-                InsertBellRing(b);
+                AssignNewBellRingByTemplateElement(item, dayDate);
             }
         }
 
@@ -640,16 +652,16 @@ namespace Logic
                 throw new Exception($"Template element must be set to fill the range between {startDate} and {endDate}.");
             }
             List<BellRing> bellRingsForADay = new List<BellRing>();
-            IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
+            IList<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id).ToList();
             DeleteBellRingsInRange(startDate, endDate);
             foreach (DateTime day in EachDay(startDate, endDate)) // loops through an entire school year
             {
-                if (day.Day < 6) // checks if it's a workday Monday->Friday
+                if ((int)day.DayOfWeek < 6) // checks if it's a workday Monday->Friday
                 {
                     foreach (var item in ElementsOfTemplate)
                     {
-                        BellRing b = AssignNewBellRingByTemplateElement(item, day);
-                        InsertBellRing(b);
+                        AssignNewBellRingByTemplateElement(item, day);
+                        //InsertBellRing(b);
                     }
                 }
             }
@@ -669,16 +681,16 @@ namespace Logic
             }
 
             List<BellRing> bellRingsForADay = new List<BellRing>();
-            IQueryable<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id);
+            IList<TemplateElement> ElementsOfTemplate = readlogic.GetElementsForTemplate(template.Id).ToList();
             DeleteBellRingsInRange(startDate, endDate);
             foreach (DateTime day in EachDay(startDate, endDate)) // loops through an entire school year
             {
-                if (day.Day < 6) // checks if it's a workday Monday->Friday
+                if ((int)day.DayOfWeek < 6) // checks if it's a workday Monday->Friday
                 {
                     foreach (var item in ElementsOfTemplate)
                     {
-                        BellRing b = AssignNewBellRingByTemplateElementWithFile(item, day, fileName);
-                        InsertBellRing(b);
+                        AssignNewBellRingByTemplateElementWithFile(item, day, fileName);
+                        //InsertBellRing(b);
                     }
                 }
             }
@@ -708,7 +720,7 @@ namespace Logic
             }
         }
 
-        private BellRing AssignNewBellRingByTemplateElement(TemplateElement templateElement, DateTime dayDate)
+        private void AssignNewBellRingByTemplateElement(TemplateElement templateElement, DateTime dayDate)
         {
             BellRing b = new BellRing()
             {
@@ -725,10 +737,9 @@ namespace Logic
                 BellRingId = b.Id,
             };
             outputPathRepo.InsertOne(outputPath);
-            return new BellRing();
         }
 
-        private BellRing AssignNewBellRingByTemplateElementWithFile(TemplateElement templateElement, DateTime dayDate, string fileName)
+        private void AssignNewBellRingByTemplateElementWithFile(TemplateElement templateElement, DateTime dayDate, string fileName)
         {
             BellRing b = new BellRing()
             {
@@ -745,7 +756,6 @@ namespace Logic
                 BellRingId = b.Id,
             };
             outputPathRepo.InsertOne(outputPath);
-            return new BellRing();
         }
 
         private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)

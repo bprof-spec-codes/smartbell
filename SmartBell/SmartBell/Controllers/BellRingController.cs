@@ -43,8 +43,17 @@ namespace SmartBell.Controllers
         {
             try
             {
-                
-                List<BellRing> brings = readlogic.GetAllBellring().ToList();
+                IList<BellRing> brings = readlogic.GetAllBellring().Where(x=>x.Type==BellRingType.Start).ToList();
+                foreach (var item in brings)
+                {
+                    modlogic.DeleteBellring(item);
+                }
+                brings = readlogic.GetAllBellring().Where(x => x.Type == BellRingType.End).ToList();
+                foreach (var item in brings)
+                {
+                    modlogic.DeleteBellring(item);
+                }
+                brings = readlogic.GetAllBellring().Where(x => x.Type == BellRingType.Special).ToList();
                 foreach (var item in brings)
                 {
                     modlogic.DeleteBellring(item);
