@@ -20,7 +20,7 @@ namespace SmartBellClient.VM
 {
     internal class MainViewModel : ViewModelBase
     {
-        private TimeSpan autoUpdateTime = new TimeSpan(14, 43, 00);
+        private TimeSpan autoUpdateTime = new TimeSpan(6, 00, 00);
         private System.Threading.Timer timer;
         private System.Threading.Timer UpdateTimer;
         DispatcherTimer clockTimer;
@@ -64,7 +64,7 @@ namespace SmartBellClient.VM
                 Clock = timeLogic.GetNetworkTime();
                 startClock();
                 //BellRingInfo = "Next bellring time:";
-                NextBellRing = timeLogic.GetNextBellRingTime(Clock);
+                NextBellRing = timeLogic.GetNextBellringFromServer(Clock);
                 this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x => x.BellRingTime));
                 this.BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveAllElapsedBellRings(Clock,BellRings.ToList()).ToList());
                 this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
@@ -115,7 +115,7 @@ namespace SmartBellClient.VM
             Clock = timeLogic.GetNetworkTime();
             clockTimer.Start();
             //BellRingInfo = "Next bellring time:";
-            NextBellRing = timeLogic.GetNextBellRingTime(Clock);
+            NextBellRing = timeLogic.GetNextBellringFromServer(Clock);
             this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x => x.BellRingTime));
             this.BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveAllElapsedBellRings(Clock, BellRings.ToList()).ToList());
             this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
@@ -277,7 +277,11 @@ namespace SmartBellClient.VM
             BellRingInfo = "Next bellring time:";
             if (nextbellring == null)
             {
-                BellRingInfo = "No more bellrings for "+Clock.Date.ToString("yyyy:MM:dd");
+                BellRingInfo = "No more bellrings for " + Clock.Date.ToString("yyyy:MM:dd");
+                if ((timeLogic.GetNextBellringFromServer(Clock))!=null) // If the server's data is mismatched with local update it.
+                {
+                    UpdateEverything();
+                }
                 return;
             }
             DateTime calledForTime = Clock;
@@ -312,7 +316,7 @@ namespace SmartBellClient.VM
             //outputLogic.MP3(item.FilePath);
             
             BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveElapsedBellRing(NextBellRing.Id, BellRings.ToList()));
-            this.NextBellRing = this.timeLogic.GetNextBellRingTime(Clock.AddSeconds(5));
+            this.NextBellRing = this.timeLogic.GetNextBellringFromList(Clock.AddSeconds(5),BellRings.ToList());
             BellRingUpdate(NextBellRing);
             
         }
