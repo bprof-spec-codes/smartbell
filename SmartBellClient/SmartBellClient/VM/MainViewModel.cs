@@ -1,6 +1,7 @@
 ﻿using CommonServiceLocator;
 using Data;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Logic;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -18,10 +20,15 @@ namespace SmartBellClient.VM
 {
     internal class MainViewModel : ViewModelBase
     {
+        private TimeSpan autoUpdateTime = new TimeSpan(14, 43, 00);
         private System.Threading.Timer timer;
+        private System.Threading.Timer UpdateTimer;
+        DispatcherTimer clockTimer;
         private IReadLogic readLogic;
         private ITimeLogic timeLogic;
         private IOutputLogic outputLogic;
+
+        public ICommand UpdateCmd { get; private set; }
         private string bellRingInfo;
         public string BellRingInfo
         {
@@ -63,6 +70,10 @@ namespace SmartBellClient.VM
                 this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
                 readLogic.GetAllFiles(Outputs);
                 BellRingUpdate(NextBellRing);
+                SetUpTimer(autoUpdateTime);
+
+                this.UpdateCmd = new RelayCommand(() => UpdateEverything(),true);
+
             }
             else
             {
@@ -80,7 +91,38 @@ namespace SmartBellClient.VM
                   IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<IOutputLogic>()) // IoC
         {
         }
+        private void SetUpTimer(TimeSpan alertTime)
+        {
+            DateTime current = Clock;
+            TimeSpan timeToGo = alertTime - current.TimeOfDay;
+            if (timeToGo < TimeSpan.Zero)
+            {
+                return;//time already passed
+            }
+            this.UpdateTimer = new System.Threading.Timer(x =>
+            {
+                this.UpdateEverything();
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
+        }
 
+        private void UpdateEverything()
+        {
+            clockTimer.Stop();
+            if (timer != null)
+            {
+                timer.Dispose();
+            }
+            Clock = timeLogic.GetNetworkTime();
+            clockTimer.Start();
+            //BellRingInfo = "Next bellring time:";
+            NextBellRing = timeLogic.GetNextBellRingTime(Clock);
+            this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x => x.BellRingTime));
+            this.BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveAllElapsedBellRings(Clock, BellRings.ToList()).ToList());
+            this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
+            readLogic.GetAllFiles(Outputs);
+            BellRingUpdate(NextBellRing);
+            SetUpTimer(autoUpdateTime);
+        }
         private static ObservableCollection<BellRing> FillWithSamples()
         {
             ObservableCollection<BellRing> brings = new ObservableCollection<BellRing>();
@@ -276,10 +318,10 @@ namespace SmartBellClient.VM
         }
         private void startClock()
         {
-            DispatcherTimer clock = new DispatcherTimer();
-            clock.Interval = TimeSpan.FromSeconds(1);
-            clock.Tick += this.TicksOfClock;
-            clock.Start();
+            clockTimer = new DispatcherTimer();
+            clockTimer.Interval = TimeSpan.FromSeconds(1);
+            clockTimer.Tick += this.TicksOfClock;
+            clockTimer.Start();
         }
         private void TicksOfClock(object sender, EventArgs e)
         {
