@@ -306,11 +306,25 @@ namespace SmartBellClient.VM
                 mplayer.Play();*/
                 if (item.FilePath.Substring(item.FilePath.LastIndexOf('.') + 1).ToLower() == "mp3")
                 {
-                    outputLogic.MP3(item.FilePath);
+                    if (currentOutputs.Count==1)
+                    {
+                        outputLogic.MP3(item.FilePath, NextBellRing.IntervalSeconds);
+                    }
+                    else
+                    {
+                        outputLogic.MP3(item.FilePath,0);
+                    }
                 }
                 else if(item.FilePath.Substring(item.FilePath.LastIndexOf('.') + 1).ToLower() == "txt")
                 {
-                    outputLogic.TTS(item.FilePath);
+                    if (currentOutputs.Count == 1)
+                    {
+                        outputLogic.TTS(item.FilePath, NextBellRing.IntervalSeconds);
+                    }
+                    else
+                    {
+                        outputLogic.TTS(item.FilePath,0);
+                    }
                 }
             }
             //outputLogic.MP3(item.FilePath);

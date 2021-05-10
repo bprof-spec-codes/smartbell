@@ -9,7 +9,7 @@ namespace Logic
 {
     public class OutputLogic : IOutputLogic
     {
-        public void TTS(string txt)
+        public void TTS(string txt, int intervalSeconds)
         {
             string path = Directory.GetParent(
                 Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\{txt}";
@@ -49,13 +49,19 @@ namespace Logic
             }
             else
             {
-                voice.Speak(File.ReadAllText(path));
+                voice.Speak(File.ReadAllText(path), SpeechVoiceSpeakFlags.SVSFlagsAsync);
                 avrageWordsDuration = new TimeSpan(0, 0, 0, 0, words.Length * 750);
             }
-            Thread.Sleep(avrageWordsDuration);
+    
+            /*if (intervalSeconds == 0)
+            {
+                Thread.Sleep(avrageWordsDuration);
+                return;
+            }
+            Thread.Sleep(TimeSpan.FromSeconds(intervalSeconds));*/
         }
 
-        public void MP3(string audio)
+        public void MP3(string audio,int intervalSeconds)
         {
             var tfile = TagLib.File.Create(Directory.GetParent(
                 Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\{audio}");
@@ -65,7 +71,13 @@ namespace Logic
             mplayer.Open(new Uri(Directory.GetParent(
                 Environment.CurrentDirectory).Parent.Parent.FullName + @"\Output" + @$"\{audio}"));
             mplayer.Play();
-            Thread.Sleep((int)duration.TotalMilliseconds);
+            if (intervalSeconds==0)
+            {
+                Thread.Sleep((int)duration.TotalMilliseconds);
+                return;
+            }
+            Thread.Sleep(TimeSpan.FromSeconds(intervalSeconds));
+            mplayer.Stop();
         }
         
 
