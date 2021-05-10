@@ -1,7 +1,6 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
 
-import UploadFile from '../Button/UploadFile'
 import DDMenu from './DDMenu';
 import TPicker from '../Calendar/TPicker'
 import '../../index.css'
@@ -11,19 +10,31 @@ const AddRing = ({onAdd}) => {
     const [time,setTime]=useState('');
     const [normal,setNormal]=useState(false);
     const [toRead, settoRead]=useState('');
-
-    
-
-    const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Beolvasás'];
-    const ringOption = ringOptions[0];
-
     const [ringType, setRingType]=useState(ringOptions[0]);
 
-    const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
-    const radioOption = radioOptions[0];
-    const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
-    const ttrOption = ttrOptions[0];
 
+    const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Beolvasás'];
+
+    const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
+    const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
+
+     //add ring
+    const addRing = (ring) =>{
+        const id=Math.floor(Math.random()*10000)+1
+        const newRing = {id, ...ring}
+
+
+        /*const data = {}
+
+
+        axios.post(`/${(ringType==='Normál' && 'Bellring/InsertLessonBellrings') ||
+         (ringType==='Csengetések némítása' && 'Holiday/InsertLessonBellrings') ||
+         (ringType==='Iskolarádió' && 'Bellring/AssignTimeToSequencedBellRing') ||
+         (ringType==='Beolvasás' && 'Bellring/InsertSpecialBellring')}`,)
+         
+        */
+
+    }
 
     useEffect(() => {
         console.log(ringType)
@@ -32,16 +43,7 @@ const AddRing = ({onAdd}) => {
     const onSubmit = (e)=>{
         e.preventDefault()
 
-        /*if(!text){
-            alert('Kérlek nevezd el a csengetést')
-            return
-        }*/
-
         onAdd({text, time, normal})
-        /*setText('')
-        setTime('')
-        setNormal(false)
-        settoRead('')*/
     }
 
     return (
@@ -69,21 +71,41 @@ const AddRing = ({onAdd}) => {
                 <label>Szünet kezdete</label>
                 <TPicker/>
             </div>
-            <div className='form-control'>
-                <label>Szünet vége</label>
-                <TPicker/>
-            </div>
-            <div className='form-control'>
-                <p>Add meg a csengetések hosszát másodpercben:</p><br/>
-                <input placeholder='automatikus'/><br/>
-            </div>
+
             {
-                ringType!=='Normál' && 
+                ringType=='Csengetések némítása' && 
+                <div>
+                    <div className='form-control'>
+                        <label>Szünet vége</label>
+                        <TPicker/>
+                    </div>
+                </div>
+            }
+            {
+                ringType=='Normál' && 
+                <div>
+                    <div className='form-control'>
+                        <label>Szünet vége</label>
+                        <TPicker/>
+                    </div>
+                    <div className='form-control'>
+                        <p>Add meg a csengetések hosszát másodpercben:</p><br/>
+                        <input placeholder='automatikus'/><br/>
+                    </div>
+                </div>
+            }
+            {
+                ringType=='Iskolarádió' && 
                 <div>
                     <div className='form-control'>
                         <label>Válassz rádióműsort</label>
                         <DDMenu props={radioOptions} first={radioOptions[0]} />
                     </div>
+                </div>
+            }
+            {
+                ringType=='Beolvasás' && 
+                <div>
                     <div className='form-control'>
                         <label>Válassz felolvasandó szöveget</label>
                         <DDMenu props={ttrOptions} first={ttrOptions[0]} />

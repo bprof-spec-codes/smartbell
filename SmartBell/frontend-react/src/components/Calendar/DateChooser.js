@@ -28,7 +28,7 @@ const DateChooser = ({onAdd}) => {
     const onSubmit = (e)=>{
         e.preventDefault()
     
-        if(startDate==endDate){
+        if(startDate===endDate){
             alert('Kérlek add meg a kívánt időtartamot')
             return
         }
