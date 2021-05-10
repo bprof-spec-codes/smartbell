@@ -32,7 +32,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.ColumnSpan="3" Background="#2c375c">
             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
                 <TextBlock Text="Smartbell" Margin="15,0,0,0" Foreground="#e2faff" HorizontalAlignment="Left" FontSize="41" FontFamily="Arial Bold" Height="50"/>
@@ -42,12 +42,12 @@
             <ListBox ItemTemplate="{StaticResource listTemplate}" ItemsSource="{Binding Path=BellRings}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" Height="354" VerticalAlignment="Center" Width="780" Background="#e2faff" Foreground="#e2faff"/>
         </Grid>
         <Grid Grid.Row="2" Background="#2c375c">
-            <Label Content="Date:"  Margin="10,12,681,111" Foreground="#e2faff"/>
-            <Label Content="{Binding Path=Clock}" ContentStringFormat="yyyy.MM.dd"  Margin="119,15,603,111" Foreground="#e2faff"/>
-            <Label Content="Time:"  Margin="10,39,681,86" Foreground="#e2faff"/>
-            <Label Content="{Binding Path=Clock}" ContentStringFormat="hh:mm:ss"  Margin="119,39,603,86" Foreground="#e2faff"/>
-            <Label Content="{Binding Path=BellRingInfo}"  Margin="10,64,681,58" Foreground="#e2faff"/>
-            <Label Content="{Binding Path=NextBellRing.BellRingTime}" ContentStringFormat="hh:mm:ss"  Margin="119,64,603,58" Foreground="#e2faff"/>
+            <Label Content="Date:"  Margin="10,12,598,111" Foreground="#e2faff"/>
+            <Label Content="{Binding Path=Clock}" ContentStringFormat="yyyy.MM.dd"  Margin="207,15,464,111" Foreground="#e2faff"/>
+            <Label Content="Time:"  Margin="10,39,598,86" Foreground="#e2faff"/>
+            <Label Content="{Binding Path=Clock}" ContentStringFormat="hh:mm:ss"  Margin="207,39,464,86" Foreground="#e2faff"/>
+            <Label Content="{Binding Path=BellRingInfo}"  Margin="10,64,598,58" Foreground="#e2faff"/>
+            <Label Content="{Binding Path=NextBellRing.BellRingTime}" ContentStringFormat="hh:mm:ss"  Margin="207,64,464,58" Foreground="#e2faff"/>
         </Grid>
     </Grid>
 
