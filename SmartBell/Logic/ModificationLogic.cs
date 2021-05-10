@@ -68,6 +68,10 @@ namespace Logic
             }
             specialBellRing.Id = Guid.NewGuid().ToString();
             specialBellRing.Type = BellRingType.Special;
+            if (specialBellRing.IntervalSeconds > 0)
+            {
+                specialBellRing.Interval = new TimeSpan(0, 0, specialBellRing.IntervalSeconds);
+            }
             bellRingRepo.InsertOne(specialBellRing);
             OutputPath outputPath = new OutputPath();
             outputPath.FilePath = fileName;
