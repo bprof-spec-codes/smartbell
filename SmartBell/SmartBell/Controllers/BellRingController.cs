@@ -207,7 +207,8 @@ namespace SmartBell.Controllers
         {
             try
             {
-                return Ok(readlogic.GetSequencedBellring(id));
+                BellRing b = readlogic.GetSequencedBellring(id);
+                return Ok(b);
 
             }
             catch (Exception ex)

@@ -365,6 +365,8 @@ namespace Logic
             {
                 outputPathRepo.Delete(item);
             }
+            bellRing.Type = BellRingType.Special;
+            bellRing.IntervalSeconds = 0;
             bellRingRepo.Update(bellRing.Id, bellRing);
             int i = 1;
             foreach (OutputPath outputPath in outputPaths)
@@ -423,6 +425,9 @@ namespace Logic
             {
                 outputPathRepo.Delete(item);
             }
+            bellRing.BellRingTime = new DateTime(1, 1, 1); // Assings a static time value to achive the "storing" of a reusable Sequenced bellring
+            bellRing.Type = BellRingType.Special;
+            bellRing.IntervalSeconds = 0;
             bellRingRepo.Update(bellRing.Id, bellRing);
             int i = 1;
             foreach (OutputPath outputPath in outputPaths)
