@@ -5,15 +5,10 @@ import DDMenu from './DDMenu';
 import TPicker from '../Calendar/TPicker'
 import '../../index.css'
 
-const AddRing = ({onAdd}) => {
-    const [text, setText]=useState('');
-    const [time,setTime]=useState('');
-    const [normal,setNormal]=useState(false);
-    const [toRead, settoRead]=useState('');
+const AddRing = () => {
+    const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Beolvasás'];
     const [ringType, setRingType]=useState(ringOptions[0]);
 
-
-    const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Beolvasás'];
 
     const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
     const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
@@ -21,7 +16,8 @@ const AddRing = ({onAdd}) => {
      //add ring
     const addRing = (ring) =>{
         const id=Math.floor(Math.random()*10000)+1
-        const newRing = {id, ...ring}
+        const newRing = {id, ...ring
+    }
 
 
         /*const data = {}
@@ -42,8 +38,6 @@ const AddRing = ({onAdd}) => {
     
     const onSubmit = (e)=>{
         e.preventDefault()
-
-        onAdd({text, time, normal})
     }
 
     return (
@@ -64,14 +58,23 @@ const AddRing = ({onAdd}) => {
                         Beolvasás
                     </option>
                 </select>
-                {/*<DDMenu props={ringOptions} first={ringOption} />*/}
             </div>
             
+
             <div className='form-control'>
                 <label>Szünet kezdete</label>
                 <TPicker/>
             </div>
 
+            {
+                ringType!='Csengetések némítása' && 
+                <div>
+                    <div className='form-control'>
+                        <p>Csengetés leírása:</p><br/>
+                        <input placeholder='alapértelmezett'/><br/>
+                    </div>
+                </div>
+            }
             {
                 ringType=='Csengetések némítása' && 
                 <div>
@@ -113,7 +116,6 @@ const AddRing = ({onAdd}) => {
                 </div>
             }
             
-
             <input type='submit' className='btn btn-block' value='Csengetés hozzáadása'/>
         </form>
     )
