@@ -5,18 +5,6 @@ import {FaTimes} from 'react-icons/fa'
 
 const Ring = ({ring, onDelete}) => {
     const ringText = ring.bellRingTime.split("T")[1].split(":");
-    /*const [type, setType]=useState('Kezdet: ');
-
-    switch(ring.type) {
-        case '1':
-            setType('Vég');
-          break;
-        case '2':
-            setType('Vég');
-          break;
-        default:
-          // code block
-    }*/
 
     return (
         <div className={`task ${ring.normal? 'reminder':''}`}>
