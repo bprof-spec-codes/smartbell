@@ -92,10 +92,21 @@ namespace Logic
             string startFileName, string endFileName)
         {
             if (startOfLesson == default || endOfLesson == default
-                || startFileName == default || endFileName == default)
+                || startFileName == default || /*startFileName == "" ||*/ endFileName == default /*|| endFileName == ""*/) // THIS SECTION IS NEEDED(TESTING)
             {
                 throw new Exception("All parameters must be declared in the body.");
             }
+
+            //TESTING PURPOSESˇ
+            if (startFileName == "")
+            {
+                startFileName = "default.mp3";
+            }
+            if (endFileName == "")
+            {
+                endFileName = "default.mp3";
+            }
+            //THIS SECTION MUST BE REMOVED^
             if (startOfLesson.BellRingTime > endOfLesson.BellRingTime)
             {
                 throw new Exception("The start of a lesson must be earlier than the end.");
@@ -307,7 +318,7 @@ namespace Logic
             }
             BellRing newlyAssignedBellRing = new BellRing();
             newlyAssignedBellRing.Interval = bellRing.Interval;
-            newlyAssignedBellRing.IntervalSeconds= bellRing.IntervalSeconds;
+            newlyAssignedBellRing.IntervalSeconds = bellRing.IntervalSeconds;
             newlyAssignedBellRing.Description = bellRing.Description;
             newlyAssignedBellRing.Type = BellRingType.Special;
             newlyAssignedBellRing.BellRingTime = time;
@@ -321,7 +332,7 @@ namespace Logic
                     Id = Guid.NewGuid().ToString(),
                     BellRingId = newlyAssignedBellRing.Id,
                     FilePath = x.FilePath,
-                    SequenceID = x.SequenceID,                    
+                    SequenceID = x.SequenceID,
                 };
                 outputsToInsert.Add(oneOutput);
             });
@@ -403,7 +414,7 @@ namespace Logic
             {
                 throw new Exception("Update method must get an Id to prefrom the updation.");
             }
-            if (readlogic.GetSequencedBellring(bellRing.Id)==null)
+            if (readlogic.GetSequencedBellring(bellRing.Id) == null)
             {
                 throw new Exception($"Bellring with the description {bellRing.Description} is not a sequenced bellring");
             }
