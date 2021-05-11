@@ -3,6 +3,9 @@ import {useState} from 'react'
 import Ttss from '../TTS/Ttss'
 
 const TtsMaker = () => {
+
+    const [fileName, setFileName]=useState('');
+
     const [ttss, setTtss] = useState([
         {
             id:1,
@@ -32,18 +35,20 @@ const TtsMaker = () => {
 
     const deleteTts = (id) =>{
         setTtss(ttss.filter((ttss) => ttss.id!==id))
-        }
+    }
 
     return (
         <div className='container'>
             <h1>Felolvasandó szövegek</h1>
             <form className='form-control'>
                 <h3>Új szöveg:</h3>
-                <label>Rádióműsor neve</label>
                     <input  
                         placeholder='Gépeld be a felolvasandó szöveget' 
                     />
-                <input type='submit' className='btn btn-block' value='Új szöveg hozzáadása'/>
+                <h3>Fájlnév:</h3>
+                <input placeholder='Adj nevet a fájlnak' type='text' onChange={e => setFileName(e.target.value)}/><br/>
+                <input type='submit' className='btn btn-block' value='Szöveg hozzáadása'/>
+
             <br/><br/>
             <h3>Felolvasható szövegek: </h3><br/>
             {
@@ -64,6 +69,10 @@ const TtsMaker = () => {
             </form>
         </div>
     )
+}
+
+const onSubmit = (e)=>{
+    e.preventDefault()
 }
 
 export default TtsMaker

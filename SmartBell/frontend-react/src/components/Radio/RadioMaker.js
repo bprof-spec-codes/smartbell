@@ -89,9 +89,9 @@ const RadioMaker = () => {
 
     return (
         <div className='radiocontainer'>
-            <div class='row'>
-                <div class='column'>
-                    <div class='container'>
+            <div className='row'>
+                <div className='column'>
+                    <div className='container'>
                         <h1>Rádióműsor-összeállító</h1><br/>
                         <form className='form-control'>
                             <h3>Új műsor:</h3>
@@ -124,8 +124,8 @@ const RadioMaker = () => {
                     </div>
                     
                 </div>
-                <div class='column'>
-                    <div class='container'>
+                <div className='column'>
+                    <div className='container'>
                         <h1>Zenék kezelése</h1><br/>
                         <h2>Új zeneszám feltöltése</h2>
                         <UploadFile/><br/>
