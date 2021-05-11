@@ -1,7 +1,9 @@
 import React from 'react'
 import DDMenu from '../Button/DDMenu'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
+import axios from "../../axios";
 import Songs from './Songs'
+import Song from './Song'
 import UploadFile from '../Button/UploadFile'
 
 
@@ -81,11 +83,37 @@ const RadioMaker = () => {
             used: false
         },
     ])
+    const [files,setFiles]=useState([]);
 
     //delete song
     const deleteFromallSong = (id) =>{
         setallSongs(songs.filter((song) => song.id!==id))
-        }
+    }
+
+    useEffect(() => {
+        axios
+        .get(`/File/GetAllFiles/`)
+        .then((response) => {
+            const res = response.data;
+            setFiles(res);
+            console.log(res+" files");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    },[]);
+        
+        /*const onDelete=(id)=>{
+            axios.delete(`/Bellring/${id}`)
+            .then((response) => {
+                console.log(response);
+                setDeleteClicked(!deleteClicked);
+              })
+            .catch((error) => {
+                console.log(error);
+              });
+          }
+    */
 
     return (
         <div className='radiocontainer'>
@@ -108,10 +136,11 @@ const RadioMaker = () => {
                         {
                         songs.length > 0 ? 
                         (
-                            <Songs 
+                            /*<Songs 
                             songs={songs} 
                             onDelete={deleteSong}
-                            />
+                            />*/
+                            'TODO'
                         ) 
                         : 
                         (
@@ -121,26 +150,27 @@ const RadioMaker = () => {
                         
                         <input type='submit' className='btn btn-block' value='Rádióműsorok mentése'/>
                         </form>
-                    </div>
-                    
+                    </div>           
                 </div>
                 <div className='column'>
                     <div className='container'>
-                        <h1>Zenék kezelése</h1><br/>
-                        <h2>Új zeneszám feltöltése</h2>
+                        <h1>Feltöltött fájlok kezelése</h1><br/>
+                        <h2>Új fájl feltöltése</h2>
                         <UploadFile/><br/>
-                        <h2>Feltöltött zeneszámok</h2>
+                        <h2>Eddigi fájlok</h2>
                         {
-                        allsongs.length > 0 ? 
+                        files.length > 0 ? 
                         (
-                            <Songs 
-                            songs={allsongs} 
-                            onDelete={deleteSong}
-                            />
+                            files.map((file) => (
+                                <Song
+                                    key={file}
+                                    song={file}
+                                />
+                              ))
                         ) 
                         : 
                         (
-                            'A kiválasztott rádióműsor nem tartalmaz számokat'
+                            <p>Nincsenek feltöltött fájlok</p>
                         )
                         }
                     </div>

@@ -8,12 +8,12 @@ const Rings = ({date}) => {
   const [ringsFromBackend, setRingsFromBackend] = useState([]);
   const [deleteClicked, setDeleteClicked] = useState(false);
 
-  useEffect(() => renderrings(), [ringsFromBackend]);
+  /*useEffect(() => renderrings(), [ringsFromBackend]);
 
   const renderrings = () => {
     const allrings = ringsFromBackend.map((ring) => (<Ring key={ring.id} ring={ring} onDelete={onDelete} />));
     return allrings;
-  };
+  };*/
 
   //a megkapott mai nap dátumot olyanra alakítja, hogy a backend fel tudja dolgozni
   const dateFormatter = (date) => {
@@ -27,11 +27,11 @@ const Rings = ({date}) => {
     return [year, month, day].join("-");
   };
 
-  //delete ring - még nincs használatban, de itt lehet
+  /*//delete ring - még nincs használatban, de itt lehet
   const deleteRing = (id) => {
     //console.log('delete', id)
     setRingsFromBackend(ringsFromBackend.filter((ring) => ring.id !== id));
-  };
+  };*/
 
   useEffect(() => {
     axios
@@ -59,7 +59,8 @@ const Rings = ({date}) => {
 
   return (
     <div className="container">
-      {ringsFromBackend.length > 0 ? (
+      {ringsFromBackend.length > 0 ? 
+      (
         ringsFromBackend.map((ring) => (
           <Ring
             key={ring.id}

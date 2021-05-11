@@ -50,10 +50,10 @@ const SoundUploader = () => {
 
     return (
         <div className='container'>
-            <h1>Zenék kezelése</h1><br/>
-            <h2>Új zeneszám feltöltése</h2>
+            <h1>Feltöltött fájlok kezelése</h1><br/>
+            <h2>Új fájl feltöltése</h2>
             <UploadFile/><br/>
-            <h2>Feltöltött zeneszámok</h2>
+            <h2>Feltöltött fájlok</h2>
             {
               songs.length > 0 ? 
               (
