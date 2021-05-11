@@ -31,7 +31,8 @@ namespace SmartBell
             services.AddTransient<ModificationLogic, ModificationLogic>();
             services.AddTransient<ReadLogic, ReadLogic>();
             services.AddTransient<TimeLogic, TimeLogic>();
-            services.AddTransient<ClientLogic, ClientLogic>();            
+            services.AddTransient<ClientLogic, ClientLogic>();
+            services.AddTransient<TemplateEditingLogic, TemplateEditingLogic>();
             services.AddTransient<ITemplateRepository, TemplateRepository>();
             services.AddTransient<ITemplateElementRepository, TemplateEelementRepository>();
             services.AddTransient<IBellRingRepository, BellRingRepository>();
