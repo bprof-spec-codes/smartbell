@@ -2,6 +2,7 @@ import React from 'react'
 import {useState, useEffect} from 'react'
 import moment from 'moment';
 import TimePicker from 'rc-time-picker';
+import dateFormatter from 'dateformat';
 import 'rc-time-picker/assets/index.css';
 import DDMenu from './DDMenu';
 import TPicker from '../Calendar/TPicker'
@@ -11,66 +12,112 @@ import '../../index.css'
 const AddRing = () => {
     const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Speciális csengetés'];
     const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
-    const ttrOptions = ['Alap szöveg', 'ünnepi szöveg', 'covid tájékoztató'];
 
     const [ringType, setRingType]=useState(ringOptions[0]);
 
-    const [startTime,setStartTime] = useState('12:00');
-    const [endTime,setEndTime] = useState('12:00');
+    const [startTime,setStartTime] = useState(new Date());
+    const [endTime,setEndTime] = useState(new Date());
     const [description, setDescription] = useState('');
     const [length, setLength] = useState(0);
     const file = 'emptyFile'
 
+    const [chosenFile,setChosenFile] = useState('');
     const [files,setFiles] = useState([]);
+    const [radioSeqs, setRadioSeqs] = useState([]);
 
-    
+
     function onStartChange(value) {
-        setStartTime(value);
+        setStartTime(dateFormatter(value, "yyyy-mm-dd'T'HH:MM:ss"));
         console.log(value);
     }
 
     function onEndChange(value) {
-        setEndTime(value);
+        setEndTime(dateFormatter(value, "yyyy-mm-dd'T'HH:MM:ss"));
         console.log(value);
+    }
+
+    function addHoursToDate(date, hours) {
+        return new Date(new Date(date).setHours(date.getHours() + hours));
     }
 
     useEffect(() => {
         axios
-          .get(`/File/GetAllFiles/`)
-          .then((response) => {
-            const res = response.data;
-            setFiles(res);
-            console.log(res);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            .get(`/File/GetAllFiles/`)
+            .then((response) => {
+                const res = response.data;
+                setFiles(res);
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios
+            .get(`/Bellring/GetAllSequencedBellRings`)
+            .then((response) => {
+                const res = response.data;
+                setRadioSeqs(res);
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
       }, [ringType]);
 
 
      //add ring
     const addRing = () =>{
         
-        console.log(startTime);
-        console.log(endTime);
-        console.log(description);
+        if(ringType==='Normál')
+        {
+            console.log(startTime);
+            console.log(endTime);
+            console.log(description);
+    
+            const data = {
+                "startBellRing": {
+                    "description": description,
+                    "bellRingTime": startTime,
+                    "intervalSeconds": length
+                  },
+                  "endBellring": {
+                    "description": description,
+                    "bellRingTime": endTime,
+                    "intervalSeconds": length
+                  },
+                "startFilename": "",
+                "endFilename": ""
+            }
+    
+            axios.post(`/Bellring/InsertLessonBellrings`, data)
+            .catch((error) => {
+                console.log(error);
+            });
+        }
 
-        const data = {}
+        if(ringType==='Csengetések némítása'){
+            axios.post(`/Holiday/DeleteBellRingsInRange/${startTime}&${endTime}`)
+            .catch((error) => {
+                console.log(error);
+            });
+        }
 
+        if(ringType==='Speciális csengetés'){
+            
+            const data = {
+                "bellRing": {
+                  "id": "",
+                  "description": description,
+                  "bellRingTime": startTime,
+                  "intervalSeconds": length,
+                },
+                "fileName": chosenFile
+              }
 
-        /*axios.post(`/${(ringType==='Normál' && 'Bellring/InsertLessonBellrings') ||
-         (ringType==='Csengetések némítása' && 'Holiday/InsertLessonBellrings') ||
-         (ringType==='Iskolarádió' && 'Bellring/AssignTimeToSequencedBellRing') ||
-         (ringType==='Beolvasás' && 'Bellring/InsertSpecialBellring')}`,)
-         axios.post(`Bellring/InsertLessonBellrings`,
-         {
-            startBellRing:{description:description,bellRingTime:startTime,interval:length},
-            endBellRing:{description:description,bellRingTime:endTime,interval:length},
-            startFileName:file,
-
-        });*/
-         
-
+            axios.post(`/Bellring/InsertSpecialBellring`, data)
+            .catch((error) => {
+                console.log(error);
+            });
+        }
     }
 
     useEffect(() => {
@@ -142,7 +189,7 @@ const AddRing = () => {
                     </div>
                     <div className='form-control'>
                         <label>Válassz rádióműsort</label>
-                        <DDMenu props={radioOptions} first={radioOptions[0]} />
+                        <DDMenu props={radioSeqs.description} first={radioSeqs[0]} />
                     </div>
                 </div>
             }
@@ -155,7 +202,7 @@ const AddRing = () => {
                     </div>
                     <div className='form-control'>
                         <label>Válassz lejátszandó fájlt</label>
-                        <DDMenu props={files} first={files[0]} />
+                        <DDMenu onChange={e => setChosenFile(e.target.value)} props={files} first={files[0]} />
                     </div>
                 </div>
             }
