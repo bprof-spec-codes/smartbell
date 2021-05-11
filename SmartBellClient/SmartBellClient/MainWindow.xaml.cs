@@ -37,5 +37,34 @@ namespace SmartBellClient
         {
 
         }
+
+        private void ExitClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void DragMove(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Minimize(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
