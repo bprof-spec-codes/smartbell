@@ -21,7 +21,7 @@ namespace Data
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.
-                    UseLazyLoadingProxies().UseSqlServer(@"Server=tcp:smartbell.database.windows.net,1433;Initial Catalog=smartbell;Persist Security Info=False;User ID=sbadmin;Password=Abcd1234;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", b => b.MigrationsAssembly("SmartBell"));
+                    UseLazyLoadingProxies().UseSqlServer(@"Server=tcp:smartbelldb.database.windows.net,1433;Initial Catalog=smartbellDb;Persist Security Info=False;User ID=sbadmin;Password=Passw0rd;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", b => b.MigrationsAssembly("SmartBell"));
             }
         }
 
