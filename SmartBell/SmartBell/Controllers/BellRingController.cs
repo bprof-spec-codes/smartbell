@@ -92,20 +92,6 @@ namespace SmartBell.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult AddBellRing([FromBody] BellRing item)
-        {
-            try
-            {
-                modlogic.InsertBellRing(item);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-        }
-
         [HttpPost("InsertLessonBellrings")]
         public IActionResult InsertLessonBellrings([FromBody]LessonViewModel Lesson)
         {

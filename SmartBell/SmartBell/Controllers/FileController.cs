@@ -29,7 +29,7 @@ namespace SmartBell.Controllers
             {
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (FileToUpload != null || FileToUpload.Length > 0)
+                if (FileToUpload != null && FileToUpload.Length > 0)
                 {
                     string filename = FileToUpload.FileName.ToLower();
                     var fullpath = Path.Combine(pathToSave, filename);
@@ -86,7 +86,7 @@ namespace SmartBell.Controllers
             }
         }
 
-        [HttpDelete("DeleteFile/ {filename}")]
+        [HttpDelete("DeleteFile/{filename}")]
         public IActionResult DeleteFile(string filename)
         {
             try

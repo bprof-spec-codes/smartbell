@@ -123,6 +123,10 @@ namespace Logic
             };
             startBellRing.Id = Guid.NewGuid().ToString();
             startBellRing.Type = BellRingType.Start;
+            if (startBellRing.IntervalSeconds > 0)
+            {
+                startBellRing.Interval = new TimeSpan(0, 0, startBellRing.IntervalSeconds);
+            }
             bellRingRepo.InsertOne(startBellRing);
             BellRing endBellring = new BellRing
             {
@@ -132,6 +136,10 @@ namespace Logic
             };
             endBellring.Id = Guid.NewGuid().ToString();
             endBellring.Type = BellRingType.End;
+            if (startBellRing.IntervalSeconds > 0)
+            {
+                endBellring.Interval = new TimeSpan(0, 0, endBellring.IntervalSeconds);
+            }
             bellRingRepo.InsertOne(endBellring);
             OutputPath startOutput = new OutputPath();
             startOutput.FilePath = startFileName;
@@ -538,27 +546,6 @@ namespace Logic
             outputPathRepo.Delete(outputPath);
         }
 
-        //Save
-        public void SaveBellring()
-        {
-            bellRingRepo.SaveChanges();
-        }
-
-        public void SaveHoliday()
-        {
-            holidayRepo.SaveChanges();
-        }
-
-        public void SaveTemplate()
-        {
-            templateRepo.SaveChanges();
-        }
-
-        public void SaveTemplateElement()
-        {
-            templateElementRepo.SaveChanges();
-        }
-
         public void SetBellRingIntervalByPath(string id)
         {
             if (bellRingRepo.GetOne(id).IntervalSeconds > 0)
@@ -579,7 +566,7 @@ namespace Logic
                     var x = new FileExtensionContentTypeProvider().TryGetContentType(path, out ct);
                     if (ct == "text/plain")
                     {
-                        // TODO: For txt files we should implement a mathematical function to assume an interval.
+                        // TODO: For txt files we should implement a mathematical function to assume an interval. done
                         char[] delims = { '.', '!', '?', ',', '(', ')', '\t', '\n', '\r', ' ' };
 
                         string[] words = File.ReadAllText(path)
