@@ -8,7 +8,7 @@ namespace Logic
 {
     public interface IOutputLogic
     {
-        void TTS(string txt);
-        void MP3(string auido);
+        void TTS(string txt, int intervalSeconds);
+        void MP3(string auido,int intervalSeconds);
     }
 }

@@ -14,7 +14,7 @@ namespace Logic
         private static string outputFolder = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName+@"\Output");
         public void GetAllFiles(IList<OutputPath> outputs)
         {
-            foreach (var item in outputs)
+            foreach (var item in outputs.GroupBy(test => test.FilePath).Select(grp => grp.First()))
             {
                 string url = ConstConfig.DomainAddress + @$"/File/{item.FilePath}";
                 WebClient wc = new WebClient();

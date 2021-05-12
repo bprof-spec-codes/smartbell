@@ -1,6 +1,7 @@
 ﻿using CommonServiceLocator;
 using Data;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Logic;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -18,10 +20,15 @@ namespace SmartBellClient.VM
 {
     internal class MainViewModel : ViewModelBase
     {
+        private TimeSpan autoUpdateTime = new TimeSpan(6, 00, 00);
         private System.Threading.Timer timer;
+        private System.Threading.Timer UpdateTimer;
+        DispatcherTimer clockTimer;
         private IReadLogic readLogic;
         private ITimeLogic timeLogic;
         private IOutputLogic outputLogic;
+
+        public ICommand UpdateCmd { get; private set; }
         private string bellRingInfo;
         public string BellRingInfo
         {
@@ -57,12 +64,15 @@ namespace SmartBellClient.VM
                 Clock = timeLogic.GetNetworkTime();
                 startClock();
                 //BellRingInfo = "Next bellring time:";
-                NextBellRing = timeLogic.GetNextBellRingTime(Clock);
+                NextBellRing = timeLogic.GetNextBellringFromServer(Clock);
                 this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x => x.BellRingTime));
                 this.BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveAllElapsedBellRings(Clock,BellRings.ToList()).ToList());
                 this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
                 readLogic.GetAllFiles(Outputs);
                 BellRingUpdate(NextBellRing);
+                SetUpTimer(autoUpdateTime);
+
+                this.UpdateCmd = new RelayCommand(() => UpdateEverything(),true);
             }
             else
             {
@@ -80,7 +90,38 @@ namespace SmartBellClient.VM
                   IsInDesignModeStatic ? null : ServiceLocator.Current.GetInstance<IOutputLogic>()) // IoC
         {
         }
+        private void SetUpTimer(TimeSpan alertTime)
+        {
+            DateTime current = Clock;
+            TimeSpan timeToGo = alertTime - current.TimeOfDay;
+            if (timeToGo < TimeSpan.Zero)
+            {
+                return;//time already passed
+            }
+            this.UpdateTimer = new System.Threading.Timer(x =>
+            {
+                this.UpdateEverything();
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
+        }
 
+        private void UpdateEverything()
+        {
+            clockTimer.Stop();
+            if (timer != null)
+            {
+                timer.Dispose();
+            }
+            Clock = timeLogic.GetNetworkTime();
+            clockTimer.Start();
+            //BellRingInfo = "Next bellring time:";
+            NextBellRing = timeLogic.GetNextBellringFromServer(Clock);
+            this.BellRings = new ObservableCollection<BellRing>(readLogic.GetBellRingsForDay(Clock.Date).OrderBy(x => x.BellRingTime));
+            this.BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveAllElapsedBellRings(Clock, BellRings.ToList()).ToList());
+            this.Outputs = new ObservableCollection<OutputPath>(readLogic.GetAllOutputPathsForDay(Clock.Date));
+            readLogic.GetAllFiles(Outputs);
+            BellRingUpdate(NextBellRing);
+            SetUpTimer(autoUpdateTime);
+        }
         private static ObservableCollection<BellRing> FillWithSamples()
         {
             ObservableCollection<BellRing> brings = new ObservableCollection<BellRing>();
@@ -235,7 +276,11 @@ namespace SmartBellClient.VM
             BellRingInfo = "Next bellring time:";
             if (nextbellring == null)
             {
-                BellRingInfo = "No more bellrings for "+Clock.Date.ToString("yyyy:MM:dd");
+                BellRingInfo = "No more bellrings for " + Clock.Date.ToString("yyyy:MM:dd");
+                if ((timeLogic.GetNextBellringFromServer(Clock))!=null) // If the server's data is mismatched with local update it.
+                {
+                    UpdateEverything();
+                }
                 return;
             }
             DateTime calledForTime = Clock;
@@ -260,26 +305,40 @@ namespace SmartBellClient.VM
                 mplayer.Play();*/
                 if (item.FilePath.Substring(item.FilePath.LastIndexOf('.') + 1).ToLower() == "mp3")
                 {
-                    outputLogic.MP3(item.FilePath);
+                    if (currentOutputs.Count==1)
+                    {
+                        outputLogic.MP3(item.FilePath, NextBellRing.IntervalSeconds);
+                    }
+                    else
+                    {
+                        outputLogic.MP3(item.FilePath,0);
+                    }
                 }
                 else if(item.FilePath.Substring(item.FilePath.LastIndexOf('.') + 1).ToLower() == "txt")
                 {
-                    outputLogic.TTS(item.FilePath);
+                    if (currentOutputs.Count == 1)
+                    {
+                        outputLogic.TTS(item.FilePath, NextBellRing.IntervalSeconds);
+                    }
+                    else
+                    {
+                        outputLogic.TTS(item.FilePath,0);
+                    }
                 }
             }
             //outputLogic.MP3(item.FilePath);
             
             BellRings = new ObservableCollection<BellRing>(timeLogic.RemoveElapsedBellRing(NextBellRing.Id, BellRings.ToList()));
-            this.NextBellRing = this.timeLogic.GetNextBellRingTime(Clock.AddSeconds(5));
+            this.NextBellRing = this.timeLogic.GetNextBellringFromList(Clock.AddSeconds(5),BellRings.ToList());
             BellRingUpdate(NextBellRing);
             
         }
         private void startClock()
         {
-            DispatcherTimer clock = new DispatcherTimer();
-            clock.Interval = TimeSpan.FromSeconds(1);
-            clock.Tick += this.TicksOfClock;
-            clock.Start();
+            clockTimer = new DispatcherTimer();
+            clockTimer.Interval = TimeSpan.FromSeconds(1);
+            clockTimer.Tick += this.TicksOfClock;
+            clockTimer.Start();
         }
         private void TicksOfClock(object sender, EventArgs e)
         {
