@@ -22,6 +22,9 @@ namespace Models
         [Key]
         public string Id { get; set; }
 
+        /// <summary>Defines the name of a holiday.</summary>
+        public string Name { get; set; }
+
         /// <summary>Specifies the type of the holiday 0=Manually setup , 1=Break ,2=Holiday.</summary>
         [Required]
         public HolidayType Type { get; set; }

@@ -29,6 +29,7 @@ namespace Repository
         {
             BellRing old_bellRing = this.GetOne(oid);
 
+
             old_bellRing.Description = nItem.Description;
             old_bellRing.BellRingTime = nItem.BellRingTime;
             old_bellRing.Interval = nItem.Interval;
@@ -41,7 +42,6 @@ namespace Repository
             IQueryable<BellRing> BellringsOfDay = GetAll().Where(bellring => bellring.BellRingTime.Date == dayDate.Date);
             return BellringsOfDay;
         }
-
         
     }
 }

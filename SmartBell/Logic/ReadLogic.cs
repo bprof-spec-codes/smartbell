@@ -74,7 +74,7 @@ namespace Logic
 
         public IQueryable<Template> GetAllSampleTemplate()
         {
-            return templateRepo.GetAll().Where(x => x.Id.Length < 4); ;
+            return templateRepo.GetAll().Where(x => x.Id.Length < 4);
         }
 
         public IQueryable<Holiday> GetAllCalendarHoliday()
@@ -84,7 +84,7 @@ namespace Logic
 
         public IQueryable<TemplateElement> GetElementsForTemplate(string templateId)
         {
-            return templateRepo.GetOne(templateId).TemplateElements.AsQueryable();
+            return templateElementRepo.GetAll().Where(x => x.TemplateId == templateId);
         }
 
         public IQueryable<OutputPath> GetOutputsForBellRing(string bellringId)
@@ -94,7 +94,9 @@ namespace Logic
 
         public IQueryable<BellRing> GetAllSequencedBellRings()
         {
-            return bellRingRepo.GetAll().Where(x => x.Description != null && x.OutputPaths.Count() > 1 && x.Type.Equals(BellRingType.Special));
+            return bellRingRepo.GetAll().Where(x => x.Description != null && x.BellRingTime==new DateTime(1,1,1) &&
+            GetAllOutputPath().Where(y=>y.BellRingId==x.Id).Select(y=>y.SequenceID).Contains(1) &&
+            x.Type.Equals(BellRingType.Special));
         }
         public BellRing GetSequencedBellring(string id)
         {
@@ -124,6 +126,15 @@ namespace Logic
             throw new Exception("Can't check for breaks, all start values must have an end value.");
 
 
+        }
+        public int FileOccurrence(string fileName)
+        {
+            return (outputPathRepo.GetAll().Where(x => x.FilePath == fileName).Count() +
+                templateElementRepo.GetAll().Where(x => x.FilePath == fileName).Count());
+        }
+        public bool FileIsUsed(string filename)
+        {
+            return (FileOccurrence(filename) > 0);
         }
     }
 }

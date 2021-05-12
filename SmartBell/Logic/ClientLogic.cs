@@ -11,13 +11,16 @@ namespace Logic
     public class ClientLogic
     {
         ModificationLogic modLogic;
-        ReadLogic readlogic;
+        ReadLogic readLogic;
         IBellRingRepository bellRingRepo;
         ITemplateRepository templateRepo;
+        IOutputPathRepository outputPathRepo;
 
-        public ClientLogic(ModificationLogic logic,IBellRingRepository bellRingRepo, ITemplateRepository templateRepo)
+        public ClientLogic(ModificationLogic modLogic,IBellRingRepository bellRingRepo, ITemplateRepository templateRepo,ReadLogic readLoigc, IOutputPathRepository outputPathRepo)
         {
-            this.modLogic = logic;
+            this.modLogic = modLogic;
+            this.readLogic = readLoigc;
+            this.outputPathRepo = outputPathRepo;
             this.bellRingRepo = bellRingRepo;
             this.templateRepo = templateRepo;
         }
@@ -28,11 +31,16 @@ namespace Logic
         }
         public IQueryable<TemplateElement> GetElementsForTemplate(string id)
         {
-            return readlogic.GetElementsForTemplate(id);
+            return readLogic.GetElementsForTemplate(id);
         }
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
         {
-            return bellRingRepo.GetBellRingsForDay(dayDate);
+            return bellRingRepo.GetBellRingsForDay(dayDate).OrderBy(x=>x.BellRingTime);
+        }
+        public IQueryable<OutputPath> GetAllOutputPathsForDay(DateTime dayDate)
+        {
+           IQueryable<BellRing> bellringsofday = bellRingRepo.GetBellRingsForDay(dayDate);
+           return outputPathRepo.GetAll().Where(x => bellringsofday.Select(y => y.Id).Contains(x.BellRingId));
         }
     }
 }

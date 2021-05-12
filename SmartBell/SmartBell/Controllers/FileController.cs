@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Logic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,12 @@ namespace SmartBell.Controllers
     public class FileController : ControllerBase
     {
         public static readonly string[] fileExceptions = { "default.mp3" };
+        ReadLogic readlogic;
+
+        public FileController(ReadLogic readlogic)
+        {
+            this.readlogic = readlogic;
+        }
 
         [HttpPost,DisableRequestSizeLimit]
         public IActionResult Upload(IFormFile FileToUpload)
@@ -22,9 +29,10 @@ namespace SmartBell.Controllers
             {
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (FileToUpload != null || FileToUpload.Length > 0)
+                if (FileToUpload != null && FileToUpload.Length > 0)
                 {
-                    var fullpath = Path.Combine(pathToSave, FileToUpload.FileName);
+                    string filename = FileToUpload.FileName.ToLower();
+                    var fullpath = Path.Combine(pathToSave, filename);
 
                     using (var stream = new FileStream(fullpath, FileMode.Create))
                     {
@@ -55,6 +63,11 @@ namespace SmartBell.Controllers
         {
             try
             {
+                filename = filename.ToLower();
+                if (filename.Split('.').Last() != "txt")
+                {
+                    filename = filename.Split('.').First() + ".txt";
+                }
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
@@ -73,11 +86,16 @@ namespace SmartBell.Controllers
             }
         }
 
-        [HttpDelete("DeleteTTSByName/ {filename}")]
-        public IActionResult DeleteTTSFileByName(string filename)
+        [HttpDelete("DeleteFile/{filename}")]
+        public IActionResult DeleteFile(string filename)
         {
             try
             {
+                int occurrence = readlogic.FileOccurrence(filename);
+                if (occurrence != 0)
+                {
+                    throw new Exception($"This file's occurrence is {occurrence}.");
+                }
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
@@ -99,7 +117,79 @@ namespace SmartBell.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [HttpGet("GetFileUsage/{filename}")]
+        public IActionResult FileIsUsed(string filename)
+        {
+            try
+            {
+                return Ok(readlogic.FileIsUsed(filename));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+            
+        }
+        [HttpGet("GetAllFiles")]
+        public IActionResult GetAllFiles()
+        {
+            try
+            {
+                var folderName = "Output";
+                var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string[] files = Directory.GetFiles(outputFolder);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string[] split = files[i].Split(@"\");
+                    files[i] = split.Last();
+                }
+                return Ok(files);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        [HttpGet("GetAllTTSFiles")]
+        public IActionResult GetAllTTSFiles()
+        {
+            try
+            {
+                var folderName = "Output";
+                var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string[] files = Directory.GetFiles(outputFolder).Where(x => (x.Split('.').Last() == "txt")).ToArray();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string[] split = files[i].Split(@"\");
+                    files[i] = split.Last();
+                }
+                return Ok(files);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        [HttpGet("GetAllMp3Files")]
+        public IActionResult GetAllMp3Files()
+        {
+            try
+            {
+                var folderName = "Output";
+                var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string[] files = Directory.GetFiles(outputFolder).Where(x => (x.Split('.').Last() == "mp3")).ToArray();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string[] split = files[i].Split(@"\");
+                    files[i] = split.Last();
+                }
+                return Ok(files);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
         [HttpGet("GetFileExceptions")]
         public IActionResult GetFileExceptions()
         {
