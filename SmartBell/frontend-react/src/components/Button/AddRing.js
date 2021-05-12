@@ -1,7 +1,5 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
-import moment from 'moment';
-import TimePicker from 'rc-time-picker';
 import dateFormatter from 'dateformat';
 import 'rc-time-picker/assets/index.css';
 import DDMenu from './DDMenu';
@@ -9,12 +7,12 @@ import TPicker from '../Calendar/TPicker'
 import axios from "../../axios";
 import '../../index.css'
 
-const AddRing = () => {
+const AddRing = ({date}) => {
     const ringOptions = ['Normál', 'Csengetések némítása','Iskolarádió','Speciális csengetés'];
     const radioOptions = ['Alap rádióműsor', 'műsor2', 'műsor3'];
 
     const [ringType, setRingType]=useState(ringOptions[0]);
-
+    
     const [startTime,setStartTime] = useState(new Date());
     const [endTime,setEndTime] = useState(new Date());
     const [description, setDescription] = useState('');
@@ -25,19 +23,24 @@ const AddRing = () => {
     const [files,setFiles] = useState([]);
     const [radioSeqs, setRadioSeqs] = useState([]);
 
+    const chosenDate = date;
 
     function onStartChange(value) {
+        //const currenMonths = startTime.getMonth();
+        //const currentDay = startTime.getDay();
         setStartTime(dateFormatter(value, "yyyy-mm-dd'T'HH:MM:ss"));
+        //startTime.setMonth(currenMonths);
+        //startTime.setDay(currentDay);
         console.log(value);
     }
 
     function onEndChange(value) {
+        //const currenMonths = endTime.getMonth();
+        //const currentDay = endTime.getDay();
         setEndTime(dateFormatter(value, "yyyy-mm-dd'T'HH:MM:ss"));
+        //endTime.setMonth(currenMonths);
+        //endTime.setDay(currentDay);
         console.log(value);
-    }
-
-    function addHoursToDate(date, hours) {
-        return new Date(new Date(date).setHours(date.getHours() + hours));
     }
 
     useEffect(() => {
@@ -127,6 +130,7 @@ const AddRing = () => {
     const onSubmit = (e)=>{
         e.preventDefault()
         addRing();
+        //window.location.reload(false);
     }
 
     return (
@@ -189,7 +193,7 @@ const AddRing = () => {
                     </div>
                     <div className='form-control'>
                         <label>Válassz rádióműsort</label>
-                        <DDMenu props={radioSeqs.description} first={radioSeqs[0]} />
+                        <DDMenu props={/*radioSeqs.description*/radioOptions} first={radioOptions[0]} />
                     </div>
                 </div>
             }
