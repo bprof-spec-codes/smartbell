@@ -1,8 +1,6 @@
 import React from 'react'
 import {useState,useEffect} from 'react'
 
-//help: https://codesandbox.io/s/react-google-flight-datepicker-zultp?file=/src/App.js:637-643
-//also: https://github.com/JSLancerTeam/react-google-flight-datepicker
 import {RangeDatePicker} from "react-google-flight-datepicker";
 import "react-google-flight-datepicker/dist/main.css";
 import DDMenu from '../Button/DDMenu';
@@ -17,10 +15,7 @@ const DateChooser = ({onAdd}) => {
     const [radio, setRadio]=useState('');
     
     const [template,setTemplate]=useState([]);
-    const ringOptions = ['Normál csengetési rend',
-     'Rövidített csengetési rend',
-        'Tanítási szünet',
-        'Pirosbetűs ünnep'];
+    const ringOptions = ['Tízperces csengetési rend', 'Tizenöt perces csengetési rend', 'Rövidített órák'];
 
     const [files,setFiles]=useState([]);
     const [chosenFile,setChosenFile] = useState('');

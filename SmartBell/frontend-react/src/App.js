@@ -47,7 +47,7 @@ const App = () =>{
                   showAdd={showAddRing}
               />
             </div>
-            {showAddRing && <AddRing />}
+            {showAddRing && <AddRing date={date}/>}
             <Rings date={date}/>
             <ConfigButton/>
           </div>
