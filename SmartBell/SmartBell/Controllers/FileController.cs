@@ -64,6 +64,10 @@ namespace SmartBell.Controllers
             try
             {
                 filename = filename.ToLower();
+                if (filename.Split('.').Last() != "txt")
+                {
+                    filename = filename.Split('.').First() + ".txt";
+                }
                 var folderName = "Output";
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
@@ -134,6 +138,46 @@ namespace SmartBell.Controllers
                 var folderName = "Output";
                 var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 string[] files = Directory.GetFiles(outputFolder);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string[] split = files[i].Split(@"\");
+                    files[i] = split.Last();
+                }
+                return Ok(files);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        [HttpGet("GetAllTTSFiles")]
+        public IActionResult GetAllTTSFiles()
+        {
+            try
+            {
+                var folderName = "Output";
+                var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string[] files = Directory.GetFiles(outputFolder).Where(x => (x.Split('.').Last() == "txt")).ToArray();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string[] split = files[i].Split(@"\");
+                    files[i] = split.Last();
+                }
+                return Ok(files);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        [HttpGet("GetAllMp3Files")]
+        public IActionResult GetAllMp3Files()
+        {
+            try
+            {
+                var folderName = "Output";
+                var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string[] files = Directory.GetFiles(outputFolder).Where(x => (x.Split('.').Last() == "mp3")).ToArray();
                 for (int i = 0; i < files.Length; i++)
                 {
                     string[] split = files[i].Split(@"\");
