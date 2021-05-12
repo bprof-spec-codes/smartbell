@@ -1,10 +1,11 @@
 import React from 'react'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import Ttss from '../TTS/Ttss'
+import axios from "../../axios";
+import Songs from './Songs'
+import Song from './Song'
 
 const TtsMaker = () => {
-
-    const [fileName, setFileName]=useState('');
 
     const [ttss, setTtss] = useState([
         {
@@ -33,46 +34,86 @@ const TtsMaker = () => {
         }
     ])
 
+    const [content,setContent] = useState('');
+
+    const [fileName,setFileName] = useState('');
+    
+    const [tts,setTts]=useState([]);
+
     const deleteTts = (id) =>{
         setTtss(ttss.filter((ttss) => ttss.id!==id))
     }
 
+    const addTts = () => {
+        axios.post(`/File/PostTTSString/${content} & ${fileName}`)
+        .then((response) => {
+            console.log(response+" tts");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const onSubmit = (e) =>{
+        e.preventDefault()
+        addTts();
+        //window.location.reload(false);
+    }
+
+    useEffect(() => {
+        axios
+        .get(`/File/GetAllTTSFiles/`)
+        .then((response) => {
+            const res = response.data;
+            setTts(res);
+            console.log(res+" files");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    },[]);
+
+    const onDelete=(id)=>{
+        axios.delete(`/File/DeleteFile/${id}`)
+        .then((response) => {
+            console.log(response);
+          })
+        .catch((error) => {
+            console.log(error);
+          });
+      }
+
     return (
         <div className='container'>
             <h1>Felolvasandó szövegek</h1>
-            <form className='form-control'>
+            <form className='form-control' onSubmit={onSubmit}>
                 <h3>Új szöveg:</h3>
-                    <input  
-                        placeholder='Gépeld be a felolvasandó szöveget' 
-                    />
+                    <input placeholder='Gépeld be a felolvasandó szöveget' onChange={e => setContent(e.target.value)}/>
                 <h3>Fájlnév:</h3>
-                <input placeholder='Adj nevet a fájlnak' type='text' onChange={e => setFileName(e.target.value)}/><br/>
+                    <input placeholder='Adj nevet a fájlnak' type='text' onChange={e => setFileName(e.target.value)}/><br/>
                 <input type='submit' className='btn btn-block' value='Szöveg hozzáadása'/>
 
             <br/><br/>
             <h3>Felolvasható szövegek: </h3><br/>
             {
-              ttss.length > 0 ? 
+              tts.length > 0 ? 
               (
-                <Ttss 
-                  ttss={ttss} 
-                  onDelete={deleteTts}
-                />
+                  tts.map((file) => (
+                      <Song
+                          key={file}
+                          song={file}
+                          onDelete={onDelete}
+                      />
+                    ))
               ) 
               : 
               (
-                'Nincsenek felolvasandó szövegek'
+                  <p>Nincsenek feltöltött fájlok</p>
               )
             }
-            
-            <input type='submit' className='btn btn-block' value='Szövegek mentése'/>
             </form>
         </div>
     )
-}
-
-const onSubmit = (e)=>{
-    e.preventDefault()
 }
 
 export default TtsMaker

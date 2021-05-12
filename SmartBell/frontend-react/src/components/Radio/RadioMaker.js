@@ -84,6 +84,8 @@ const RadioMaker = () => {
         },
     ])
     const [files,setFiles]=useState([]);
+    const [sequenced,setSequenced]=useState([]);
+    const [tts,setTts]=useState([]);
 
     //delete song
     const deleteFromallSong = (id) =>{
@@ -96,6 +98,28 @@ const RadioMaker = () => {
         .then((response) => {
             const res = response.data;
             setFiles(res);
+            console.log(res+" files");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+        axios
+        .get(`/Bellring/GetAllSequencedBellRings/`)
+        .then((response) => {
+            const res = response.data;
+            setSequenced(res);
+            console.log(res+" files");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+        axios
+        .get(`/File/GetAllTTSFiles/`)
+        .then((response) => {
+            const res = response.data;
+            setTts(res);
             console.log(res+" files");
         })
         .catch((error) => {
@@ -134,13 +158,14 @@ const RadioMaker = () => {
                         
                         <h3>Kiválaszott rádióműsor zenéi:</h3>
                         {
-                        songs.length > 0 ? 
+                        files.length > 0 ? 
                         (
-                            /*<Songs 
-                            songs={songs} 
-                            onDelete={deleteSong}
-                            />*/
-                            'TODO'
+                            files.map((file) => (
+                                <Song
+                                    key={file}
+                                    song={file}
+                                />
+                              ))
                         ) 
                         : 
                         (
@@ -165,6 +190,7 @@ const RadioMaker = () => {
                                 <Song
                                     key={file}
                                     song={file}
+                                    onDelete={deleteSong}
                                 />
                               ))
                         ) 
