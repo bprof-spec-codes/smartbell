@@ -631,7 +631,7 @@ namespace Logic
 
         public void RemoveAllHolidays()
         {
-            IQueryable<Holiday> holidays = holidayRepo.GetAll();
+            IQueryable<Holiday> holidays = holidayRepo.GetAll().Where(x => x.Type == HolidayType.Break || x.Type == HolidayType.Manual);
             if (holidays == null)
             {
                 return;
@@ -640,6 +640,31 @@ namespace Logic
             {
                 IQueryable<BellRing> bellRingsDuringHoliday =
                     bellRingRepo.GetAll().Where(bellring => bellring.BellRingTime >= item.StartTime && item.EndTime >= bellring.BellRingTime);
+                if (bellRingsDuringHoliday != null)
+                {
+                    foreach (var BellRingToBeRemoved in bellRingsDuringHoliday)
+                    {
+                        bellRingRepo.Delete(BellRingToBeRemoved);
+                    }
+                }
+            }
+            IQueryable<Holiday> holidayswithtypeholiday = holidayRepo.GetAll().Where(x => x.Type == HolidayType.Holiday);
+            foreach (var item in holidays)
+            {
+                IQueryable<BellRing> bellRingsDuringHoliday =
+                    bellRingRepo.GetAll().Where(bellring =>
+                    (bellring.BellRingTime.Month >= item.StartTime.Month &&
+                    bellring.BellRingTime.Day >= item.StartTime.Day &&
+                    bellring.BellRingTime.Hour >= item.StartTime.Hour &&
+                    bellring.BellRingTime.Minute >= item.StartTime.Minute
+                    )
+                    &&
+                    (item.EndTime.Month >= bellring.BellRingTime.Month &&
+                    item.EndTime.Day >= bellring.BellRingTime.Day &&
+                    item.EndTime.Month >= bellring.BellRingTime.Month &&
+                    item.EndTime.Hour >= bellring.BellRingTime.Hour &&
+                    item.EndTime.Minute >= bellring.BellRingTime.Minute)
+                    );
                 if (bellRingsDuringHoliday != null)
                 {
                     foreach (var BellRingToBeRemoved in bellRingsDuringHoliday)
