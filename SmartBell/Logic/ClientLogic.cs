@@ -35,7 +35,7 @@ namespace Logic
         }
         public IQueryable<BellRing> GetBellRingsForDay(DateTime dayDate)
         {
-            return bellRingRepo.GetBellRingsForDay(dayDate);
+            return bellRingRepo.GetBellRingsForDay(dayDate).OrderBy(x=>x.BellRingTime);
         }
         public IQueryable<OutputPath> GetAllOutputPathsForDay(DateTime dayDate)
         {

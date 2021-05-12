@@ -8,6 +8,24 @@ using System.Threading.Tasks;
 namespace Models.UI.VM
 {
     /// <summary>
+    /// Describe a lessons parameters as a viewModel.
+    /// </summary>
+    public class Lesson
+    {
+        /// <summary>
+        /// Describes the reason of a bellringing.
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
+        /// Starting point a of a bellringing
+        /// </summary>
+        public DateTime BellRingTime { get; set; }
+        /// <summary>
+        /// Property which can determine static length of a bellringing in seconds.
+        /// </summary>
+        public int IntervalSeconds { get; set; }
+    }
+    /// <summary>
     /// View model for inserting lessons.
     /// </summary>
     public class LessonViewModel
@@ -15,18 +33,18 @@ namespace Models.UI.VM
         /// <summary>
         /// Starting bellring of a lesson.
         /// </summary>
-        public BellRing startBellRing { get; set; }
+        public Lesson startBellRing { get; set; }
         /// <summary>
         /// Ending bellring of a lesson.
         /// </summary>
-        public BellRing endBellring { get; set; }
+        public Lesson endBellring { get; set; }
         /// <summary>
         /// Starting output for the bellring of a lesson.
         /// </summary>
-        public OutputPath startOutputpath { get; set; }
+        public string startFilename { get; set; }
         /// <summary>
         /// Ending output for the bellring of a lesson.
         /// </summary>
-        public OutputPath endOutputpath { get; set; }
+        public string endFilename { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios';
+import axios from "../../axios";
 
 class UploadFile extends React.Component{
 
@@ -22,10 +22,9 @@ class UploadFile extends React.Component{
         const data = new FormData() 
         data.append('file', this.state.selectedFile)
         console.warn(this.state.selectedFile);
-        let url = "http://localhost:8000/upload.php";
+        let url = "https://localhost:5001/File";
 
-        axios.post(url, data, { // receive two parameter endpoint url ,form data 
-        })
+        axios.post(`/File`, data)
         .then(res => { // then print response status
             console.warn(res);
         })

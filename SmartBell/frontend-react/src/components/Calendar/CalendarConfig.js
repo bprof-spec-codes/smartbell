@@ -4,6 +4,7 @@ import RadioMaker from '../Radio/RadioMaker'
 import SoundUploader from '../Radio/SoundUploader'
 import TtsMaker from '../Radio/TtsMaker'
 
+
 const CalendarConfig = () => {
     return (
         <div>
@@ -12,9 +13,6 @@ const CalendarConfig = () => {
             </div>
             <div>
                 <RadioMaker/>
-            </div>
-            <div>
-                <SoundUploader/>
             </div>
             <div>
                 <TtsMaker/>

@@ -1,6 +1,7 @@
 ﻿using Logic;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.UI.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,17 @@ namespace ApiEndpoint.Controllers
 {
     [ApiController]
     [Route("Template")]
-    public class TemplateController:ControllerBase
+    public class TemplateController : ControllerBase
     {
         ModificationLogic modlogic;
+        TemplateEditingLogic templateEditingLogic;
         ReadLogic readlogic;
 
-        public TemplateController(ModificationLogic logic,ReadLogic readlogic)
+        public TemplateController(ModificationLogic logic, ReadLogic readlogic, TemplateEditingLogic templateEditingLogic)
         {
             this.modlogic = logic;
             this.readlogic = readlogic;
+            this.templateEditingLogic = templateEditingLogic;
         }
 
         [HttpDelete("{id}")]
@@ -94,7 +97,7 @@ namespace ApiEndpoint.Controllers
             try
             {
                 Template template = readlogic.GetOneTemplate(id);
-                modlogic.ModifyByTemplate(dateTime,template);
+                modlogic.ModifyByTemplate(dateTime, template);
                 return Ok();
             }
             catch (Exception ex)
@@ -103,13 +106,54 @@ namespace ApiEndpoint.Controllers
             }
         }
 
-        [HttpPost("FillDbByTemplate")]
-        public IActionResult FillDbByTemplate(string id, DateTime StartDate, DateTime EndDate)
+        [HttpPost("ApplyTemplateWithoutFileAssign/{id}&{startDate}&{endDate}")]
+        public IActionResult ApplyTemplateWithoutFileAssign(string id, DateTime startDate, DateTime endDate)
         {
             try
             {
                 Template template = readlogic.GetOneTemplate(id);
-                modlogic.FillDbByTemplate(template, StartDate, EndDate);
+                modlogic.ApplyTemplateWithoutFileAssign(template, startDate, endDate);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
+
+        [HttpPost("ApplyTemplateWithFileAssign/{id}&{startDate}&{endDate}&{fileName}")]
+        public IActionResult FillDbByTemplateWithFileName(string id, DateTime startDate, DateTime endDate, string fileName)
+        {
+            try
+            {
+                Template template = readlogic.GetOneTemplate(id);
+                modlogic.ApplyTemplateWithFileAssign(template, startDate, endDate, fileName);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
+        [HttpGet("InsertLessonTemplateElements/{templateId}&{templateName}")]
+        public IActionResult InsertLessonTemplateElements([FromBody] LessonViewModel Lesson, string templateId, string templateName)
+        {
+            try
+            {
+                templateEditingLogic.InsertLessonTemplateElements(Lesson.startBellRing, Lesson.endBellring, Lesson.startFilename, Lesson.endFilename, templateId, templateName);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Bad request error: {ex}");
+            }
+        }
+        [HttpGet("DeleteLessonTemplateElement")]
+        public IActionResult DeleteLessonTemplateElement([FromBody] TemplateElement templateElement)
+        {
+            try
+            {
+                templateEditingLogic.DeleteLessonTemplateElement(templateElement);
                 return Ok();
             }
             catch (Exception ex)

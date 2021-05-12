@@ -21,7 +21,7 @@ namespace Data
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.
-                    UseLazyLoadingProxies().UseSqlServer(@"Server=tcp:smartbell.database.windows.net,1433;Initial Catalog=smartbell;Persist Security Info=False;User ID=sbadmin;Password=Abcd1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", b => b.MigrationsAssembly("SmartBell"));
+                    UseLazyLoadingProxies().UseSqlServer(@"Server=tcp:smartbelldb.database.windows.net,1433;Initial Catalog=smartbellDb;Persist Security Info=False;User ID=sbadmin;Password=Passw0rd;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", b => b.MigrationsAssembly("SmartBell"));
             }
         }
 
@@ -119,6 +119,19 @@ namespace Data
 
                 );
 
+            modelBuilder.Entity<Holiday>().HasData(
+                new { Id = "1", Name= "Újév", Type = HolidayType.Holiday, StartTime = new DateTime(1,1,1,0,0,1), EndTime = new DateTime(1,1,1,0,59,23)},
+                new { Id = "2", Name = "48-as Forradalom", Type = HolidayType.Holiday, StartTime = new DateTime(1, 3, 15, 0, 0, 1), EndTime = new DateTime(1, 3, 15, 0, 59, 23) },
+
+                new { Id = "3", Name = "Munka ünnepe", Type = HolidayType.Holiday, StartTime = new DateTime(1, 5, 1, 0, 0, 1), EndTime = new DateTime(1, 5, 1, 0, 59, 23) },
+                new { Id = "4", Name = "Augusztus 20.", Type = HolidayType.Holiday, StartTime = new DateTime(1, 8, 20, 0, 0, 1), EndTime = new DateTime(1, 8, 20, 0, 59, 23) },
+
+                new { Id = "5", Name = "56-os Forradalom", Type = HolidayType.Holiday, StartTime = new DateTime(1, 10, 23, 0, 0, 1), EndTime = new DateTime(1, 10, 23, 0, 59, 23) },
+                new { Id = "6", Name = "Mindenszentek", Type = HolidayType.Holiday, StartTime = new DateTime(1, 11, 1, 0, 0, 1), EndTime = new DateTime(1, 11, 1, 0, 59, 23) },
+
+                new { Id = "7", Name = "Karácsony", Type = HolidayType.Holiday, StartTime = new DateTime(1, 12, 25, 0, 0, 1), EndTime = new DateTime(1, 12, 26, 0, 59, 23) }
+
+                );
 
 
 

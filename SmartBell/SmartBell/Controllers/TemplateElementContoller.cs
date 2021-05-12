@@ -36,19 +36,6 @@ namespace SmartBell.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetTemplateElement(string id)
-        {
-            try
-            {
-                return Ok(readlogic.GetOneTemplateElement(id));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, $"Bad request error: {ex}");
-            }
-        }
-
         [HttpGet]
         public IActionResult GetAllTemplate()
         {
@@ -61,20 +48,17 @@ namespace SmartBell.Controllers
                 return StatusCode(400, $"Bad request error: {ex}");
             }
         }
-
-        [HttpPost]
-        public IActionResult AddTemplateElement([FromBody] TemplateElement item)
+        [HttpGet("GetTemplateElementsForTemplate/{id}")]
+        public IActionResult GetTemplateElementsForTemplate(string id)
         {
             try
             {
-                modlogic.InsertTemplateElement(item);
-                return Ok();
+                return Ok(readlogic.GetElementsForTemplate(id));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error : {ex}");
+                return StatusCode(400, $"Bad request error: {ex}");
             }
-            
         }
     }
 }

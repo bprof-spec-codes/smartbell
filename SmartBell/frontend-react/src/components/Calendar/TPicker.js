@@ -8,10 +8,10 @@ const format = 'h:mm a';
 const now = moment();
 
 function onChange(value) {
-  console.log(value && value.format(format));
+  console.log(value && value/*.format(format)*/);
 }
 
-const TPicker = () => {
+const TPicker = ({onChange}) => {
     return (
       <TimePicker
       showSecond={false}
