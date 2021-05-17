@@ -31,10 +31,49 @@ Jelenlegi projektben található meg egy iskoláknak szánt okoscsnegő alkalmaz
 
 # Használati utasítás
 <br/>
- * Első sorban a szerver elindítása szükséges. Amint az felállt, lehet indítani a klienst illetva a weboldal is látogatható lesz onnantól kezdve! Egyelőre szükséges még a VS környezet a program futtatásához. 
+ * Első sorban a szerver elindítása szükséges. Amint az felállt, lehet indítani a klienst illetve a weboldal is látogatható lesz onnantól kezdve! Egyelőre szükséges még a VS környezet a program futtatásához. 
  * A projekthez teljes leírást a <code>usermanual.pdf</code> fájlban talál.
 
-# Probléma dokumentáció
+## Elkészített API-k
+<br/>
+### BellRing API-k
+<br/>
+Itt találhatóak a csengetéssel kapcsolatos API-k<br/>
+![bellring api](pictures/br.png "BellRing API")
+<br/>
+
+### Client API-k
+<br/>
+Itt találhatóak a klienssel kapcsolatos API-k <br/>
+![client api](pictures/client.png "Client API")
+<br/>
+### File API-k
+<br/> Itt találhatóak a fájl kezeléssel kapcsolatos API-k
+<br/>
+![file api](pictures/file.api "File API")
+<br/>
+
+### Holiday API-k
+<br/>
+Itt találhatóak a szünetekkel kapcsolatos API-k<br/>
+![holiday api](pictures/holiday.png "Holiday API")
+<br/>
+
+### Template API-k
+<br/> Itt találhatóak az előre beállított templatek. <br/>
+![template api](pictures/template.png "Template API")
+<br/>
+
+## Felhasználói felületek
+<br/>
+ Főoldal
+ Ez a felület tölt be először, itt tudjuk megtekinteni a különböző napokra beállított csengetéseket. <br/>
+ ![fooldal](pictures/f1.png "Főoldal képe")<br/>
+ Másodlagos oldal <br/>
+ ![masodikoldal](pictures/f6.png "Második oldal képe")<br/>
+
+
+## Probléma dokumentáció
 <br/>
 
 A fejlesztés során problémáinkat és ötleteinket egy online SCRUM boardban vezettük. Itt mindannyian hozzá tudtunk szólni, illetve a heti meetingen mindent átbeszéltünk ami kérdéses maradt.
