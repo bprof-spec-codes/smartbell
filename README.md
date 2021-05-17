@@ -37,31 +37,32 @@ Jelenlegi projektben található meg egy iskoláknak szánt okoscsnegő alkalmaz
 ## Elkészített API-k
 <br/>
 ### BellRing API-k
+Itt találhatóak a csengetéssel kapcsolatos API-k
 <br/>
-Itt találhatóak a csengetéssel kapcsolatos API-k<br/>
 ![bellring api](pictures/br.png "BellRing API")
 <br/>
 
 ### Client API-k
+Itt találhatóak a klienssel kapcsolatos API-k
 <br/>
-Itt találhatóak a klienssel kapcsolatos API-k <br/>
 ![client api](pictures/client.png "Client API")
 <br/>
 
 ### File API-k
-<br/> Itt találhatóak a fájl kezeléssel kapcsolatos API-k
+Itt találhatóak a fájl kezeléssel kapcsolatos API-k
 <br/>
 ![file api](pictures/file.png "File API")
 <br/>
 
 ### Holiday API-k
+Itt találhatóak a szünetekkel kapcsolatos API-k
 <br/>
-Itt találhatóak a szünetekkel kapcsolatos API-k<br/>
 ![holiday api](pictures/holiday.png "Holiday API")
 <br/>
 
 ### Template API-k
-<br/> Itt találhatóak az előre beállított templatek. <br/>
+Itt találhatóak az előre beállított templatek. 
+<br/>
 ![template api](pictures/template.png "Template API")
 <br/>
 
