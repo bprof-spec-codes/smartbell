@@ -36,6 +36,7 @@ Jelenlegi projektben található meg egy iskoláknak szánt okoscsnegő alkalmaz
 
 ## Elkészített API-k
 <br/>
+
 ### BellRing API-k
 Itt találhatóak a csengetéssel kapcsolatos API-k
 <br/>
