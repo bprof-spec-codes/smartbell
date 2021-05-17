@@ -68,12 +68,15 @@ Itt találhatóak az előre beállított templatek.
 <br/>
 
 ## Felhasználói felületek
-<br/>
  Főoldal
- Ez a felület tölt be először, itt tudjuk megtekinteni a különböző napokra beállított csengetéseket. <br/>
- ![fooldal](pictures/f1.png "Főoldal képe")<br/>
- Másodlagos oldal <br/>
- ![masodikoldal](pictures/f6.png "Második oldal képe")<br/>
+ Ez a felület tölt be először, itt tudjuk megtekinteni a különböző napokra beállított csengetéseket.
+ <br/>
+ ![fooldal](pictures/f1.png "Főoldal képe")
+ <br/>
+ Másodlagos oldal 
+ <br/>
+ ![masodikoldal](pictures/f6.png "Második oldal képe")
+ <br/>
 
 
 ## Probléma dokumentáció
