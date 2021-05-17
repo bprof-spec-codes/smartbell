@@ -33,3 +33,19 @@ Jelenlegi projektben található meg egy iskoláknak szánt okoscsnegő alkalmaz
 <br/>
  * Első sorban a szerver elindítása szükséges. Amint az felállt, lehet indítani a klienst illetva a weboldal is látogatható lesz onnantól kezdve! Egyelőre szükséges még a VS környezet a program futtatásához. 
  * A projekthez teljes leírást a <code>usermanual.pdf</code> fájlban talál.
+
+# Probléma dokumentáció
+<br/>
+
+A fejlesztés során problémáinkat és ötleteinket egy online SCRUM boardban vezettük. Itt mindannyian hozzá tudtunk szólni, illetve a heti meetingen mindent átbeszéltünk ami kérdéses maradt.
+
+Backend:
+-  Sokat beszélgettünk az adatbázis felépítéséről, miket tároljunk a db-be milyen módon. Végül sikerült szerintem egy köztes megoldást találni.
+-  Az Azure szolgáltatással volt nekünk többszöri problémánk. Először gyorsan leszívta a rendelkezésre álló kreditet, másodjára lejárt a próbaidőszak. Most éppen a harmadik opció fut, ami egy másik csapattag Azure-járól fut.
+-  Problémánk akadt még az naudio nuget packet-tel. Mivel .net 5-s verzión készült a projekt, ezért ott már nem támogatott. Ezt tablib packet-re cseréltük.
+-  TTS lejátszó implementálása, a szöveg felolvasást csak nehezen tudtok összerakni. Végül megoldódott. Speech synthetisizer és a registryből a magyar nyelv betöltése
+-  Irdatlan mennyiségű merge confliktok debuggolása és kezelése.
+
+Frontend:
+- REACT és alapvetően a frontend felépítés a nulláról kezdése, így lassabb haladás volt csak vele. A minden backend funkcióra így sajnos nem készült el a frontend vagy csak félig.
+
