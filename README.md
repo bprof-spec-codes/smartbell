@@ -47,10 +47,11 @@ Itt találhatóak a csengetéssel kapcsolatos API-k<br/>
 Itt találhatóak a klienssel kapcsolatos API-k <br/>
 ![client api](pictures/client.png "Client API")
 <br/>
+
 ### File API-k
 <br/> Itt találhatóak a fájl kezeléssel kapcsolatos API-k
 <br/>
-![file api](pictures/file.api "File API")
+![file api](pictures/file.png "File API")
 <br/>
 
 ### Holiday API-k
